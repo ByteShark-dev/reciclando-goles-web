@@ -1,0 +1,110 @@
+mutation CreateDemoData @transaction @auth(level: USER, insecureReason: "Seed data mutation for demo purposes. Safe to expose to authenticated users.") {
+  user_insertMany(data: [
+    {
+      id: "b21e8d64-e29b-41d4-a716-446655440000",
+      displayName: "John Doe",
+      email: "john.doe@example.com",
+      createdAt: "2023-01-15T10:00:00Z",
+      bio: "Passionate about sustainable development.",
+      photoUrl: "https://example.com/john.jpg"
+    },
+    {
+      id: "a12e8d64-e29b-41d4-a716-446655440001",
+      displayName: "Jane Smith",
+      email: "jane.smith@example.com",
+      createdAt: "2023-02-20T11:30:00Z",
+      bio: "Environmental activist and community organizer.",
+      photoUrl: "https://example.com/jane.jpg"
+    },
+    {
+      id: "c34e8d64-e29b-41d4-a716-446655440002",
+      displayName: "Peter Jones",
+      email: "peter.jones@example.com",
+      createdAt: "2023-03-01T09:15:00Z",
+      bio: "Supporter of local initiatives.",
+      photoUrl: "https://example.com/peter.jpg"
+    }
+  ])
+  project_insertMany(data: [
+    {
+      id: "d56e8d64-e29b-41d4-a716-446655440003",
+      name: "Community Garden Renovation",
+      description: "Renovating a local community garden for better food production.",
+      goalAmount: 5000.00,
+      currentAmount: 1200.00,
+      startDate: "2024-04-01",
+      endDate: "2024-06-30",
+      createdAt: "2024-03-10T08:00:00Z",
+      organizer: { id: "b21e8d64-e29b-41d4-a716-446655440000" },
+      imageUrl: "https://example.com/garden.jpg",
+      status: "Active"
+    },
+    {
+      id: "e78e8d64-e29b-41d4-a716-446655440004",
+      name: "Beach Cleanup Drive",
+      description: "Organizing a cleanup drive at the local beach.",
+      goalAmount: 1000.00,
+      currentAmount: 750.00,
+      startDate: "2024-05-15",
+      endDate: "2024-05-20",
+      createdAt: "2024-04-01T14:00:00Z",
+      organizer: { id: "a12e8d64-e29b-41d4-a716-446655440001" },
+      imageUrl: "https://example.com/beach.jpg",
+      status: "Active"
+    },
+    {
+      id: "f90e8d64-e29b-41d4-a716-446655440005",
+      name: "Tree Planting Initiative",
+      description: "Planting trees in urban areas to improve air quality.",
+      goalAmount: 3000.00,
+      currentAmount: 0.00,
+      startDate: "2024-09-01",
+      endDate: "2024-10-31",
+      createdAt: "2024-08-01T10:00:00Z",
+      organizer: { id: "b21e8d64-e29b-41d4-a716-446655440000" },
+      imageUrl: "https://example.com/trees.jpg",
+      status: "Planning"
+    }
+  ])
+  donation_insertMany(data: [
+    {
+      amount: 50.00,
+      donatedAt: "2024-04-05T10:30:00Z",
+      donor: { id: "b21e8d64-e29b-41d4-a716-446655440000" },
+      project: { id: "d56e8d64-e29b-41d4-a716-446655440003" },
+      isAnonymous: false
+    },
+    {
+      amount: 25.00,
+      donatedAt: "2024-04-06T11:00:00Z",
+      donor: { id: "a12e8d64-e29b-41d4-a716-446655440001" },
+      project: { id: "d56e8d64-e29b-41d4-a716-446655440003" },
+      isAnonymous: true
+    },
+    {
+      amount: 100.00,
+      donatedAt: "2024-05-16T09:00:00Z",
+      donor: { id: "c34e8d64-e29b-41d4-a716-446655440002" },
+      project: { id: "e78e8d64-e29b-41d4-a716-446655440004" },
+      isAnonymous: false
+    }
+  ])
+  teamMember_insertMany(data: [
+    {
+      name: "Alice Green",
+      role: "Project Manager",
+      project: { id: "d56e8d64-e29b-41d4-a716-446655440003" },
+      bio: "Experienced in community project management.",
+      photoUrl: "https://example.com/alice.jpg",
+      socialLink: "https://linkedin.com/in/alice"
+    },
+    {
+      name: "Bob White",
+      role: "Volunteer Coordinator",
+      project: { id: "e78e8d64-e29b-41d4-a716-446655440004" },
+      bio: "Dedicated to environmental conservation.",
+      photoUrl: "https://example.com/bob.jpg",
+      socialLink: "https://twitter.com/bob"
+    }
+  ])
+}

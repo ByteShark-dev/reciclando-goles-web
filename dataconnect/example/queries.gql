@@ -1,0 +1,73 @@
+query ListAllProjects @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public.") {
+  projects {
+    id
+    name
+    description
+    goalAmount
+    currentAmount
+    startDate
+    endDate
+    status
+    imageUrl
+    organizer {
+      id
+      displayName
+      email
+    }
+  }
+}
+
+query GetProjectById($id: UUID!) @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public.") {
+  project(id: $id) {
+    id
+    name
+    description
+    goalAmount
+    currentAmount
+    startDate
+    endDate
+    status
+    imageUrl
+    organizer {
+      id
+      displayName
+      email
+      photoUrl
+    }
+    donations_on_project {
+      id
+      amount
+      donatedAt
+      isAnonymous
+      donor {
+        id
+        displayName
+      }
+    }
+    teamMembers_on_project {
+      id
+      name
+      role
+      bio
+      photoUrl
+      socialLink
+    }
+  }
+}
+
+mutation CreateDonation($projectId: UUID!, $amount: Float!, $isAnonymous: Boolean) @auth(level: USER) {
+  donation_insert(data: {
+    projectId: $projectId,
+    amount: $amount,
+    donatedAt_expr: "request.time",
+    isAnonymous: $isAnonymous,
+    donorId_expr: "auth.uid"
+  })
+}
+
+mutation UpdateUserBio($bio: String!) @auth(level: USER) {
+  user_update(
+    key: { id_expr: "auth.uid" },
+    data: { bio: $bio }
+  )
+}

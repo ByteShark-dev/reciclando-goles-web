@@ -1,0 +1,37 @@
+type User @table {
+  displayName: String!
+  email: String!
+  createdAt: Timestamp!
+  photoUrl: String
+  bio: String
+}
+
+type Project @table {
+  name: String!
+  description: String!
+  goalAmount: Float!
+  currentAmount: Float!
+  startDate: Date!
+  endDate: Date!
+  createdAt: Timestamp!
+  organizer: User
+  imageUrl: String
+  status: String
+}
+
+type Donation @table {
+  amount: Float!
+  donatedAt: Timestamp!
+  donor: User
+  project: Project
+  isAnonymous: Boolean
+}
+
+type TeamMember @table {
+  name: String!
+  role: String!
+  project: Project
+  bio: String
+  photoUrl: String
+  socialLink: String
+}

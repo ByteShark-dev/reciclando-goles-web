@@ -1,0 +1,111 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function hasValidAccessCode() {
+      return request.resource.data.accessCodeHash is string &&
+        request.resource.data.accessCodeHash == "18beed41db9cbaab69bc592d3cd33317110d0775f63e68837f1dbb5e5f4f31ec";
+    }
+
+    function isValidDonationCreate() {
+      return request.resource.data.keys().hasOnly([
+          "name",
+          "amount",
+          "createdAt",
+          "enteredBy",
+          "accessCodeHash"
+        ]) &&
+        request.resource.data.name is string &&
+        request.resource.data.name.size() >= 2 &&
+        request.resource.data.name.size() <= 80 &&
+        request.resource.data.enteredBy is string &&
+        request.resource.data.enteredBy.size() >= 2 &&
+        request.resource.data.enteredBy.size() <= 80 &&
+        request.resource.data.amount is number &&
+        request.resource.data.amount > 0 &&
+        request.resource.data.createdAt is timestamp &&
+        hasValidAccessCode();
+    }
+
+    function isValidAdminAccessLog() {
+      return request.resource.data.keys().hasOnly([
+          "accessName",
+          "action",
+          "donationName",
+          "donationAmount",
+          "createdAt",
+          "accessCodeHash"
+        ]) &&
+        request.resource.data.accessName is string &&
+        request.resource.data.accessName.size() >= 2 &&
+        request.resource.data.accessName.size() <= 80 &&
+        request.resource.data.action is string &&
+        request.resource.data.action.size() >= 2 &&
+        request.resource.data.action.size() <= 40 &&
+        request.resource.data.donationName is string &&
+        request.resource.data.donationName.size() <= 80 &&
+        request.resource.data.donationAmount is number &&
+        request.resource.data.donationAmount >= 0 &&
+        request.resource.data.createdAt is timestamp &&
+        hasValidAccessCode();
+    }
+
+    function isValidCampaignSyncWrite() {
+      return request.resource.data.keys().hasAll([
+          "externalTeletonAmount",
+          "updatedAt",
+          "updatedBy",
+          "accessCodeHash"
+        ]) &&
+        request.resource.data.keys().hasOnly([
+          "externalTeletonAmount",
+          "updatedAt",
+          "updatedBy",
+          "accessCodeHash",
+          "teletonPageUrl"
+        ]) &&
+        request.resource.data.externalTeletonAmount is number &&
+        request.resource.data.externalTeletonAmount >= 0 &&
+        request.resource.data.updatedBy is string &&
+        request.resource.data.updatedBy.size() >= 2 &&
+        request.resource.data.updatedBy.size() <= 80 &&
+        request.resource.data.updatedAt is timestamp &&
+        (
+          !("teletonPageUrl" in request.resource.data) ||
+          (
+            request.resource.data.teletonPageUrl is string &&
+            request.resource.data.teletonPageUrl.size() <= 300
+          )
+        ) &&
+        hasValidAccessCode();
+    }
+
+    match /donations/{donationId} {
+      allow read: if true;
+      allow create: if isValidDonationCreate();
+      allow update, delete: if false;
+    }
+
+    match /stats/{documentId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /donor_totals/{documentId} {
+      allow read: if true;
+      allow write: if false;
+    }
+
+    match /admin_access_logs/{documentId} {
+      allow read: if false;
+      allow create: if isValidAdminAccessLog();
+      allow update, delete: if false;
+    }
+
+    match /campaign_sync/{documentId} {
+      allow read: if true;
+      allow create, update: if isValidCampaignSyncWrite();
+      allow delete: if false;
+    }
+  }
+}

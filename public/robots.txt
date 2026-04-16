@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://reciclando-goles.web.app/sitemap.xml

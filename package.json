@@ -1,0 +1,21 @@
+{
+  "dependencies": {
+    "@dataconnect/generated": "file:src/dataconnect-generated",
+    "firebase": "^12.12.0",
+    "firebase-admin": "^13.8.0",
+    "tailwindcss": "^4.2.2"
+  },
+  "name": "reciclando-goles",
+  "version": "1.0.0",
+  "description": "Sitio web de la campaña Reciclando Goles x Teletón",
+  "main": "index.js",
+  "scripts": {
+    "sync:teleton": "node scripts/sync-teleton.mjs",
+    "sync:teleton:dry": "node scripts/sync-teleton.mjs --dry-run",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Reciclando Goles",
+  "license": "ISC",
+  "type": "commonjs"
+}

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Reciclando Goles x Teletón</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700;800;900&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#594136",
+                      "primary-fixed-dim": "#ffb692",
+                      "on-secondary-fixed": "#221b00",
+                      "error-container": "#ffdad6",
+                      "outline": "#8d7164",
+                      "on-tertiary-fixed-variant": "#343d96",
+                      "tertiary-container": "#8992f0",
+                      "surface-tint": "#9f4200",
+                      "inverse-on-surface": "#f3f0ef",
+                      "tertiary-fixed-dim": "#bdc2ff",
+                      "on-primary-fixed-variant": "#7a3000",
+                      "on-secondary-fixed-variant": "#544600",
+                      "secondary": "#705d00",
+                      "error": "#ba1a1a",
+                      "on-primary-container": "#582100",
+                      "background": "#fcf9f8",
+                      "tertiary-fixed": "#e0e0ff",
+                      "on-primary-fixed": "#341100",
+                      "surface-container-highest": "#e5e2e1",
+                      "surface": "#fcf9f8",
+                      "surface-bright": "#fcf9f8",
+                      "surface-container-low": "#f6f3f2",
+                      "on-background": "#1b1c1c",
+                      "inverse-primary": "#ffb692",
+                      "on-tertiary-container": "#1c2580",
+                      "inverse-surface": "#303030",
+                      "primary": "#9f4200",
+                      "surface-dim": "#dcd9d9",
+                      "secondary-fixed": "#ffe170",
+                      "outline-variant": "#e2bfb0",
+                      "on-surface": "#1b1c1c",
+                      "on-tertiary": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-secondary-container": "#6f5c00",
+                      "surface-variant": "#e5e2e1",
+                      "on-error-container": "#93000a",
+                      "primary-fixed": "#ffdbcb",
+                      "surface-container-lowest": "#ffffff",
+                      "tertiary": "#4c56af",
+                      "on-secondary": "#ffffff",
+                      "primary-container": "#ff6d00",
+                      "surface-container": "#f0eded",
+                      "on-tertiary-fixed": "#000767",
+                      "secondary-container": "#fdd400",
+                      "surface-container-high": "#eae7e7",
+                      "on-error": "#ffffff",
+                      "secondary-fixed-dim": "#e9c400"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "fontFamily": {
+                      "headline": ["Lexend"],
+                      "body": ["Plus Jakarta Sans"],
+                      "label": ["Plus Jakarta Sans"]
+              }
+            },
+          }
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .text-shadow-custom {
+            text-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .glass-panel {
+            background: rgba(252, 249, 248, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-zinc-900/70 backdrop-blur-md shadow-xl shadow-zinc-900/5 h-20">
+<div class="flex justify-between items-center px-8 h-full max-w-7xl mx-auto">
+<div class="text-2xl font-black italic text-orange-600 dark:text-orange-400 font-['Lexend'] tracking-tight">
+                Reciclando Goles
+            </div>
+<div class="hidden md:flex items-center space-x-8 font-['Lexend'] font-bold tracking-tight">
+<a class="text-orange-600 dark:text-orange-400 font-bold border-b-4 border-orange-500 pb-1" href="#impact">Impact</a>
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-orange-500 transition-all duration-300" href="#ranking">Ranking</a>
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-orange-500 transition-all duration-300" href="#about">About</a>
+<a class="text-zinc-600 dark:text-zinc-400 font-medium hover:text-orange-500 transition-all duration-300" href="#help">How to Help</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-bold transition-all duration-300 hover:opacity-80 scale-95 active:scale-90">
+                Donate Now
+            </button>
+</div>
+</nav>
+<!-- Hero Section -->
+<header class="relative pt-32 pb-20 overflow-hidden">
+<div class="max-w-7xl mx-auto px-6 lg:px-8 grid md:grid-cols-2 items-center gap-12">
+<div class="order-2 md:order-1 space-y-8">
+<div class="inline-flex items-center bg-secondary-container text-on-secondary-container px-4 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
+<span class="material-symbols-outlined mr-2" style="font-variation-settings: 'FILL' 1;">sports_soccer</span>
+                    Campaña Solidaria 2024
+                </div>
+<h1 class="text-5xl lg:text-7xl font-black font-headline text-on-surface leading-tight tracking-tight">
+                    Reciclando <span class="text-primary italic">Goles</span> x Teletón
+                </h1>
+<p class="text-xl text-on-surface-variant max-w-lg leading-relaxed">
+                    Apoyando con cada gol y cada donación. Convierte la pasión del fútbol en esperanza para miles de niños.
+                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-gradient-to-r from-primary to-primary-container text-white px-10 py-4 rounded-full font-black text-lg shadow-xl shadow-primary/20 hover:scale-105 transition-transform duration-300">
+                        Donar ahora
+                    </button>
+<button class="bg-surface-container-highest text-primary px-10 py-4 rounded-full font-bold text-lg hover:bg-surface-container-high transition-colors">
+                        Ver Ranking
+                    </button>
+</div>
+</div>
+<div class="order-1 md:order-2 relative">
+<div class="absolute inset-0 bg-secondary-container/20 rounded-full scale-110 blur-3xl -z-10"></div>
+<img class="w-full aspect-square object-cover rounded-xl shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500" data-alt="Dynamic shot of a soccer ball hitting the net with golden sunlight and floating particles, high energy sports photography style" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDX9q_8fLrzlOYkBqDQC98IHbc6YDHj7lAy_AIo2ep0zbf9aF6GgI-pYALZG8YX8mqhXnb0OvJDWR6TaTsZhM5_DvGdO7O-IHro-zesMBvjSi4W2HGbVAGwBVaZqj_t1i7rFT540J366AhwFdbTd4WbZ_TV4IstGnSDI2RzBYdx345nfdw7wpA3DDJZ1yOQR_9LU5x5R2KPAhl4WBXNKjPnZEkBPavh5FlZkREmH4zoJiqA6bi5mv4Q_KnQRfEbkn8DzmxokJseIcK"/>
+<!-- Floating Card -->
+<div class="absolute -bottom-6 -left-6 glass-panel p-6 rounded-lg shadow-2xl border-outline-variant/15 border max-w-[240px]">
+<div class="flex items-center gap-4 mb-3">
+<div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+<span class="material-symbols-outlined">volunteer_activism</span>
+</div>
+<div>
+<p class="text-xs font-bold text-on-surface-variant uppercase">Próximo Partido</p>
+<p class="font-bold">Celaya Stadium</p>
+</div>
+</div>
+<p class="text-sm font-medium">Sábado 18:00 hrs. Cada entrada es una donación.</p>
+</div>
+</div>
+</div>
+</header>
+<!-- Progress Tracker -->
+<section class="py-20 bg-surface-container-low" id="impact">
+<div class="max-w-7xl mx-auto px-6">
+<div class="bg-surface-container-lowest rounded-xl p-8 md:p-16 shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-64 bg-secondary-container/10 rounded-full -mr-32 -mt-32"></div>
+<div class="relative z-10 grid lg:grid-cols-3 gap-12 items-center">
+<div class="lg:col-span-1">
+<h2 class="text-4xl font-black font-headline mb-4 tracking-tight">Nuestra Meta</h2>
+<p class="text-on-surface-variant leading-relaxed">Estamos a solo un paso de alcanzar el objetivo. Cada peso cuenta para mejorar la vida de los pequeños guerreros del Teletón.</p>
+<div class="mt-8 grid grid-cols-2 gap-4">
+<div>
+<p class="text-sm font-bold text-on-surface-variant uppercase">Recaudado</p>
+<p class="text-3xl font-black text-primary">$6,500 MXN</p>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface-variant uppercase">Objetivo</p>
+<p class="text-3xl font-black text-on-surface">$10,000 MXN</p>
+</div>
+</div>
+</div>
+<div class="lg:col-span-2 space-y-6">
+<div class="flex justify-between items-end">
+<span class="bg-primary text-white px-4 py-1 rounded-full text-sm font-bold">65% Completado</span>
+<span class="text-on-surface-variant text-sm font-medium">Faltan $3,500</span>
+</div>
+<!-- Progress Bar Container -->
+<div class="h-12 w-full bg-surface-container-highest rounded-full p-2">
+<div class="h-full w-[65%] bg-gradient-to-r from-primary to-secondary-container rounded-full relative shadow-inner">
+<div class="absolute top-1/2 right-2 -translate-y-1/2 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md">
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">sports_soccer</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 pt-4">
+<div class="text-center p-4 bg-surface rounded-lg">
+<p class="text-2xl font-black text-secondary">42</p>
+<p class="text-xs font-bold uppercase text-on-surface-variant">Donantes</p>
+</div>
+<div class="text-center p-4 bg-surface rounded-lg">
+<p class="text-2xl font-black text-secondary">15</p>
+<p class="text-xs font-bold uppercase text-on-surface-variant">Goles</p>
+</div>
+<div class="text-center p-4 bg-surface rounded-lg">
+<p class="text-2xl font-black text-secondary">8</p>
+<p class="text-xs font-bold uppercase text-on-surface-variant">Patrocinios</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Top Donors Ranking -->
+<section class="py-24 bg-surface" id="ranking">
+<div class="max-w-4xl mx-auto px-6">
+<div class="text-center mb-16">
+<h2 class="text-4xl font-black font-headline tracking-tight mb-4">Muro de Campeones</h2>
+<p class="text-on-surface-variant italic">Los líderes en generosidad de esta temporada</p>
+</div>
+<div class="space-y-4">
+<!-- Rank 1 -->
+<div class="group bg-surface-container-lowest p-6 rounded-lg shadow-md border-l-8 border-secondary flex flex-wrap items-center justify-between gap-6 hover:scale-[1.02] transition-transform duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-secondary-container rounded-full flex items-center justify-center text-secondary font-black text-2xl scale-110 shadow-lg">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+</div>
+<div>
+<h3 class="text-xl font-bold">Fam. González</h3>
+<p class="text-on-surface-variant text-sm">Donante Platino</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-2xl font-black text-primary">$1,500 MXN</p>
+<p class="text-xs font-bold text-secondary uppercase tracking-widest">1st Place</p>
+</div>
+</div>
+<!-- Rank 2 -->
+<div class="group bg-surface-container-lowest p-6 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-6 hover:bg-surface-container-low transition-colors duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center text-zinc-500 font-black text-2xl">
+                            2
+                        </div>
+<div>
+<h3 class="text-xl font-bold">Anónimo</h3>
+<p class="text-on-surface-variant text-sm">Corazón de Oro</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-2xl font-black text-on-surface">$1,200 MXN</p>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">2nd Place</p>
+</div>
+</div>
+<!-- Rank 3 -->
+<div class="group bg-surface-container-lowest p-6 rounded-lg shadow-sm flex flex-wrap items-center justify-between gap-6 hover:bg-surface-container-low transition-colors duration-300">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 bg-surface-container-highest rounded-full flex items-center justify-center text-orange-700 font-black text-2xl">
+                            3
+                        </div>
+<div>
+<h3 class="text-xl font-bold">Empresa Local</h3>
+<p class="text-on-surface-variant text-sm">Socio de Impacto</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-2xl font-black text-on-surface">$800 MXN</p>
+<p class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">3rd Place</p>
+</div>
+</div>
+</div>
+<div class="mt-12 text-center">
+<button class="text-primary font-bold hover:underline underline-offset-8 transition-all">Ver lista completa de donadores →</button>
+</div>
+</div>
+</section>
+<!-- About Section -->
+<section class="py-24 bg-surface-container-low overflow-hidden" id="about">
+<div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">
+<div class="relative">
+<div class="aspect-square bg-primary-container rounded-xl overflow-hidden shadow-2xl">
+<img class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="Community volunteers and children laughing together in a sunny park with colorful banners, warm heartfelt atmosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVc6W9Z6ojOJWsnvQAw044JJ4MjrI6KvIT8x0BJ9wBvXY-PVyECd7yR6iRlLSdaCAwRHGis7mkc70TcI1JKGXKNewIGb0p90T2MuZ7OuEOurbu2yMDlmgSjTcGRh8FvI3Wrp-rg6ZClMEIOmV_dn4ejX7xUamsV3u90av89h5m6wE0S9e26UOqSlLj-LAVG0muOz5BvxRyFQZ-N9rijuJOpd9OV7mJQ9IAj1Fz-Z-ToC95P-uYDF_Q-FrSppUvmDX1O1hndJOvpvXD"/>
+</div>
+<!-- Design Element -->
+<div class="absolute -top-10 -right-10 w-48 h-48 border-8 border-secondary rounded-full opacity-20"></div>
+</div>
+<div class="space-y-8">
+<h2 class="text-4xl lg:text-5xl font-black font-headline tracking-tight leading-tight">Goles que Transforman <span class="text-primary">Vidas</span></h2>
+<div class="space-y-6 text-lg text-on-surface-variant leading-relaxed">
+<p>
+                        Reciclando Goles es una iniciativa de <span class="font-bold text-on-surface">Kinetic Guardian</span> que une la pasión del fútbol con el compromiso social. En colaboración con el Estadio Celaya y Teletón, buscamos que cada anotación sea un motivo de esperanza.
+                    </p>
+<p>
+                        Nuestra alianza estratégica permite que los recursos recaudados se destinen directamente a las terapias y equipamiento del CRIT local, asegurando que el deporte sea un motor de inclusión y bienestar para nuestra comunidad.
+                    </p>
+</div>
+<div class="pt-6">
+<div class="flex items-center gap-6">
+<div class="flex -space-x-4">
+<div class="w-12 h-12 rounded-full border-4 border-surface bg-zinc-200"></div>
+<div class="w-12 h-12 rounded-full border-4 border-surface bg-zinc-300"></div>
+<div class="w-12 h-12 rounded-full border-4 border-surface bg-zinc-400"></div>
+</div>
+<p class="text-sm font-bold text-on-surface">Más de 200 personas ya se unieron</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- How to Help Section -->
+<section class="py-24 bg-surface" id="help">
+<div class="max-w-7xl mx-auto px-6">
+<div class="text-center max-w-2xl mx-auto mb-20">
+<h2 class="text-4xl font-black font-headline tracking-tight mb-4">¿Cómo Puedes Ayudar?</h2>
+<p class="text-on-surface-variant">No importa el tamaño del gesto, tu participación es el motor de este gran equipo.</p>
+</div>
+<div class="grid md:grid-cols-3 gap-8">
+<!-- Donate Money -->
+<div class="bg-surface-container-lowest p-10 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-outline-variant/10 group">
+<div class="w-16 h-16 bg-primary-container text-on-primary-container rounded-lg flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">payments</span>
+</div>
+<h3 class="text-2xl font-black mb-4">Donar dinero</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Cualquier cantidad suma. Tu donativo económico va directo al fondo de rehabilitación del CRIT Celaya.</p>
+<a class="inline-flex items-center font-bold text-primary hover:gap-2 transition-all" href="#">
+                        Donar ahora <span class="material-symbols-outlined ml-2">arrow_forward</span>
+</a>
+</div>
+<!-- Participate -->
+<div class="bg-surface-container-lowest p-10 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-outline-variant/10 group">
+<div class="w-16 h-16 bg-secondary-container text-on-secondary-container rounded-lg flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">event</span>
+</div>
+<h3 class="text-2xl font-black mb-4">Participar</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Asiste a los partidos en el Estadio Celaya. Un porcentaje de tu entrada se destina a la causa.</p>
+<a class="inline-flex items-center font-bold text-secondary hover:gap-2 transition-all" href="#">
+                        Comprar boletos <span class="material-symbols-outlined ml-2">arrow_forward</span>
+</a>
+</div>
+<!-- Share -->
+<div class="bg-surface-container-lowest p-10 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 border border-outline-variant/10 group">
+<div class="w-16 h-16 bg-tertiary-container text-on-tertiary-container rounded-lg flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">share</span>
+</div>
+<h3 class="text-2xl font-black mb-4">Compartir</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">Ayúdanos a llegar a más personas. Comparte el proyecto en tus redes sociales y suma seguidores.</p>
+<div class="flex gap-4">
+<button class="text-tertiary hover:scale-110 transition-transform"><span class="material-symbols-outlined">share_reviews</span></button>
+<button class="text-tertiary hover:scale-110 transition-transform"><span class="material-symbols-outlined">public</span></button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="w-full rounded-t-[3rem] mt-20 bg-zinc-100 dark:bg-zinc-950">
+<div class="flex flex-col items-center py-16 px-6 text-center space-y-8">
+<div class="text-xl font-black text-zinc-900 dark:text-zinc-50 font-headline uppercase tracking-tighter">
+                Reciclando Goles x Teletón
+            </div>
+<div class="flex flex-wrap justify-center gap-8 font-['Plus_Jakarta_Sans'] text-sm">
+<a class="text-zinc-500 hover:text-orange-500 transition-colors duration-200 hover:underline decoration-2 underline-offset-4" href="#">Privacy Policy</a>
+<a class="text-zinc-500 hover:text-orange-500 transition-colors duration-200 hover:underline decoration-2 underline-offset-4" href="#">Terms of Service</a>
+<a class="text-zinc-500 hover:text-orange-500 transition-colors duration-200 hover:underline decoration-2 underline-offset-4" href="#">Press Kit</a>
+<a class="text-zinc-500 hover:text-orange-500 transition-colors duration-200 hover:underline decoration-2 underline-offset-4" href="#">Contact Us</a>
+</div>
+<div class="flex gap-6 pt-4">
+<a class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">alternate_email</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">location_on</span>
+</a>
+<a class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface hover:bg-primary hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined text-sm">call</span>
+</a>
+</div>
+<p class="text-zinc-500 text-xs mt-8">
+                © 2024 Reciclando Goles x Teletón. Kinetic Guardian Initiative.
+            </p>
+</div>
+</footer>
+<!-- Mobile Bottom NavBar (Hidden on Desktop) -->
+<div class="md:hidden fixed bottom-6 left-6 right-6 z-50">
+<nav class="bg-zinc-900 text-white rounded-full px-6 py-4 shadow-2xl flex justify-between items-center">
+<a class="flex flex-col items-center gap-1 text-orange-500" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-[10px] font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-400" href="#ranking">
+<span class="material-symbols-outlined">leaderboard</span>
+<span class="text-[10px] font-bold">Ranking</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-400" href="#help">
+<span class="material-symbols-outlined">favorite</span>
+<span class="text-[10px] font-bold">Help</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-400" href="#about">
+<span class="material-symbols-outlined">info</span>
+<span class="text-[10px] font-bold">About</span>
+</a>
+</nav>
+</div>
+</body></html>
