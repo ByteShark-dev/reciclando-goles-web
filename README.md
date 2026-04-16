@@ -66,6 +66,3 @@ $env:FIREBASE_SERVICE_ACCOUNT_JSON = Get-Content .\service-account.json -Raw
 node scripts/sync-teleton.mjs
 ```
 
-## Nota de seguridad
-
-No subas claves privadas, cuentas de servicio ni credenciales administrativas al repositorio. El SDK web público puede vivir en el código; las credenciales con permisos de escritura deben quedarse en secretos del entorno o en GitHub Secrets.
