@@ -13,8 +13,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
 import { db, isFirebaseConfigured } from "./firebase.js";
 
-const INITIAL_GOAL_AMOUNT = 10000;
+const GOAL_MILESTONES = [5000, 7000, 10000, 15000];
 const GOAL_STEP_AMOUNT = 5000;
+const MIN_VISIBLE_GOALS = 6;
 const CAMPAIGN_END_TARGET = new Date("2026-05-11T23:59:00-06:00");
 const TELETON_DONATION_URL =
   "https://www.alcanciadigitalteleton.mx/pagos/0/12689/reciclando-goles-toros-para-el-teletn.html";
@@ -54,6 +55,9 @@ const elements = {
   progressPercent: document.getElementById("progress-percent"),
   progressRemaining: document.getElementById("progress-remaining"),
   progressFill: document.getElementById("progress-fill"),
+  goalProgressSummary: document.getElementById("goal-progress-summary"),
+  goalCompletedCopy: document.getElementById("goal-completed-copy"),
+  goalMilestonesList: document.getElementById("goal-milestones-list"),
   donorCount: document.getElementById("donor-count"),
   campaignCountdownValue: document.getElementById("campaign-countdown-value"),
   campaignCountdownLabel: document.getElementById("campaign-countdown-label"),
@@ -393,32 +397,84 @@ function validateExternalAmount(amount) {
   return Number(parsedAmount.toFixed(2));
 }
 
-function getGoalState(totalAmount) {
-  const safeTotal = Number(totalAmount) || 0;
-  if (safeTotal < INITIAL_GOAL_AMOUNT) {
-    return {
-      completedGoals: 0,
-      currentGoal: INITIAL_GOAL_AMOUNT,
-      currentGoalNumber: 1,
-      percentage: safeTotal > 0 ? Math.min((safeTotal / INITIAL_GOAL_AMOUNT) * 100, 100) : 0,
-      remaining: Math.max(INITIAL_GOAL_AMOUNT - safeTotal, 0),
-      stageLabel: "Meta 1 en curso",
-    };
+function getGoalThreshold(goalNumber) {
+  if (goalNumber <= GOAL_MILESTONES.length) {
+    return GOAL_MILESTONES[goalNumber - 1];
   }
 
-  const completedGoals = 1 + Math.floor((safeTotal - INITIAL_GOAL_AMOUNT) / GOAL_STEP_AMOUNT);
-  const currentGoal = INITIAL_GOAL_AMOUNT + completedGoals * GOAL_STEP_AMOUNT;
-  const stageStart = INITIAL_GOAL_AMOUNT + (completedGoals - 1) * GOAL_STEP_AMOUNT;
-  const stageProgress = safeTotal - stageStart;
+  const extraGoals = goalNumber - GOAL_MILESTONES.length;
+  return GOAL_MILESTONES[GOAL_MILESTONES.length - 1] + extraGoals * GOAL_STEP_AMOUNT;
+}
+
+function buildGoalThresholds(count) {
+  return Array.from({ length: count }, (_, index) => getGoalThreshold(index + 1));
+}
+
+function getGoalState(totalAmount) {
+  const safeTotal = Number(totalAmount) || 0;
+  const thresholdScanCount = Math.max(MIN_VISIBLE_GOALS, Math.ceil((safeTotal + 1) / GOAL_STEP_AMOUNT) + 4);
+  const completedGoals = buildGoalThresholds(thresholdScanCount).filter(
+    (threshold) => safeTotal >= threshold
+  ).length;
+  const currentGoalNumber = completedGoals + 1;
+  const currentGoal = getGoalThreshold(currentGoalNumber);
+  const previousGoal = completedGoals > 0 ? getGoalThreshold(completedGoals) : 0;
+  const currentStageSize = Math.max(currentGoal - previousGoal, 1);
+  const stageProgress = Math.max(safeTotal - previousGoal, 0);
+  const visibleGoalCount = Math.max(MIN_VISIBLE_GOALS, currentGoalNumber + 2);
+  const visibleGoals = buildGoalThresholds(visibleGoalCount).map((amount, index) => {
+    const goalNumber = index + 1;
+    const status =
+      goalNumber <= completedGoals ? "completed" : goalNumber === currentGoalNumber ? "current" : "upcoming";
+
+    return {
+      goalNumber,
+      amount,
+      status,
+    };
+  });
 
   return {
     completedGoals,
     currentGoal,
-    currentGoalNumber: completedGoals + 1,
-    percentage: Math.min((stageProgress / GOAL_STEP_AMOUNT) * 100, 100),
+    currentGoalNumber,
+    percentage: Math.min((stageProgress / currentStageSize) * 100, 100),
     remaining: Math.max(currentGoal - safeTotal, 0),
-    stageLabel: `Meta ${completedGoals} completada${completedGoals === 1 ? "" : "s"}`,
+    stageLabel:
+      completedGoals > 0
+        ? `${completedGoals} meta${completedGoals === 1 ? "" : "s"} completada${completedGoals === 1 ? "" : "s"}`
+        : "Meta 1 en curso",
+    visibleGoalCount,
+    visibleGoals,
   };
+}
+
+function renderGoalMilestones(goalState) {
+  if (!elements.goalProgressSummary || !elements.goalCompletedCopy || !elements.goalMilestonesList) {
+    return;
+  }
+
+  elements.goalProgressSummary.textContent = `Meta actual ${goalState.currentGoalNumber}/${goalState.visibleGoalCount}`;
+  elements.goalCompletedCopy.textContent =
+    goalState.completedGoals > 0
+      ? `${goalState.completedGoals} meta${goalState.completedGoals === 1 ? "" : "s"} completada${
+          goalState.completedGoals === 1 ? "" : "s"
+        }`
+      : "Aun no hay metas completadas.";
+
+  elements.goalMilestonesList.innerHTML = "";
+
+  goalState.visibleGoals.forEach((goal) => {
+    const chip = document.createElement("div");
+    chip.className =
+      goal.status === "completed"
+        ? "rounded-full bg-primary px-4 py-2 text-sm font-bold text-white shadow-sm"
+        : goal.status === "current"
+          ? "rounded-full border-2 border-secondary bg-secondary-container/25 px-4 py-2 text-sm font-bold text-primary"
+          : "rounded-full border border-outline-variant bg-white px-4 py-2 text-sm font-bold text-on-surface-variant";
+    chip.textContent = `Meta ${goal.goalNumber}: ${formatCurrency(goal.amount)}`;
+    elements.goalMilestonesList.append(chip);
+  });
 }
 
 function updateProgress(totalAmount, donationCount) {
@@ -444,6 +500,7 @@ function updateProgress(totalAmount, donationCount) {
     goalState.completedGoals > 0
       ? `${goalState.stageLabel}. Meta ${goalState.currentGoalNumber} en curso.`
       : goalState.stageLabel;
+  renderGoalMilestones(goalState);
 }
 
 function buildLeaderboardRow({ rank, title, subtitle, amount, accent = false }) {
