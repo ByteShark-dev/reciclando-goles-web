@@ -10,6 +10,8 @@
   "description": "Sitio web de la campaña Reciclando Goles x Teletón",
   "main": "index.js",
   "scripts": {
+    "bootstrap:admin": "node scripts/bootstrap-admin.mjs",
+    "migrate:multicampaign": "node scripts/migrate-to-multicampaign.mjs",
     "sync:teleton": "node scripts/sync-teleton.mjs",
     "sync:teleton:dry": "node scripts/sync-teleton.mjs --dry-run",
     "test": "echo \"Error: no test specified\" && exit 1"

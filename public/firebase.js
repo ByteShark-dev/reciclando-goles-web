@@ -1,15 +1,21 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-app.js";
 import {
+  connectAuthEmulator,
+  getAuth,
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
+import {
   getAnalytics,
   isSupported as analyticsSupported,
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-analytics.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-auth.js";
 import {
   connectFirestoreEmulator,
   getFirestore,
 } from "https://www.gstatic.com/firebasejs/12.12.0/firebase-firestore.js";
+import {
+  connectStorageEmulator,
+  getStorage,
+} from "https://www.gstatic.com/firebasejs/12.12.0/firebase-storage.js";
 
-const adminEmail = "tiburonangel0@gmail.com";
 const defaultFirebaseConfig = {
   apiKey: "AIzaSyAYpd28K3BvpA7kVuTq5o8-7Pdm1gRuUus",
   authDomain: "reciclando-goles.firebaseapp.com",
@@ -37,13 +43,23 @@ const isFirebaseConfigured = requiredKeys.every((key) => {
   return typeof value === "string" && value.trim() !== "";
 });
 
+const isLocalhost = ["localhost", "127.0.0.1"].includes(globalThis.location?.hostname);
 const app = isFirebaseConfigured ? initializeApp(firebaseConfig) : null;
 const auth = app ? getAuth(app) : null;
 const db = app ? getFirestore(app) : null;
+const storage = app ? getStorage(app) : null;
 let analytics = null;
 
-if (db && ["localhost", "127.0.0.1"].includes(globalThis.location?.hostname)) {
+if (db && isLocalhost) {
   connectFirestoreEmulator(db, "127.0.0.1", 8088);
+}
+
+if (auth && isLocalhost) {
+  connectAuthEmulator(auth, "http://127.0.0.1:9099", { disableWarnings: true });
+}
+
+if (storage && isLocalhost) {
+  connectStorageEmulator(storage, "127.0.0.1", 9199);
 }
 
 if (app) {
@@ -58,4 +74,4 @@ if (app) {
     });
 }
 
-export { adminEmail, analytics, app, auth, db, firebaseConfig, isFirebaseConfigured };
+export { analytics, app, auth, db, firebaseConfig, isFirebaseConfigured, storage };

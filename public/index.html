@@ -3,29 +3,29 @@
   <head>
     <meta charset="utf-8" />
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <title>Reciclando Goles x Teletón</title>
+    <title>Reciclando Goles</title>
     <meta
-      content="Reciclando Goles x Teletón une deporte, reciclaje y solidaridad para apoyar al HITO con donaciones, aliados y puntos de recoleccion en Celaya."
+      content="Plataforma oficial de Reciclando Goles para seguir campañas semestrales, transparencia pública, alcancías activas y apoyo a Teletón."
       name="description"
     />
     <meta content="index, follow" name="robots" />
     <meta content="#173d7a" name="theme-color" />
     <link href="https://reciclando-goles.web.app/" rel="canonical" />
-    <meta content="Reciclando Goles x Teletón" property="og:title" />
+    <meta content="Reciclando Goles" property="og:title" />
     <meta
-      content="Conoce la campana, el avance de la meta, los aliados y las formas de apoyar al HITO a traves del reciclaje y la solidaridad."
+      content="Plataforma oficial del proyecto estudiantil Reciclando Goles con campañas activas, transparencia y acciones solidarias."
       property="og:description"
     />
     <meta content="https://reciclando-goles.web.app/" property="og:url" />
     <meta content="website" property="og:type" />
-    <meta content="https://reciclando-goles.web.app/images/IMG-20260414-WA0016.jpg" property="og:image" />
+    <meta content="https://reciclando-goles.web.app/images/hero-equipo-reciclando-goles.jpg" property="og:image" />
     <meta content="summary_large_image" name="twitter:card" />
-    <meta content="Reciclando Goles x Teletón" name="twitter:title" />
+    <meta content="Reciclando Goles" name="twitter:title" />
     <meta
-      content="Campana solidaria para apoyar al HITO con reciclaje, aliados y recaudacion en Celaya."
+      content="Proyecto estudiantil de reciclaje y solidaridad con campañas públicas, metas y transparencia."
       name="twitter:description"
     />
-    <meta content="https://reciclando-goles.web.app/images/IMG-20260414-WA0016.jpg" name="twitter:image" />
+    <meta content="https://reciclando-goles.web.app/images/hero-equipo-reciclando-goles.jpg" name="twitter:image" />
     <link
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='50' font-size='48'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E"
       rel="icon"
@@ -82,38 +82,327 @@
       };
     </script>
     <style>
+      html,
+      body {
+        overflow-x: hidden;
+      }
+
       .material-symbols-outlined {
         font-variation-settings: "FILL" 0, "wght" 500, "GRAD" 0, "opsz" 24;
       }
 
       .glass-panel {
-        background: rgba(248, 248, 244, 0.8);
+        background: rgba(248, 248, 244, 0.82);
         backdrop-filter: blur(20px);
       }
 
       .logo-glow {
         box-shadow: 0 24px 60px rgba(23, 61, 122, 0.18);
       }
+
+      #admin-modal {
+        align-items: flex-start;
+        padding: 16px;
+      }
+
+      .admin-modal-shell {
+        width: min(1100px, calc(100vw - 32px));
+        max-height: calc(100vh - 32px);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        overscroll-behavior: contain;
+      }
+
+      .admin-modal-header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        flex-shrink: 0;
+        background: #ffffff;
+      }
+
+      .admin-modal-body {
+        min-height: 0;
+        overflow-y: auto;
+        overflow-x: hidden;
+        scrollbar-gutter: stable;
+      }
+
+      .admin-modal-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 300px) minmax(0, 1fr);
+        gap: 1rem;
+        align-items: start;
+      }
+
+      #admin-layout.admin-locked {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      #admin-layout.admin-locked #admin-tab-nav,
+      #admin-layout.admin-locked .admin-modal-main,
+      #admin-layout.admin-locked #admin-fallback-card {
+        display: none;
+      }
+
+      #admin-layout.admin-locked #admin-auth-card {
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      #admin-layout.admin-ready {
+        grid-template-columns: 1fr;
+        gap: 0.875rem;
+      }
+
+      #admin-layout.admin-ready #admin-auth-card,
+      #admin-layout.admin-ready #admin-fallback-card {
+        display: none;
+      }
+
+      #admin-session-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+
+      #admin-tab-nav > div {
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      }
+
+      .admin-modal-sidebar,
+      .admin-modal-main,
+      #admin-workspace,
+      #admin-panel [data-admin-tab-panel],
+      #admin-panel article,
+      #admin-panel form,
+      #admin-panel .grid,
+      #admin-panel .flex,
+      #admin-panel .space-y-4,
+      #admin-panel .space-y-6 {
+        min-width: 0;
+      }
+
+      .admin-card {
+        padding: 1rem;
+      }
+
+      .admin-kicker {
+        letter-spacing: 0.18em;
+        font-size: 0.72rem;
+      }
+
+      .admin-panel-title {
+        font-size: clamp(1.55rem, 2vw, 1.85rem);
+        line-height: 1.1;
+      }
+
+      #admin-panel input,
+      #admin-panel select,
+      #admin-panel textarea {
+        min-height: 2.65rem;
+        padding: 0.68rem 0.85rem;
+        font-size: 0.95rem;
+        line-height: 1.35;
+      }
+
+      #admin-panel textarea {
+        min-height: 5.5rem;
+        resize: vertical;
+      }
+
+      #admin-panel label > span {
+        margin-bottom: 0.35rem;
+        font-size: 0.8rem;
+        line-height: 1.2;
+      }
+
+      #admin-panel button:not(#close-admin-modal),
+      #admin-panel a {
+        line-height: 1.2;
+      }
+
+      #admin-panel [data-admin-tab-button] {
+        white-space: normal;
+      }
+
+      #admin-panel code {
+        overflow-wrap: anywhere;
+      }
+
+      @media (min-width: 768px) {
+        #admin-modal {
+          align-items: center;
+        }
+      }
+
+      @media (max-width: 900px) {
+        .admin-modal-layout {
+          grid-template-columns: 1fr;
+          gap: 0.875rem;
+        }
+
+        #admin-layout.admin-locked {
+          max-width: none;
+        }
+
+        #admin-panel .admin-modal-body {
+          padding: 0.75rem 0.875rem 0.875rem;
+        }
+
+        #admin-panel .admin-modal-sidebar,
+        #admin-panel .admin-modal-main,
+        #admin-panel #admin-workspace {
+          gap: 0.875rem;
+        }
+
+        #admin-panel #admin-tab-nav {
+          padding: 0.7rem;
+        }
+
+        #admin-panel #admin-tab-nav > div {
+          gap: 0.45rem;
+        }
+
+        #admin-panel .admin-card {
+          padding: 0.92rem;
+        }
+
+        #admin-session-bar {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+      }
+
+      @media (max-width: 640px) {
+        #admin-modal {
+          padding: 8px;
+        }
+
+        .admin-modal-shell {
+          width: calc(100vw - 16px);
+          max-height: calc(100vh - 16px);
+          border-radius: 1.5rem;
+        }
+
+        #admin-panel .admin-modal-header {
+          padding: 0.85rem 0.9rem 0.8rem;
+        }
+
+        #admin-panel .admin-modal-body {
+          padding: 0.65rem 0.75rem 0.75rem;
+        }
+
+        #admin-panel .admin-panel-title {
+          font-size: 1.6rem;
+        }
+
+        #admin-panel .admin-kicker {
+          font-size: 0.67rem;
+          letter-spacing: 0.14em;
+        }
+
+        #admin-panel .admin-card {
+          padding: 0.82rem;
+        }
+
+        #admin-panel input,
+        #admin-panel select,
+        #admin-panel textarea {
+          min-height: 2.45rem;
+          padding: 0.6rem 0.78rem;
+          font-size: 0.92rem;
+        }
+
+        #admin-panel textarea {
+          min-height: 4.75rem;
+        }
+
+        #admin-panel label > span {
+          margin-bottom: 0.3rem;
+          font-size: 0.76rem;
+        }
+
+        #admin-panel #close-admin-modal {
+          width: 2.4rem;
+          height: 2.4rem;
+        }
+
+        #admin-panel #admin-auth-form {
+          margin-top: 0.75rem;
+          gap: 0.65rem;
+        }
+
+        #admin-panel #admin-auth-form .flex {
+          gap: 0.45rem;
+        }
+
+        #admin-panel #admin-auth-form button,
+        #admin-panel #admin-tab-summary button,
+        #admin-panel #admin-tab-donation button,
+        #admin-panel #admin-tab-piggy-banks button,
+        #admin-panel #admin-tab-active-campaign button,
+        #admin-panel #admin-tab-close-campaign button,
+        #admin-panel #admin-tab-new-campaign button,
+        #admin-panel #admin-tab-piggy-banks a,
+        #admin-panel #admin-tab-active-campaign a {
+          padding: 0.68rem 1rem;
+        }
+
+        #admin-panel #admin-tab-nav {
+          padding: 0.5rem;
+        }
+
+        #admin-panel #admin-tab-nav > div {
+          gap: 0.35rem;
+        }
+
+        #admin-panel [data-admin-tab-button] {
+          border-radius: 0.9rem;
+          padding: 0.65rem 0.8rem;
+          font-size: 0.84rem;
+        }
+
+        #admin-panel #admin-summary-campaign {
+          font-size: 1.65rem;
+          line-height: 1.05;
+        }
+
+        #admin-panel #admin-summary-totals,
+        #admin-panel #admin-summary-sync,
+        #admin-panel #admin-role-copy,
+        #admin-panel #legacy-admin-copy {
+          font-size: 0.92rem;
+        }
+      }
+
+      [data-admin-tab-panel][hidden] {
+        display: none;
+      }
     </style>
   </head>
   <body class="bg-surface font-body text-on-surface">
-    <nav class="fixed top-0 z-50 h-20 w-full bg-surface/85 backdrop-blur-md shadow-xl shadow-primary/10">
+    <nav class="fixed top-0 z-50 h-20 w-full bg-surface/85 shadow-xl shadow-primary/10 backdrop-blur-md">
       <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-6 lg:px-8">
         <a class="flex items-center gap-3 font-headline text-2xl font-black tracking-tight text-primary" href="#home">
           <img
-            alt="Logo de la campaña Reciclando Goles x Teletón"
+            alt="Logo de Reciclando Goles"
             class="logo-glow h-12 w-12 rounded-full bg-white object-cover"
             src="./images/IMG-20260414-WA0016.jpg"
           />
           <span class="italic">Reciclando Goles</span>
         </a>
         <div class="hidden items-center space-x-8 font-headline font-bold tracking-tight md:flex">
-          <a class="border-b-4 border-secondary-container pb-1 text-primary" href="#impact">Impacto</a>
+          <a class="border-b-4 border-secondary-container pb-1 text-primary" href="#active-campaign">Campaña</a>
+          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#impact">Contador</a>
+          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#piggy-banks">Alcancías</a>
           <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#ranking">Ranking</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#about">Historia</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#help">Ayuda</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#allies">Aliados</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#contact">Contacto</a>
+          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#transparency">Transparencia</a>
+          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#history">Historial</a>
         </div>
       </div>
     </nav>
@@ -122,43 +411,38 @@
       <header class="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,212,31,0.24),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(125,63,152,0.16),_transparent_28%)] pb-20 pt-32">
         <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2 lg:px-8">
           <div class="order-2 space-y-8 lg:order-1">
-            <div class="inline-flex items-center rounded-full bg-secondary-container px-4 py-2 text-sm font-bold uppercase tracking-wider text-primary">
+            <div
+              class="inline-flex items-center rounded-full bg-secondary-container px-4 py-2 text-sm font-bold uppercase tracking-wider text-primary"
+              id="hero-campaign-state"
+            >
               <span class="material-symbols-outlined mr-2" style='font-variation-settings: "FILL" 1'>sports_soccer</span>
-              Campana solidaria
+              Plataforma solidaria
             </div>
             <div class="space-y-5">
               <h1 class="font-headline text-5xl font-black leading-tight tracking-tight lg:text-7xl">
-                Reciclando <span class="italic text-primary">Goles</span> x Teletón
+                Reciclando <span class="italic text-primary">Goles</span>
               </h1>
               <p class="max-w-xl text-lg leading-relaxed text-on-surface-variant lg:text-xl">
-                Convierte la pasion por el futbol en esperanza real. Cada donacion entra al
-                marcador, actualiza la meta y fortalece al CRIT local.
+                Proyecto estudiantil que convierte reciclaje, comunidad y fútbol en apoyo real para campañas
+                semestrales con transparencia pública.
               </p>
-            </div>
-            <div class="flex items-center gap-4 rounded-[2rem] bg-white/90 p-4 shadow-lg shadow-primary/10">
-              <img
-                alt="Logo de la campaña"
-                class="h-16 w-16 rounded-full bg-white object-cover"
-                src="./images/IMG-20260414-WA0016.jpg"
-              />
-              <div>
-                <p class="text-sm font-bold uppercase tracking-[0.2em] text-tertiary">Imagen de la campaña</p>
-                <p class="text-sm leading-relaxed text-on-surface-variant">
-                  Unimos deporte, reciclaje y solidaridad bajo una misma identidad.
-                </p>
-              </div>
+              <p class="max-w-xl rounded-[1.5rem] bg-white/90 px-5 py-4 text-sm font-medium text-on-surface-variant shadow-lg shadow-primary/10" id="hero-campaign-copy">
+                Cargando información institucional y estado de campaña...
+              </p>
             </div>
             <div class="flex flex-wrap gap-4">
               <button
-                class="rounded-full bg-gradient-to-r from-primary to-primary-container px-10 py-4 text-lg font-black text-white shadow-xl shadow-primary/20 transition-transform duration-300 hover:scale-105"
+                class="rounded-full bg-gradient-to-r from-primary to-primary-container px-10 py-4 text-lg font-black text-white shadow-xl shadow-primary/20 transition-transform duration-300 hover:scale-105 disabled:cursor-not-allowed disabled:opacity-50"
                 data-open-donation-notice
+                id="hero-primary-button"
                 type="button"
               >
-                Donación
+                Cómo apoyar
               </button>
               <a
                 class="rounded-full bg-surface-container-highest px-10 py-4 text-lg font-bold text-primary transition-colors hover:bg-surface-container-high"
                 href="#ranking"
+                id="hero-secondary-button"
               >
                 Ver ranking
               </a>
@@ -167,28 +451,100 @@
           <div class="relative order-1 lg:order-2">
             <div class="absolute inset-0 -z-10 scale-110 rounded-full bg-secondary-container/20 blur-3xl"></div>
             <img
-              alt="Carrito decorado durante actividad del Teletón"
+              alt="Equipo de Reciclando Goles con manta de la campaña junto al Celaya"
               class="aspect-square w-full rounded-[2rem] object-cover shadow-2xl transition-transform duration-500 hover:rotate-0 lg:rotate-3"
-              src="./images/hero-teleton.jpg"
+              src="./images/hero-equipo-reciclando-goles.jpg"
             />
-            <div class="glass-panel absolute -bottom-6 left-4 max-w-[240px] rounded-[2rem] border border-outline-variant/15 p-6 shadow-2xl lg:-left-6">
+            <div class="glass-panel absolute -bottom-6 left-4 max-w-[260px] rounded-[2rem] border border-outline-variant/15 p-6 shadow-2xl lg:-left-6">
               <div class="mb-3 flex items-center gap-4">
                 <div class="flex h-12 w-12 items-center justify-center rounded-full bg-primary text-white">
                   <span class="material-symbols-outlined">volunteer_activism</span>
                 </div>
                 <div>
-                  <p class="text-xs font-bold uppercase text-on-surface-variant">Proximo partido</p>
-                  <p class="font-bold">Celaya Stadium</p>
+                  <p class="text-xs font-bold uppercase text-on-surface-variant">Campaña visible</p>
+                  <p class="font-bold" id="hero-campaign-name">Sin campaña activa</p>
                 </div>
               </div>
-              <p class="text-sm font-medium">Cada entrada y cada donativo suman directo a la causa.</p>
+              <p class="text-sm font-medium" id="hero-campaign-meta">
+                El proyecto sigue activo como plataforma institucional mientras prepara nuevas ediciones.
+              </p>
             </div>
           </div>
         </div>
       </header>
 
-      <section class="px-6 pb-8" aria-live="polite">
+      <section aria-live="polite" class="px-6 pb-8">
         <div id="app-status" class="mx-auto mb-8 hidden max-w-5xl rounded-2xl border px-4 py-3 text-sm font-medium"></div>
+      </section>
+
+      <section class="bg-surface py-16" id="active-campaign">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="grid gap-8 lg:grid-cols-[1.35fr_0.85fr]">
+            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10 md:p-10">
+                  <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-secondary">Campaña activa</p>
+              <div class="flex flex-wrap items-start justify-between gap-6">
+                <div class="space-y-3">
+                  <h2 class="font-headline text-4xl font-black tracking-tight" id="active-campaign-name">
+                    Sin campaña activa
+                  </h2>
+                  <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary" id="active-campaign-status">
+                    Estado institucional
+                  </p>
+                  <p class="text-sm text-on-surface-variant" id="active-campaign-semester">Plataforma oficial del proyecto</p>
+                  <p class="text-sm text-on-surface-variant" id="active-campaign-dates">
+                    Por ahora no hay una campaña abierta. El historial del proyecto sigue disponible más abajo.
+                  </p>
+                </div>
+                <div class="min-w-[180px] rounded-[1.5rem] bg-surface-container-low p-5 text-right">
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant">Meta activa</p>
+                  <p class="mt-2 text-3xl font-black text-primary" id="active-campaign-goal">$0 MXN</p>
+                </div>
+              </div>
+              <p class="mt-6 max-w-3xl text-base leading-relaxed text-on-surface-variant" id="active-campaign-copy">
+                Reciclando Goles sigue funcionando como plataforma institucional mientras prepara la siguiente campaña.
+              </p>
+              <div class="mt-8 flex flex-wrap gap-3">
+                <a
+                  class="hidden rounded-full bg-primary px-6 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                  href="#"
+                  id="active-campaign-teleton-link"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Abrir página oficial de Teletón
+                </a>
+                <button
+                  class="rounded-full border border-outline-variant/50 bg-white px-6 py-3 text-sm font-bold text-on-surface transition-colors hover:bg-surface-container-low disabled:cursor-not-allowed disabled:opacity-50"
+                  data-open-donation-notice
+                  id="active-campaign-support-button"
+                  type="button"
+                >
+                  Ver formas de apoyo
+                </button>
+              </div>
+            </article>
+
+            <article class="rounded-[2rem] bg-gradient-to-br from-primary to-primary-container p-8 text-white shadow-xl shadow-primary/20">
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-secondary-container">Estado del proyecto</p>
+              <p class="mt-4 font-headline text-3xl font-black tracking-tight" id="active-campaign-total">
+                $0 MXN
+              </p>
+              <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/80">
+                El tablero se reinicia por campaña, pero el historial queda visible para mantener continuidad y transparencia.
+              </p>
+              <div class="mt-8 grid gap-4 sm:grid-cols-2">
+                <div class="rounded-[1.5rem] bg-white/10 p-5">
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Campañas cerradas</p>
+                  <p class="mt-2 text-3xl font-black" id="history-count">0</p>
+                </div>
+                <div class="rounded-[1.5rem] bg-white/10 p-5">
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Transparencia pública</p>
+                  <p class="mt-2 text-lg font-black" id="active-campaign-transparency-count">0 evidencias</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
       </section>
 
       <section class="bg-surface-container-low py-20" id="impact">
@@ -197,41 +553,40 @@
             <div class="absolute right-0 top-0 -mt-32 h-64 w-64 rounded-full bg-secondary-container/10"></div>
             <div class="relative z-10 grid items-center gap-12 lg:grid-cols-3">
               <div class="space-y-5 lg:col-span-1">
-                <h2 class="font-headline text-4xl font-black tracking-tight">Nuestra meta</h2>
+                <h2 class="font-headline text-4xl font-black tracking-tight">Contador de campaña</h2>
                 <p class="leading-relaxed text-on-surface-variant">
-                  Queremos convertir el reciclaje integral en apoyo directo para el HITO y sembrar en la
-                  comunidad la cultura de ayudar a quienes mas lo necesitan.
+                  El avance se calcula por campaña y separa aportes físicos, digitales y equivalentes de reciclaje.
                 </p>
-                <p class="text-sm font-bold uppercase tracking-[0.2em] text-secondary" id="goal-stage-copy">
-                  Meta 1 en curso
+                <p class="text-sm font-bold uppercase tracking-[0.2em] text-secondary" id="counter-stage-copy">
+                  Modo institucional
                 </p>
-                <p class="text-sm text-on-surface-variant" id="progress-breakdown">
-                  Presencial: $0 MXN · Teletón en linea: $0 MXN
+                <p class="text-sm text-on-surface-variant" id="counter-breakdown-copy">
+                  Fisico: $0 MXN · Digital: $0 MXN · Reciclaje: $0 MXN
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
-                    <p class="text-sm font-bold uppercase text-on-surface-variant">Recaudado total</p>
-                    <p class="text-3xl font-black text-primary" id="progress-raised">$0 MXN</p>
+                    <p class="text-sm font-bold uppercase text-on-surface-variant">Recaudado</p>
+                    <p class="text-3xl font-black text-primary" id="counter-total">$0 MXN</p>
                   </div>
                   <div>
-                    <p class="text-sm font-bold uppercase text-on-surface-variant">Objetivo</p>
-                    <p class="text-3xl font-black text-on-surface" id="progress-goal">$10,000 MXN</p>
+                    <p class="text-sm font-bold uppercase text-on-surface-variant">Meta</p>
+                    <p class="text-3xl font-black text-on-surface" id="counter-goal">$0 MXN</p>
                   </div>
                 </div>
               </div>
               <div class="space-y-6 lg:col-span-2">
                 <div class="flex flex-wrap items-end justify-between gap-3">
-                  <span class="rounded-full bg-primary px-4 py-1 text-sm font-bold text-white" id="progress-percent">
-                    0% completado
+                  <span class="rounded-full bg-primary px-4 py-1 text-sm font-bold text-white" id="counter-percent">
+                    0% de meta
                   </span>
-                  <span class="text-sm font-medium text-on-surface-variant" id="progress-remaining">
-                    Faltan $10,000
+                  <span class="text-sm font-medium text-on-surface-variant" id="counter-remaining">
+                    Sin meta activa
                   </span>
                 </div>
                 <div class="h-12 w-full rounded-full bg-surface-container-highest p-2">
                   <div
                     class="relative h-full rounded-full bg-gradient-to-r from-primary to-secondary-container shadow-inner transition-all duration-500"
-                    id="progress-fill"
+                    id="counter-fill"
                     style="width: 0%"
                   >
                     <div class="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full bg-white shadow-md">
@@ -239,32 +594,37 @@
                     </div>
                   </div>
                 </div>
-                <div class="rounded-[1.5rem] bg-surface-container-low p-5">
-                  <div class="flex flex-wrap items-center justify-between gap-3">
-                    <div>
-                      <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Ruta de metas</p>
-                      <p class="mt-1 text-lg font-black text-on-surface" id="goal-progress-summary">Meta actual 1/6</p>
-                    </div>
-                    <p class="text-sm text-on-surface-variant" id="goal-completed-copy">
-                      Aun no hay metas completadas.
-                    </p>
-                  </div>
-                  <div class="mt-4 flex flex-wrap gap-3" id="goal-milestones-list"></div>
+                <div class="grid gap-4 md:grid-cols-3">
+                  <article class="rounded-[1.5rem] bg-surface-container-low p-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Fisico</p>
+                    <p class="mt-2 text-2xl font-black text-primary" id="breakdown-physical">$0 MXN</p>
+                    <p class="mt-1 text-sm text-on-surface-variant">Donativos presenciales registrados por admin.</p>
+                  </article>
+                  <article class="rounded-[1.5rem] bg-surface-container-low p-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Digital</p>
+                    <p class="mt-2 text-2xl font-black text-primary" id="breakdown-digital">$0 MXN</p>
+                    <p class="mt-1 text-sm text-on-surface-variant">Suma de donativos digitales manuales y sincronizados.</p>
+                  </article>
+                  <article class="rounded-[1.5rem] bg-surface-container-low p-5">
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Reciclaje</p>
+                    <p class="mt-2 text-2xl font-black text-primary" id="breakdown-recycling">$0 MXN</p>
+                    <p class="mt-1 text-sm text-on-surface-variant">Equivalente monetario del reciclaje recibido.</p>
+                  </article>
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div class="rounded-2xl bg-surface p-4 text-center">
-                    <p class="text-2xl font-black text-secondary" id="donor-count">0</p>
+                    <p class="text-2xl font-black text-secondary" id="counter-donation-count">0</p>
                     <p class="text-xs font-bold uppercase text-on-surface-variant">Donaciones</p>
                   </div>
                   <div class="rounded-2xl bg-surface p-4 text-center">
-                    <p class="text-2xl font-black text-secondary" id="campaign-countdown-value">27 dias</p>
-                    <p class="text-xs font-bold uppercase text-on-surface-variant" id="campaign-countdown-label">
-                      Cierre estimado al 11 de mayo
+                    <p class="text-2xl font-black text-secondary" id="counter-countdown-value">Sin fecha</p>
+                    <p class="text-xs font-bold uppercase text-on-surface-variant" id="counter-countdown-label">
+                      Sin cierre programado por ahora
                     </p>
                   </div>
                   <div class="rounded-2xl bg-surface p-4 text-center">
-                    <p class="text-2xl font-black text-secondary">Pabellon del Toro</p>
-                    <p class="text-xs font-bold uppercase text-on-surface-variant">Acceso poniente</p>
+                    <p class="text-2xl font-black text-secondary" id="counter-sync-status">Pendiente</p>
+                    <p class="text-xs font-bold uppercase text-on-surface-variant">Teletón digital</p>
                   </div>
                 </div>
               </div>
@@ -273,123 +633,87 @@
         </div>
       </section>
 
-      <section class="bg-surface py-24" id="ranking">
-        <div class="mx-auto max-w-4xl px-6">
+      <section class="bg-surface py-24" id="piggy-banks">
+        <div class="mx-auto max-w-7xl px-6">
+          <div class="mx-auto mb-12 max-w-3xl text-center">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Alcancias activas</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Puntos listos para recibir apoyo</h2>
+            <p class="text-on-surface-variant">
+              Cada campaña puede abrir y cerrar alcancías sin perder el histórico del proyecto.
+            </p>
+          </div>
+          <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3" id="piggy-banks-list"></div>
+          <div class="rounded-[2rem] border border-dashed border-outline-variant bg-white px-6 py-10 text-center text-on-surface-variant" id="piggy-banks-empty">
+            No hay alcancías activas visibles en esta campaña.
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-surface-container-low py-24" id="ranking">
+        <div class="mx-auto max-w-5xl px-6">
           <div class="mb-12 text-center">
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight" id="leaderboard-title">
-              Muro de Campeones
-            </h2>
-            <p class="italic text-on-surface-variant" id="leaderboard-subtitle">
-              Ranking acumulado por nombre con los mayores aportadores.
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Ranking publico</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Muro de Campeones</h2>
+            <p class="italic text-on-surface-variant" id="ranking-copy">
+              Ranking acumulado por donador dentro de la campaña activa.
             </p>
           </div>
           <div class="mb-6 hidden" id="general-donations-card"></div>
           <div class="space-y-4" id="leaderboard-list"></div>
-          <div class="mt-12 text-center">
-            <button
-              class="font-bold text-primary transition-all hover:underline"
-              id="leaderboard-toggle"
-              type="button"
-            >
-              Ver lista completa de donaciones
-            </button>
+          <div class="rounded-[2rem] border border-dashed border-outline-variant bg-white px-6 py-10 text-center text-on-surface-variant" id="leaderboard-empty">
+            Todavía no hay aportes agregados para mostrar en el ranking.
           </div>
         </div>
       </section>
 
-      <section class="overflow-hidden bg-surface-container-low py-24" id="about">
-        <div class="mx-auto grid max-w-7xl items-center gap-16 px-6 md:grid-cols-2">
-          <div class="relative">
-            <div class="aspect-square overflow-hidden rounded-[2rem] bg-primary-container shadow-2xl">
-              <img
-                alt="Familias y personal reunidos en actividad del Teletón"
-                class="h-full w-full object-cover"
-                src="./images/transforman-vidas.jpg"
-              />
-            </div>
-            <div class="absolute -right-10 -top-10 h-48 w-48 rounded-full border-8 border-secondary opacity-20"></div>
-          </div>
-          <div class="space-y-8">
-            <h2 class="font-headline text-4xl font-black tracking-tight lg:text-5xl">
-              Goles que transforman <span class="text-primary">vidas</span>
-            </h2>
-            <div class="space-y-6 text-lg leading-relaxed text-on-surface-variant">
-              <p>
-                Somos un equipo de estudiantes de preparatoria que busca apoyar al Hospital Infantil
-                Teletón de Oncologia a traves de un modelo donde reciclar tambien significa ayudar.
-              </p>
-              <p>
-                Nuestro objetivo es concientizar a las nuevas generaciones para que vean en el reciclaje
-                una forma activa de respaldar a la comunidad y fortalecer una causa con impacto real.
-              </p>
-            </div>
-            <div class="flex items-center gap-6 pt-4">
-              <div class="flex -space-x-4">
-                <div class="h-12 w-12 rounded-full border-4 border-surface bg-zinc-200"></div>
-                <div class="h-12 w-12 rounded-full border-4 border-surface bg-zinc-300"></div>
-                <div class="h-12 w-12 rounded-full border-4 border-surface bg-zinc-400"></div>
-              </div>
-              <p class="text-sm font-bold text-on-surface">Reciclar, unir esfuerzos y transformar apoyo en esperanza.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="bg-surface py-24" id="help">
+      <section class="bg-surface py-24" id="transparency">
         <div class="mx-auto max-w-7xl px-6">
-          <div class="mx-auto mb-20 max-w-2xl text-center">
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Como puedes ayudar</h2>
+          <div class="mx-auto mb-16 max-w-3xl text-center">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Transparencia</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Seguimiento publico y evidencias</h2>
             <p class="text-on-surface-variant">
-              Dona, comparte o activa a mas personas para subir el marcador.
+              La plataforma pública comparte el seguimiento, las evidencias por URL y el resumen de montos por campaña.
             </p>
           </div>
-          <div class="grid gap-8 md:grid-cols-3">
-            <article class="group rounded-[2rem] border border-outline-variant/10 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl">
-              <div class="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-container text-on-primary-container transition-transform group-hover:scale-110">
-                <span class="material-symbols-outlined text-3xl">payments</span>
-              </div>
-              <h3 class="mb-4 text-2xl font-black">Donar dinero</h3>
-              <p class="mb-8 leading-relaxed text-on-surface-variant">
-                Suma tu apoyo en el Pabellon del Toro para que cada aportacion se convierta en impulso
-                directo para el HITO.
+          <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Estado digital</p>
+              <h3 class="mt-3 font-headline text-3xl font-black tracking-tight" id="transparency-sync-status">Modo institucional</h3>
+              <p class="mt-3 text-sm leading-relaxed text-on-surface-variant" id="transparency-sync-copy">
+                Cuando inicie la siguiente campaña, aquí aparecerán el seguimiento digital y las evidencias públicas.
               </p>
-              <button
-                class="inline-flex items-center font-bold text-primary transition-all hover:gap-2"
-                data-open-donation-notice
-                type="button"
-              >
-                Donación <span class="material-symbols-outlined ml-2">arrow_forward</span>
-              </button>
+              <div class="mt-8 rounded-[1.5rem] bg-surface-container-low p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Resumen visible</p>
+                <div class="mt-4 space-y-3 text-sm text-on-surface-variant">
+                  <div class="flex items-center justify-between gap-4">
+                    <span>Total de campaña</span>
+                    <strong class="text-on-surface" id="transparency-total-amount">$0 MXN</strong>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <span>Digital sincronizado</span>
+                    <strong class="text-on-surface" id="transparency-digital-amount">$0 MXN</strong>
+                  </div>
+                  <div class="flex items-center justify-between gap-4">
+                    <span>Ultima actualizacion</span>
+                    <strong class="text-on-surface" id="transparency-last-sync">Sin datos</strong>
+                  </div>
+                </div>
+              </div>
             </article>
-            <article class="group rounded-[2rem] border border-outline-variant/10 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl">
-              <div class="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-secondary-container text-zinc-900 transition-transform group-hover:scale-110">
-                <span class="material-symbols-outlined text-3xl">event</span>
+
+            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+              <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Evidencias públicas</p>
+                  <h3 class="mt-2 font-headline text-3xl font-black tracking-tight">Comprobantes y referencias</h3>
+                </div>
+                <span class="rounded-full bg-surface-container-low px-4 py-2 text-sm font-bold text-on-surface-variant" id="transparency-evidence-count">
+                  0 registros
+                </span>
               </div>
-              <h3 class="mb-4 text-2xl font-black">Participar</h3>
-              <p class="mb-8 leading-relaxed text-on-surface-variant">
-                Durante los partidos del Club Celaya estaremos presentes para recolectar residuos y
-                convertirlos en apoyo real para Teletón.
-              </p>
-              <a class="inline-flex items-center font-bold text-secondary transition-all hover:gap-2" href="#impact">
-                Ver avance <span class="material-symbols-outlined ml-2">arrow_forward</span>
-              </a>
-            </article>
-            <article class="group rounded-[2rem] border border-outline-variant/10 bg-white p-10 shadow-lg transition-all duration-300 hover:shadow-xl">
-              <div class="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-tertiary text-white transition-transform group-hover:scale-110">
-                <span class="material-symbols-outlined text-3xl">share</span>
-              </div>
-              <h3 class="mb-4 text-2xl font-black">Compartir</h3>
-              <p class="mb-8 leading-relaxed text-on-surface-variant">
-                Comparte esta iniciativa para inspirar a mas personas a reciclar, apoyar y sumarse a una
-                causa que ya cambia vidas.
-              </p>
-              <div class="flex gap-4">
-                <button class="text-tertiary transition-transform hover:scale-110" type="button">
-                  <span class="material-symbols-outlined">share_reviews</span>
-                </button>
-                <button class="text-tertiary transition-transform hover:scale-110" type="button">
-                  <span class="material-symbols-outlined">public</span>
-                </button>
+              <div class="space-y-4" id="transparency-evidence-list"></div>
+              <div class="rounded-[2rem] border border-dashed border-outline-variant bg-surface-container-low px-6 py-10 text-center text-on-surface-variant" id="transparency-evidence-empty">
+                Aún no hay evidencias públicas registradas para esta campaña.
               </div>
             </article>
           </div>
@@ -400,10 +724,9 @@
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-16 max-w-3xl text-center">
             <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Aliados de la causa</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Empresas y personas que se han sumado</h2>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Empresas y personas que sostienen el proyecto</h2>
             <p class="text-on-surface-variant">
-              Este esfuerzo crece gracias a quienes abren espacios, difunden la campaña y se convierten en
-              punto de encuentro para apoyar con donativos y reciclables.
+              Este esfuerzo crece gracias a quienes abren espacios, difunden la campaña y reciben reciclables.
             </p>
           </div>
           <div class="grid gap-8 lg:grid-cols-2">
@@ -412,7 +735,7 @@
               <div class="space-y-4">
                 <div class="rounded-2xl bg-surface-container-low p-5">
                   <h3 class="text-xl font-black text-on-surface">Estadio Miguel Aleman Valdes</h3>
-                  <p class="mt-2 text-on-surface-variant">Espacio clave para impulsar la presencia de la campaña.</p>
+                  <p class="mt-2 text-on-surface-variant">Espacio clave para impulsar la presencia pública del proyecto.</p>
                 </div>
                 <div class="rounded-2xl bg-surface-container-low p-5">
                   <h3 class="text-xl font-black text-on-surface">Reyka</h3>
@@ -421,93 +744,42 @@
               </div>
             </article>
             <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
-              <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Puntos de entrega de PET, latas y tapas</p>
+              <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Difusion en medios</p>
               <div class="space-y-4">
                 <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Güeros los tacos</h3>
-                  <p class="mt-2 text-on-surface-variant">Guillermo Prieto 107, Alameda, 38050.</p>
-                </div>
-                <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">San Quintín Mariscos</h3>
-                  <p class="mt-2 text-on-surface-variant">Prolongación Hidalgo, Murillo Esq, Renacimiento, 38040.</p>
-                </div>
-              </div>
-            </article>
-            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10 lg:col-span-2">
-              <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Difusion en medios</p>
-              <div class="grid gap-4 md:grid-cols-2">
-                <div class="rounded-2xl bg-surface-container-low p-5">
                   <h3 class="text-xl font-black text-on-surface">Stereo Cristal 96.7 FM</h3>
-                  <p class="mt-2 text-on-surface-variant">Nos apoyaron a anunciar la campaña para llegar a mas personas.</p>
+                  <p class="mt-2 text-on-surface-variant">Nos ayudaron a anunciar la iniciativa para llegar a más personas.</p>
                   <audio class="mt-4 w-full" controls preload="none">
                     <source src="./audio/Radio_spots/Cristal.mp3" type="audio/mpeg" />
-                    Tu navegador no soporta la reproduccion de audio.
+                    Tu navegador no soporta reproducción de audio.
                   </audio>
                 </div>
                 <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Él y ella 103.7 FM</h3>
-                  <p class="mt-2 text-on-surface-variant">Se sumaron a la difusion de nuestros anuncios al aire.</p>
+                  <h3 class="text-xl font-black text-on-surface">El y Ella 103.7 FM</h3>
+                  <p class="mt-2 text-on-surface-variant">Se sumaron a la difusión pública del proyecto.</p>
                   <audio class="mt-4 w-full" controls preload="none">
                     <source src="./audio/Radio_spots/ElyElla.mp3" type="audio/mpeg" />
-                    Tu navegador no soporta la reproduccion de audio.
+                    Tu navegador no soporta reproducción de audio.
                   </audio>
                 </div>
               </div>
-              <p class="mt-5 text-sm font-bold text-tertiary">
-                Gracias a Stereo Cristal 96.7 FM y a Él y ella 103.7 FM por darnos voz, abrirnos sus espacios
-                y ayudarnos a anunciar esta causa en la radio.
-              </p>
             </article>
           </div>
         </div>
       </section>
 
-      <section class="bg-surface-container-low py-24" id="gallery">
+      <section class="bg-surface-container-low py-24" id="history">
         <div class="mx-auto max-w-7xl px-6">
-          <div class="mx-auto mb-14 max-w-3xl text-center">
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">
-              Apoyemos la causa, todos con el Teletón
-            </h2>
+          <div class="mx-auto mb-16 max-w-3xl text-center">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Historial de campañas</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Memoria pública del proyecto</h2>
             <p class="text-on-surface-variant">
-              Momentos que reflejan la alegria, la cercania y la fuerza de esta causa compartida.
+              Cada campaña cerrada conserva meta, fechas y resumen final sin borrar el trabajo anterior.
             </p>
           </div>
-          <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            <article class="overflow-hidden rounded-[2rem] bg-white shadow-lg">
-              <img
-                alt="Coronacion durante actividad en el hospital"
-                class="aspect-[4/3] w-full object-cover"
-                src="./images/Galeria-1-new.jpg"
-              />
-            </article>
-            <article class="overflow-hidden rounded-[2rem] bg-white shadow-lg">
-              <img
-                alt="Recorrido exterior con familias y participantes"
-                class="aspect-[4/3] w-full object-cover"
-                src="./images/galeria-2.jpg"
-              />
-            </article>
-            <article class="overflow-hidden rounded-[2rem] bg-white shadow-lg">
-              <img
-                alt="Ninos participando en carrito decorado"
-                class="aspect-[4/3] w-full object-cover"
-                src="./images/galeria-3.jpg"
-              />
-            </article>
-            <article class="overflow-hidden rounded-[2rem] bg-white shadow-lg">
-              <img
-                alt="Participantes sentados durante la celebracion"
-                class="aspect-[4/3] w-full object-cover"
-                src="./images/galeria-4.jpg"
-              />
-            </article>
-            <article class="overflow-hidden rounded-[2rem] bg-white shadow-lg md:col-span-2 xl:col-span-1">
-              <img
-                alt="Coronacion de una participante durante la primavera"
-                class="aspect-[4/3] w-full object-cover"
-                src="./images/galeria-5.jpg"
-              />
-            </article>
+          <div class="grid gap-6 lg:grid-cols-2" id="history-campaigns-list"></div>
+          <div class="rounded-[2rem] border border-dashed border-outline-variant bg-white px-6 py-10 text-center text-on-surface-variant" id="history-empty">
+            Todavía no hay campañas cerradas registradas en el historial.
           </div>
         </div>
       </section>
@@ -516,10 +788,9 @@
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-14 max-w-3xl text-center">
             <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Contacto directo</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Quieres apoyar mas de cerca la causa?</h2>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">¿Quieres apoyar más de cerca la causa?</h2>
             <p class="text-on-surface-variant">
-              Si deseas sumarte con apoyo directo, alianza, difusion o recoleccion de reciclables, puedes
-              escribirnos a cualquiera de estos contactos o enviarnos mensaje por Instagram.
+              Si deseas sumar alianzas, difusion o nuevos puntos de reciclaje, puedes escribirnos aqui.
             </p>
           </div>
           <div class="grid gap-6 lg:grid-cols-2">
@@ -569,10 +840,9 @@
             </article>
             <article class="rounded-[2rem] bg-gradient-to-br from-primary to-primary-container p-8 text-white shadow-xl shadow-primary/20">
               <p class="mb-5 text-sm font-bold uppercase tracking-[0.2em] text-secondary-container">Sigamos en contacto</p>
-              <h3 class="font-headline text-3xl font-black tracking-tight">Instagram oficial de la campana</h3>
+              <h3 class="font-headline text-3xl font-black tracking-tight">Instagram oficial del proyecto</h3>
               <p class="mt-4 max-w-xl leading-relaxed text-white/80">
-                Comparte la iniciativa, pregunta por puntos de entrega o acercate para colaborar de forma
-                mas directa con el proyecto.
+                Comparte la iniciativa, pregunta por puntos de entrega o acércate para colaborar con la siguiente campaña.
               </p>
               <a
                 class="mt-8 inline-flex items-center gap-3 rounded-full bg-white px-6 py-4 font-black text-primary transition-transform hover:-translate-y-0.5"
@@ -591,15 +861,13 @@
 
     <footer class="mt-20 w-full rounded-t-[3rem] bg-zinc-100">
       <div class="flex flex-col items-center space-y-8 px-6 py-16 text-center">
-        <div class="font-headline text-xl font-black uppercase tracking-tight">
-          Reciclando Goles x Teletón
-        </div>
+        <div class="font-headline text-xl font-black uppercase tracking-tight">Reciclando Goles</div>
         <div class="flex flex-wrap justify-center gap-8 text-sm">
           <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#home">Inicio</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#impact">Impacto</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#ranking">Ranking</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#help">Ayuda</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#allies">Aliados</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#active-campaign">Campaña</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#impact">Contador</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#transparency">Transparencia</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#history">Historial</a>
           <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#contact">Contacto</a>
         </div>
         <div class="flex flex-col items-center gap-4">
@@ -622,7 +890,7 @@
         </div>
         <div class="space-y-1 text-xs font-bold uppercase tracking-[0.2em] text-zinc-500">
           <p>#reciclandogoles</p>
-          <p>Toros somos uno por Teletón</p>
+          <p>Plataforma oficial del proyecto estudiantil</p>
         </div>
       </div>
     </footer>
@@ -633,179 +901,33 @@
           <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1'>home</span>
           <span class="text-[10px] font-bold">Inicio</span>
         </a>
-        <a class="flex flex-col items-center gap-1 text-zinc-400" href="#ranking">
-          <span class="material-symbols-outlined">leaderboard</span>
-          <span class="text-[10px] font-bold">Ranking</span>
+        <a class="flex flex-col items-center gap-1 text-zinc-400" href="#impact">
+          <span class="material-symbols-outlined">monitoring</span>
+          <span class="text-[10px] font-bold">Contador</span>
         </a>
         <button class="flex flex-col items-center gap-1 text-zinc-400" data-open-admin-modal type="button">
           <span class="material-symbols-outlined">lock</span>
           <span class="text-[10px] font-bold">Admin</span>
         </button>
-        <a class="flex flex-col items-center gap-1 text-zinc-400" href="#about">
-          <span class="material-symbols-outlined">info</span>
-          <span class="text-[10px] font-bold">Historia</span>
+        <a class="flex flex-col items-center gap-1 text-zinc-400" href="#history">
+          <span class="material-symbols-outlined">history</span>
+          <span class="text-[10px] font-bold">Historial</span>
         </a>
       </nav>
     </div>
 
     <div
       aria-hidden="true"
-      hidden
-      class="pointer-events-none fixed inset-0 z-[60] flex items-center justify-center px-4 py-8 opacity-0 transition-opacity duration-200"
-      id="donation-modal"
-    >
-      <div class="absolute inset-0 bg-black/45" id="modal-backdrop"></div>
-      <div class="relative z-10 w-full max-w-md rounded-[2rem] bg-white p-8 shadow-2xl" id="donation-modal-panel">
-        <div class="mb-6 flex items-start justify-between gap-4">
-          <div>
-            <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Panel admin</p>
-            <h2 class="mt-2 font-headline text-3xl font-black">Registrar donacion</h2>
-          </div>
-          <button
-            aria-label="Cerrar modal"
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant transition-colors hover:bg-surface-container-high"
-            id="close-donation-modal"
-            type="button"
-          >
-            <span class="material-symbols-outlined">close</span>
-          </button>
-        </div>
-        <div class="mb-6 rounded-[1.5rem] bg-surface-container-low p-5" id="admin-code-panel">
-          <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Clave privada</p>
-          <p class="mt-3 text-sm leading-relaxed text-on-surface-variant">
-            Ingresa tu nombre y la clave de 24 digitos para habilitar el acceso de administrador.
-          </p>
-          <label class="mt-4 block">
-            <span class="mb-2 block text-sm font-bold text-on-surface">Nombre de acceso</span>
-            <input
-              class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              id="admin-access-name"
-              maxlength="80"
-              placeholder="Quien esta entrando"
-              type="text"
-            />
-          </label>
-          <label class="mt-4 block">
-            <span class="mb-2 block text-sm font-bold text-on-surface">Codigo de acceso</span>
-            <input
-              class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3 tracking-[0.2em] focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              id="admin-code-input"
-              inputmode="numeric"
-              maxlength="24"
-              placeholder="000000000000000000000000"
-              type="password"
-            />
-          </label>
-          <p class="mt-3 min-h-6 text-sm font-medium" id="admin-code-message"></p>
-          <button
-            class="mt-2 rounded-full bg-zinc-900 px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-            id="admin-code-submit"
-            type="button"
-          >
-            Validar clave
-          </button>
-        </div>
-        <div class="mb-6 hidden rounded-[1.5rem] bg-surface-container-low p-5" id="admin-auth-panel">
-          <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Acceso habilitado</p>
-          <p class="mt-3 text-sm leading-relaxed text-on-surface-variant" id="admin-auth-copy">
-            Sesion activa de administrador.
-          </p>
-          <div class="mt-4 flex flex-wrap gap-3">
-            <button
-              class="rounded-full border border-outline-variant/50 px-5 py-3 text-sm font-bold text-on-surface transition-colors hover:bg-white"
-              id="admin-sign-out-button"
-              type="button"
-            >
-              Cerrar acceso
-            </button>
-          </div>
-        </div>
-        <div class="mb-6 hidden rounded-[1.5rem] bg-surface-container-low p-5" id="teleton-sync-panel">
-          <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Sincronizar Teletón en linea</p>
-          <p class="mt-3 text-sm leading-relaxed text-on-surface-variant">
-            Actualiza aqui el monto total que aparece en la pagina oficial de Teletón para que esta barra
-            sume tambien los donativos virtuales.
-          </p>
-          <label class="mt-4 block">
-            <span class="mb-2 block text-sm font-bold text-on-surface">Monto actual en Teletón</span>
-            <input
-              class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              id="teleton-external-amount"
-              min="0"
-              placeholder="160"
-              step="0.01"
-              type="number"
-            />
-          </label>
-          <p class="mt-3 min-h-6 text-sm font-medium" id="teleton-sync-message"></p>
-          <div class="mt-2 flex flex-wrap gap-3">
-            <button
-              class="rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
-              id="teleton-sync-button"
-              type="button"
-            >
-              Guardar monto Teletón
-            </button>
-            <a
-              class="rounded-full border border-outline-variant/50 bg-white px-5 py-3 text-sm font-bold text-on-surface transition-colors hover:bg-surface-container-low"
-              href="https://www.alcanciadigitalteleton.mx/pagos/0/12689/reciclando-goles-toros-para-el-teletn.html"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Abrir pagina de Teletón
-            </a>
-          </div>
-        </div>
-        <form class="space-y-5 hidden" id="donation-form">
-          <label class="block">
-            <span class="mb-2 block text-sm font-bold text-on-surface">Nombre</span>
-            <input
-              class="w-full rounded-2xl border border-outline-variant bg-surface px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              id="donation-name"
-              maxlength="80"
-              name="name"
-              placeholder="Tu nombre o familia"
-              required
-              type="text"
-            />
-          </label>
-          <label class="block">
-            <span class="mb-2 block text-sm font-bold text-on-surface">Monto (MXN)</span>
-            <input
-              class="w-full rounded-2xl border border-outline-variant bg-surface px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
-              id="donation-amount"
-              min="1"
-              name="amount"
-              placeholder="500"
-              required
-              step="0.01"
-              type="number"
-            />
-          </label>
-          <p class="min-h-6 text-sm font-medium" id="form-message"></p>
-          <button
-            class="w-full rounded-full bg-gradient-to-r from-primary to-primary-container px-6 py-4 font-black text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
-            id="submit-donation"
-            type="submit"
-          >
-            Confirmar donacion
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <div
-      aria-hidden="true"
-      hidden
       class="pointer-events-none fixed inset-0 z-[55] flex items-center justify-center px-4 py-8 opacity-0 transition-opacity duration-200"
+      hidden
       id="donation-notice-modal"
     >
       <div class="absolute inset-0 bg-black/35" id="donation-notice-backdrop"></div>
       <div class="relative z-10 w-full max-w-xl rounded-[2rem] bg-white p-8 shadow-2xl" id="donation-notice-panel">
         <div class="mb-6 flex items-start justify-between gap-4">
           <div>
-            <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Aviso de donaciones</p>
-            <h2 class="mt-2 font-headline text-3xl font-black">Recolecta presencial</h2>
+            <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Cómo apoyar</p>
+            <h2 class="mt-2 font-headline text-3xl font-black">Rutas activas de participacion</h2>
           </div>
           <button
             aria-label="Cerrar aviso"
@@ -817,32 +939,23 @@
           </button>
         </div>
         <div class="rounded-[1.5rem] bg-surface-container-low p-6">
-          <p class="text-lg font-bold text-on-surface">
-            Estaremos recolectando el dinero de las donaciones en el Pabellon del Toro, ubicado en el
-            acceso poniente del Estadio MAV.
+          <p class="text-lg font-bold text-on-surface" id="donation-notice-copy">
+            Cuando exista una campaña activa, aquí verás sus rutas de apoyo presencial, digital y de reciclaje.
           </p>
           <div class="mt-4 space-y-3 text-sm leading-relaxed text-on-surface-variant">
-            <p>
-              Tambien puedes apoyar en nuestros puntos fisicos de recoleccion de PET, latas y tapas:
-            </p>
-            <ul class="space-y-2">
-              <li>Güeros los tacos, Guillermo Prieto 107, Alameda, 38050.</li>
-              <li>San Quintín Mariscos, Prolongación Hidalgo, Murillo Esq, Renacimiento, 38040.</li>
-            </ul>
-            <p>
-              Si prefieres donar en linea, Teletón ya habilito la pagina oficial de Reciclando Goles y ese
-              monto tambien lo iremos integrando a nuestro avance.
-            </p>
+            <p>Alcancias y puntos activos:</p>
+            <ul class="space-y-2" id="donation-notice-piggy-banks"></ul>
           </div>
         </div>
         <div class="mt-6 flex flex-col gap-3 sm:flex-row">
           <a
-            class="w-full rounded-full bg-gradient-to-r from-primary to-primary-container px-6 py-4 text-center font-black text-white transition-opacity hover:opacity-90"
-            href="https://www.alcanciadigitalteleton.mx/pagos/0/12689/reciclando-goles-toros-para-el-teletn.html"
+            class="hidden w-full rounded-full bg-gradient-to-r from-primary to-primary-container px-6 py-4 text-center font-black text-white transition-opacity hover:opacity-90"
+            href="#"
+            id="donation-notice-teleton-link"
             rel="noreferrer"
             target="_blank"
           >
-            Donar en la pagina de Teletón
+            Donar en Teletón
           </a>
           <button
             class="w-full rounded-full border border-outline-variant/50 bg-white px-6 py-4 font-black text-on-surface transition-colors hover:bg-surface-container-low"
@@ -851,6 +964,416 @@
           >
             Entendido
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 z-[60] flex justify-center opacity-0 transition-opacity duration-200"
+      hidden
+      id="admin-modal"
+    >
+      <div class="absolute inset-0 bg-black/50" id="admin-backdrop"></div>
+      <div class="admin-modal-shell relative z-10 rounded-[2rem] bg-white shadow-2xl" id="admin-panel" tabindex="-1">
+        <div class="admin-modal-header flex items-start justify-between gap-3 border-b border-outline-variant/20 px-4 py-4 sm:px-5">
+          <div>
+            <p class="admin-kicker text-sm font-bold uppercase text-primary">Panel admin</p>
+            <h2 class="admin-panel-title mt-2 font-headline font-black">Operación multi-campaña</h2>
+          </div>
+          <button
+            aria-label="Cerrar panel admin"
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant transition-colors hover:bg-surface-container-high"
+            id="close-admin-modal"
+            type="button"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+
+        <div class="admin-modal-body px-4 pb-4 pt-3 sm:px-5 sm:pb-5">
+          <div class="admin-modal-layout" id="admin-layout">
+          <aside class="admin-modal-sidebar space-y-4">
+            <div class="admin-card rounded-[1.5rem] bg-surface-container-low" id="admin-auth-card">
+              <p class="admin-kicker text-sm font-bold uppercase text-primary">Acceso real</p>
+              <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">
+                El panel productivo usa Firebase Auth con correo y contraseña, más validación de rol en
+                <code>user_roles/{uid}</code>.
+              </p>
+              <form class="mt-4 space-y-3" id="admin-auth-form">
+                <label class="block">
+                  <span class="mb-2 block text-sm font-bold text-on-surface">Correo</span>
+                  <input
+                    autocomplete="username"
+                    autocapitalize="none"
+                    class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    id="admin-email"
+                    placeholder="admin@reciclandogoles.mx"
+                    spellcheck="false"
+                    type="email"
+                  />
+                </label>
+                <label class="block">
+                  <span class="mb-2 block text-sm font-bold text-on-surface">Password</span>
+                  <input
+                    autocomplete="current-password"
+                    class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20"
+                    id="admin-password"
+                    placeholder="********"
+                    type="password"
+                  />
+                </label>
+                <p class="min-h-6 text-sm font-medium" id="admin-auth-message"></p>
+                <div class="flex flex-wrap gap-2.5">
+                  <button
+                    class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
+                    id="admin-login-button"
+                    type="submit"
+                  >
+                    Iniciar sesión
+                  </button>
+                  <button
+                    class="hidden rounded-full border border-outline-variant/50 px-4 py-2.5 text-sm font-bold text-on-surface transition-colors hover:bg-white"
+                    id="admin-logout-button"
+                    type="button"
+                  >
+                    Cerrar sesión
+                  </button>
+                </div>
+              </form>
+              <div class="mt-4 rounded-[1.25rem] bg-white p-3.5">
+                <p class="text-sm font-bold text-on-surface" id="admin-session-copy">Sin sesión iniciada.</p>
+                <p class="mt-2 text-sm text-on-surface-variant" id="admin-role-copy">
+                  Inicia sesión con un usuario autenticado y habilitado como admin.
+                </p>
+              </div>
+              <div class="mt-4 hidden rounded-[1.25rem] border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-900" id="admin-access-warning">
+                Necesitas una sesión autenticada con rol admin para ejecutar acciones de este panel.
+              </div>
+            </div>
+
+            <div class="admin-card rounded-[1.5rem] border border-outline-variant/30 bg-white" id="admin-fallback-card">
+              <p class="admin-kicker text-sm font-bold uppercase text-secondary">Fallback temporal</p>
+              <p class="mt-2 text-sm leading-relaxed text-on-surface-variant" id="legacy-admin-copy">
+                El acceso por codigo de la version anterior queda aislado como referencia temporal y ya no se usa
+                para escrituras productivas.
+              </p>
+            </div>
+
+            <nav class="rounded-[1.5rem] bg-surface-container-low p-3" id="admin-tab-nav">
+              <div class="grid gap-2">
+                <button class="rounded-xl bg-primary px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-white" data-admin-tab-button data-tab="summary" type="button">Resumen de campaña</button>
+                <button class="rounded-xl px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-on-surface transition-colors hover:bg-white" data-admin-tab-button data-tab="donation" type="button">Registrar donación</button>
+                <button class="rounded-xl px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-on-surface transition-colors hover:bg-white" data-admin-tab-button data-tab="piggy-banks" type="button">Administrar alcancías</button>
+                <button class="rounded-xl px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-on-surface transition-colors hover:bg-white" data-admin-tab-button data-tab="active-campaign" type="button">Administrar campaña activa</button>
+                <button class="rounded-xl px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-on-surface transition-colors hover:bg-white" data-admin-tab-button data-tab="close-campaign" type="button">Cerrar campaña</button>
+                <button class="rounded-xl px-3.5 py-2.5 text-left text-[0.92rem] font-bold text-on-surface transition-colors hover:bg-white" data-admin-tab-button data-tab="new-campaign" type="button">Crear nueva campaña</button>
+              </div>
+            </nav>
+          </aside>
+
+          <section class="admin-modal-main space-y-4" id="admin-main">
+            <div class="hidden admin-card rounded-[1.5rem] bg-surface-container-low" id="admin-session-bar">
+              <div>
+                <p class="admin-kicker text-sm font-bold uppercase text-primary">Sesión autorizada</p>
+                <p class="mt-2 text-sm font-bold text-on-surface" id="admin-active-session-copy">Sin sesión iniciada.</p>
+                <p class="mt-1 text-sm text-on-surface-variant" id="admin-active-role-copy">
+                  El acceso se habilita al validar el rol admin.
+                </p>
+              </div>
+              <button
+                class="rounded-full border border-outline-variant/50 bg-white px-4 py-2.5 text-sm font-bold text-on-surface transition-colors hover:bg-surface-container-low"
+                id="admin-active-logout-button"
+                type="button"
+              >
+                Cerrar sesión
+              </button>
+            </div>
+
+            <div class="space-y-4" id="admin-workspace">
+              <div data-admin-tab-panel id="admin-tab-summary">
+                <div class="grid gap-4 md:grid-cols-2">
+                  <article class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                    <p class="admin-kicker text-sm font-bold uppercase text-primary">Campaña seleccionada</p>
+                    <h3 class="mt-2 font-headline text-2xl font-black tracking-tight" id="admin-summary-campaign">Sin campaña activa</h3>
+                    <p class="mt-2 text-sm text-on-surface-variant" id="admin-summary-status">
+                      Activa una campaña para habilitar las operaciones diarias.
+                    </p>
+                  </article>
+                  <article class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                    <p class="admin-kicker text-sm font-bold uppercase text-primary">Resumen visible</p>
+                    <div class="mt-3 space-y-2 text-sm text-on-surface-variant" id="admin-summary-totals">
+                      <p>Total: $0 MXN</p>
+                      <p>Fisico: $0 MXN</p>
+                      <p>Digital: $0 MXN</p>
+                      <p>Reciclaje: $0 MXN</p>
+                    </div>
+                    <p class="mt-3 text-sm font-medium text-on-surface-variant" id="admin-summary-sync">Sin seguimiento activo.</p>
+                  </article>
+                </div>
+                <div class="mt-4 flex flex-wrap gap-2.5">
+                  <button
+                    class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    id="admin-sync-teleton-button"
+                    type="button"
+                  >
+                    Estado de Teletón
+                  </button>
+                  <button
+                    class="rounded-full border border-outline-variant/50 bg-white px-4 py-2.5 text-sm font-bold text-on-surface transition-colors hover:bg-surface-container-low disabled:cursor-not-allowed disabled:opacity-50"
+                    id="admin-recalculate-button"
+                    type="button"
+                  >
+                    Recalcular totales
+                  </button>
+                </div>
+              </div>
+
+              <div data-admin-tab-panel hidden id="admin-tab-donation">
+                <div class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                  <p class="admin-kicker text-sm font-bold uppercase text-primary">Registrar donación</p>
+                  <form class="mt-4 grid gap-3 md:grid-cols-2" id="admin-donation-form">
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Nombre visible</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="admin-donation-name" maxlength="80" placeholder="Tu nombre o familia" type="text" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Monto (MXN)</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="admin-donation-amount" min="0.01" placeholder="500" step="0.01" type="number" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Fuente</span>
+                      <select class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="admin-donation-source-type">
+                        <option value="physical">Fisico</option>
+                        <option value="digital">Digital</option>
+                        <option value="recycling">Reciclaje</option>
+                      </select>
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Alcancia vinculada</span>
+                      <select class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="admin-donation-piggy-bank">
+                        <option value="">Sin alcancía específica</option>
+                      </select>
+                    </label>
+                    <div class="lg:col-span-2">
+                      <p class="min-h-6 text-sm font-medium" id="admin-donation-message"></p>
+                      <button
+                        class="rounded-full bg-gradient-to-r from-primary to-primary-container px-4 py-2.5 text-sm font-black text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                        id="admin-donation-submit"
+                        type="submit"
+                      >
+                        Confirmar donación
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div data-admin-tab-panel hidden id="admin-tab-piggy-banks">
+                <div class="grid gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
+                  <article class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                    <p class="admin-kicker text-sm font-bold uppercase text-primary">Nueva alcancía</p>
+                    <form class="mt-4 space-y-3" id="piggy-bank-form">
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Nombre</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="piggy-bank-name" maxlength="120" placeholder="Alcancia estadio poniente" type="text" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Ubicacion</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="piggy-bank-location" maxlength="180" placeholder="Estadio MAV, acceso poniente" type="text" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Estado</span>
+                        <select class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="piggy-bank-status">
+                          <option value="active">Activa</option>
+                          <option value="inactive">Inactiva</option>
+                          <option value="retired">Retirada</option>
+                        </select>
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Acepta</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="piggy-bank-accepts" maxlength="160" placeholder="PET, latas, tapas" type="text" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Notas</span>
+                        <textarea class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="piggy-bank-notes" maxlength="240" rows="3"></textarea>
+                      </label>
+                      <p class="min-h-6 text-sm font-medium" id="piggy-bank-message"></p>
+                      <button class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white" id="piggy-bank-submit" type="submit">
+                        Guardar alcancía
+                      </button>
+                    </form>
+                  </article>
+
+                  <article class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                    <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                      <p class="admin-kicker text-sm font-bold uppercase text-primary">Alcancias registradas</p>
+                      <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-on-surface-variant" id="admin-piggy-bank-count">0 registros</span>
+                    </div>
+                    <div class="space-y-4" id="admin-piggy-banks-list"></div>
+                  </article>
+                </div>
+              </div>
+
+              <div data-admin-tab-panel hidden id="admin-tab-active-campaign">
+                <div class="grid gap-4 lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.05fr)]">
+                  <article class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                    <p class="admin-kicker text-sm font-bold uppercase text-primary">Configurar campaña activa</p>
+                    <form class="mt-4 space-y-3" id="active-campaign-form">
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Nombre</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-name" maxlength="120" type="text" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Semestre</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-semester" maxlength="80" type="text" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Meta (MXN)</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-goal" min="0" step="0.01" type="number" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Inicio</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-start" type="datetime-local" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">Cierre</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-end" type="datetime-local" />
+                      </label>
+                      <label class="block">
+                        <span class="mb-2 block text-sm font-bold text-on-surface">URL Teletón</span>
+                        <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="active-campaign-field-teleton-url" maxlength="500" type="url" />
+                      </label>
+                      <p class="min-h-6 text-sm font-medium" id="active-campaign-message"></p>
+                      <button class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white" id="active-campaign-submit" type="submit">
+                        Guardar campaña activa
+                      </button>
+                    </form>
+                  </article>
+
+                  <article class="space-y-4">
+                    <div class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                      <div class="mb-3 flex flex-wrap items-center justify-between gap-3">
+                        <p class="admin-kicker text-sm font-bold uppercase text-primary">Campañas disponibles</p>
+                        <span class="rounded-full bg-white px-4 py-2 text-sm font-bold text-on-surface-variant" id="admin-campaign-picker-count">0 registradas</span>
+                      </div>
+                      <div class="space-y-4" id="admin-campaign-picker"></div>
+                    </div>
+                    <div class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                      <p class="admin-kicker text-sm font-bold uppercase text-primary">Evidencias públicas</p>
+                      <form class="mt-4 grid gap-3 md:grid-cols-2" id="evidence-form">
+                        <label class="block">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Titulo</span>
+                          <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-title" maxlength="120" type="text" />
+                        </label>
+                        <label class="block">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Tipo</span>
+                          <select class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-kind">
+                            <option value="receipt">Recibo</option>
+                            <option value="report">Reporte</option>
+                            <option value="photo">Foto</option>
+                            <option value="news">Nota</option>
+                            <option value="other">Otro</option>
+                          </select>
+                        </label>
+                        <label class="block md:col-span-2">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Subir foto (opcional)</span>
+                          <input
+                            accept="image/*"
+                            class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3"
+                            id="evidence-file"
+                            type="file"
+                          />
+                        </label>
+                        <label class="block md:col-span-2">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">URL pública (opcional)</span>
+                          <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-url" maxlength="500" placeholder="https://..." type="url" />
+                        </label>
+                        <div class="md:col-span-2 rounded-[1.25rem] border border-outline-variant/40 bg-white px-4 py-3 text-sm text-on-surface-variant">
+                          Puedes subir una foto al sistema o pegar una URL pública existente. Para evidencias tipo foto, el sitio mostrará la imagen directamente.
+                        </div>
+                        <label class="block md:col-span-2">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Descripcion</span>
+                          <textarea class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-description" maxlength="240" rows="3"></textarea>
+                        </label>
+                        <label class="block">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Monto relacionado (opcional)</span>
+                          <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-amount" min="0" step="0.01" type="number" />
+                        </label>
+                        <label class="block">
+                          <span class="mb-2 block text-sm font-bold text-on-surface">Fecha del registro</span>
+                          <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="evidence-recorded-at" type="datetime-local" />
+                        </label>
+                        <div class="md:col-span-2">
+                          <p class="min-h-6 text-sm font-medium" id="evidence-message"></p>
+                          <button class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white" id="evidence-submit" type="submit">
+                            Guardar evidencia
+                          </button>
+                        </div>
+                      </form>
+                      <div class="mt-6 space-y-4" id="admin-evidence-list"></div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+
+              <div data-admin-tab-panel hidden id="admin-tab-close-campaign">
+                <div class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                  <p class="admin-kicker text-sm font-bold uppercase text-primary">Cerrar campaña activa</p>
+                  <p class="mt-2 text-sm leading-relaxed text-on-surface-variant" id="admin-close-copy">
+                    Cerrar una campaña congela su resumen en el historial y deja la plataforma sin campaña activa hasta activar una nueva.
+                  </p>
+                  <p class="mt-3 min-h-6 text-sm font-medium" id="admin-close-message"></p>
+                  <button
+                    class="mt-1 rounded-full bg-zinc-900 px-4 py-2.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+                    id="admin-close-button"
+                    type="button"
+                  >
+                    Cerrar campaña actual
+                  </button>
+                </div>
+              </div>
+
+              <div data-admin-tab-panel hidden id="admin-tab-new-campaign">
+                <div class="admin-card rounded-[1.5rem] bg-surface-container-low">
+                  <p class="admin-kicker text-sm font-bold uppercase text-primary">Crear nueva campaña</p>
+                  <form class="mt-4 grid gap-3 md:grid-cols-2" id="new-campaign-form">
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Nombre</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-name" maxlength="120" type="text" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Semestre</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-semester" maxlength="80" placeholder="2026 Semestre 2" type="text" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Meta (MXN)</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-goal" min="0.01" step="0.01" type="number" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">URL Teletón</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-teleton-url" maxlength="500" type="url" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Inicio</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-start" type="datetime-local" />
+                    </label>
+                    <label class="block">
+                      <span class="mb-2 block text-sm font-bold text-on-surface">Cierre</span>
+                      <input class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="new-campaign-end" type="datetime-local" />
+                    </label>
+                    <div class="lg:col-span-2">
+                      <p class="min-h-6 text-sm font-medium" id="new-campaign-message"></p>
+                      <button class="rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-white" id="new-campaign-submit" type="submit">
+                        Crear campaña en borrador
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
         </div>
       </div>
     </div>
