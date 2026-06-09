@@ -817,14 +817,15 @@ exports.syncTeletonCampaignAmountHttp = onRequest({ cors: true, region: REGION }
   }
 });
 
+// Intentionally inactive. The public site does not call this route in the current release.
 exports.createPayment = onRequest({ cors: true, region: REGION }, async (request, response) => {
   if (request.method === "OPTIONS") {
     response.status(204).send("");
     return;
   }
 
-  response.status(501).json({
-    error: "MercadoPago is not enabled in this release.",
-    nextStep: "Add MercadoPago credentials and replace this placeholder handler.",
+  response.status(404).json({
+    ok: false,
+    error: "This endpoint is inactive in the current release.",
   });
 });

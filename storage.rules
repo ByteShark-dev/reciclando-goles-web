@@ -2,6 +2,13 @@ rules_version = '2';
 
 service firebase.storage {
   match /b/{bucket}/o {
+    function hasAllowedEvidenceContentType() {
+      return request.resource != null && (
+        request.resource.contentType.matches('image/.*') ||
+        request.resource.contentType == 'application/pdf'
+      );
+    }
+
     function isSignedIn() {
       return request.auth != null;
     }
@@ -17,8 +24,8 @@ service firebase.storage {
       allow read: if true;
       allow create, update: if isAdmin() &&
         request.resource != null &&
-        request.resource.size < 8 * 1024 * 1024 &&
-        request.resource.contentType.matches('image/.*');
+        request.resource.size < 12 * 1024 * 1024 &&
+        hasAllowedEvidenceContentType();
       allow delete: if isAdmin();
     }
   }

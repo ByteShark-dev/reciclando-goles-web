@@ -11,6 +11,7 @@ Plataforma oficial de **Reciclando Goles**, preparada para manejar campañas sem
   Frontend publico y panel admin.
 - `functions/`
   Cloud Functions opcionales para agregados y automatizaciones si el proyecto migra a Blaze.
+  `createPayment` sigue en el repo solo como placeholder inactivo y el frontend no lo usa.
 - `scripts/`
   Scripts operativos para sync manual, migración al esquema multi-campaña y bootstrap de admin.
 - `firestore.rules`
@@ -160,6 +161,7 @@ El acceso por codigo de la version anterior queda solo como referencia de transi
 ### Cloud Functions opcionales
 
 Las Functions siguen en el repo como ruta futura para Blaze, pero no son necesarias para operar el panel actual en Spark.
+`createPayment` está desactivada en esta release y responde como endpoint inactivo; no existe integración pública de cobro activa desde el frontend.
 
 ## Reglas de Firestore
 
@@ -190,9 +192,9 @@ Colecciones legacy de campaña unica quedan bloqueadas en reglas:
 ## Reglas de Storage
 
 - lectura publica para `campaigns/{campaignId}/evidence/*`
-- subida y borrado solo para admins autenticados
-- solo imagenes
-- limite por archivo: `8 MB`
+- create, update y delete solo para admins autenticados
+- tipos permitidos: imagenes y PDF
+- limite por archivo: `12 MB`
 
 ## Desarrollo local
 

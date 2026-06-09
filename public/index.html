@@ -6,23 +6,26 @@
     <title>Reciclando Goles</title>
     <meta
       content="Plataforma oficial de Reciclando Goles para seguir campañas semestrales, transparencia pública, alcancías activas y apoyo a Teletón."
+      id="meta-description"
       name="description"
     />
     <meta content="index, follow" name="robots" />
     <meta content="#173d7a" name="theme-color" />
-    <link href="https://reciclando-goles.web.app/" rel="canonical" />
-    <meta content="Reciclando Goles" property="og:title" />
+    <link href="https://reciclando-goles.web.app/" id="canonical-link" rel="canonical" />
+    <meta content="Reciclando Goles" id="meta-og-title" property="og:title" />
     <meta
       content="Plataforma oficial del proyecto estudiantil Reciclando Goles con campañas activas, transparencia y acciones solidarias."
+      id="meta-og-description"
       property="og:description"
     />
-    <meta content="https://reciclando-goles.web.app/" property="og:url" />
+    <meta content="https://reciclando-goles.web.app/" id="meta-og-url" property="og:url" />
     <meta content="website" property="og:type" />
     <meta content="https://reciclando-goles.web.app/images/hero-equipo-reciclando-goles.jpg" property="og:image" />
     <meta content="summary_large_image" name="twitter:card" />
-    <meta content="Reciclando Goles" name="twitter:title" />
+    <meta content="Reciclando Goles" id="meta-twitter-title" name="twitter:title" />
     <meta
       content="Proyecto estudiantil de reciclaje y solidaridad con campañas públicas, metas y transparencia."
+      id="meta-twitter-description"
       name="twitter:description"
     />
     <meta content="https://reciclando-goles.web.app/images/hero-equipo-reciclando-goles.jpg" name="twitter:image" />
@@ -98,6 +101,10 @@
 
       .logo-glow {
         box-shadow: 0 24px 60px rgba(23, 61, 122, 0.18);
+      }
+
+      body.menu-open {
+        overflow: hidden;
       }
 
       #admin-modal {
@@ -388,7 +395,7 @@
   <body class="bg-surface font-body text-on-surface">
     <nav class="fixed top-0 z-50 h-20 w-full bg-surface/85 shadow-xl shadow-primary/10 backdrop-blur-md">
       <div class="mx-auto flex h-full max-w-7xl items-center justify-between px-6 lg:px-8">
-        <a class="flex items-center gap-3 font-headline text-2xl font-black tracking-tight text-primary" href="#home">
+        <a class="flex items-center gap-3 font-headline text-2xl font-black tracking-tight text-primary" data-route href="/">
           <img
             alt="Logo de Reciclando Goles"
             class="logo-glow h-12 w-12 rounded-full bg-white object-cover"
@@ -396,19 +403,63 @@
           />
           <span class="italic">Reciclando Goles</span>
         </a>
-        <div class="hidden items-center space-x-8 font-headline font-bold tracking-tight md:flex">
-          <a class="border-b-4 border-secondary-container pb-1 text-primary" href="#active-campaign">Campaña</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#impact">Contador</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#piggy-banks">Alcancías</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#ranking">Ranking</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#transparency">Transparencia</a>
-          <a class="text-on-surface-variant transition-colors duration-300 hover:text-primary" href="#history">Historial</a>
+        <div class="flex items-center gap-3 sm:gap-5">
+          <a
+            class="hidden border-b-4 border-secondary-container pb-1 font-headline font-bold tracking-tight text-primary transition-[color,border-color,opacity,transform] duration-300 md:inline-flex"
+            href="#active-campaign"
+            id="nav-current-link"
+          >
+            Campaña
+          </a>
+          <a
+            class="border-b-4 border-transparent pb-1 font-headline font-bold tracking-tight text-on-surface-variant transition-[color,border-color,opacity,transform] duration-300 hover:text-primary"
+            href="#contact"
+            id="nav-contact-link"
+          >
+            Contacto
+          </a>
+          <button
+            aria-controls="site-menu"
+            aria-expanded="false"
+            aria-label="Abrir menú"
+            class="flex h-11 w-11 items-center justify-center rounded-full bg-white text-primary shadow-sm transition-colors hover:bg-surface-container-low"
+            id="nav-menu-button"
+            type="button"
+          >
+            <span class="material-symbols-outlined">menu</span>
+          </button>
         </div>
       </div>
     </nav>
 
+    <div
+      aria-hidden="true"
+      class="pointer-events-none fixed inset-0 z-[58] opacity-0 transition-opacity duration-200"
+      hidden
+      id="site-menu"
+    >
+      <div class="absolute inset-0 bg-black/35" id="site-menu-backdrop"></div>
+      <div class="relative ml-auto flex h-full w-full max-w-sm flex-col overflow-hidden bg-white px-6 py-6 shadow-2xl">
+        <div class="flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Navegación</p>
+            <h2 class="mt-2 font-headline text-3xl font-black tracking-tight text-on-surface">Moverse por el sitio</h2>
+          </div>
+          <button
+            aria-label="Cerrar menú"
+            class="flex h-10 w-10 items-center justify-center rounded-full bg-surface-container-low text-on-surface-variant transition-colors hover:bg-surface-container-high"
+            id="site-menu-close"
+            type="button"
+          >
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <nav class="mt-8 flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto pb-6 pr-1" id="site-menu-links"></nav>
+      </div>
+    </div>
+
     <main id="home">
-      <header class="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,212,31,0.24),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(125,63,152,0.16),_transparent_28%)] pb-20 pt-32">
+      <header class="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,212,31,0.24),_transparent_38%),radial-gradient(circle_at_top_right,_rgba(125,63,152,0.16),_transparent_28%)] pb-20 pt-32" data-home-section>
         <div class="mx-auto grid max-w-7xl items-center gap-12 px-6 lg:grid-cols-2 lg:px-8">
           <div class="order-2 space-y-8 lg:order-1">
             <div
@@ -473,11 +524,11 @@
         </div>
       </header>
 
-      <section aria-live="polite" class="px-6 pb-8">
+      <section aria-live="polite" class="px-6 pb-8" data-home-section>
         <div id="app-status" class="mx-auto mb-8 hidden max-w-5xl rounded-2xl border px-4 py-3 text-sm font-medium"></div>
       </section>
 
-      <section class="bg-surface py-16" id="active-campaign">
+      <section class="bg-surface py-16" data-home-section id="active-campaign">
         <div class="mx-auto max-w-7xl px-6">
           <div class="grid gap-8 lg:grid-cols-[1.35fr_0.85fr]">
             <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10 md:p-10">
@@ -496,7 +547,7 @@
                   </p>
                 </div>
                 <div class="min-w-[180px] rounded-[1.5rem] bg-surface-container-low p-5 text-right">
-                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant">Meta activa</p>
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant" id="active-campaign-goal-label">Meta activa</p>
                   <p class="mt-2 text-3xl font-black text-primary" id="active-campaign-goal">$0 MXN</p>
                 </div>
               </div>
@@ -525,20 +576,20 @@
             </article>
 
             <article class="rounded-[2rem] bg-gradient-to-br from-primary to-primary-container p-8 text-white shadow-xl shadow-primary/20">
-              <p class="text-sm font-bold uppercase tracking-[0.25em] text-secondary-container">Estado del proyecto</p>
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-secondary-container" id="active-summary-kicker">Estado del proyecto</p>
               <p class="mt-4 font-headline text-3xl font-black tracking-tight" id="active-campaign-total">
                 $0 MXN
               </p>
-              <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/80">
+              <p class="mt-3 max-w-sm text-sm leading-relaxed text-white/80" id="active-summary-copy">
                 El tablero se reinicia por campaña, pero el historial queda visible para mantener continuidad y transparencia.
               </p>
               <div class="mt-8 grid gap-4 sm:grid-cols-2">
                 <div class="rounded-[1.5rem] bg-white/10 p-5">
-                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Campañas cerradas</p>
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60" id="active-history-label">Campañas cerradas</p>
                   <p class="mt-2 text-3xl font-black" id="history-count">0</p>
                 </div>
                 <div class="rounded-[1.5rem] bg-white/10 p-5">
-                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Transparencia pública</p>
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60" id="active-secondary-stat-label">Transparencia pública</p>
                   <p class="mt-2 text-lg font-black" id="active-campaign-transparency-count">0 evidencias</p>
                 </div>
               </div>
@@ -547,29 +598,30 @@
         </div>
       </section>
 
-      <section class="bg-surface-container-low py-20" id="impact">
+      <section class="bg-surface-container-low py-20" data-home-section id="impact">
         <div class="mx-auto max-w-7xl px-6">
           <div class="relative overflow-hidden rounded-[2rem] bg-white p-8 shadow-lg md:p-12">
             <div class="absolute right-0 top-0 -mt-32 h-64 w-64 rounded-full bg-secondary-container/10"></div>
             <div class="relative z-10 grid items-center gap-12 lg:grid-cols-3">
               <div class="space-y-5 lg:col-span-1">
-                <h2 class="font-headline text-4xl font-black tracking-tight">Contador de campaña</h2>
-                <p class="leading-relaxed text-on-surface-variant">
+                <p class="text-sm font-bold uppercase tracking-[0.25em] text-secondary" id="impact-kicker">Contador público</p>
+                <h2 class="font-headline text-4xl font-black tracking-tight" id="impact-title">Contador de campaña</h2>
+                <p class="leading-relaxed text-on-surface-variant" id="impact-description">
                   El avance se calcula por campaña y separa aportes físicos, digitales y equivalentes de reciclaje.
                 </p>
                 <p class="text-sm font-bold uppercase tracking-[0.2em] text-secondary" id="counter-stage-copy">
                   Modo institucional
                 </p>
                 <p class="text-sm text-on-surface-variant" id="counter-breakdown-copy">
-                  Fisico: $0 MXN · Digital: $0 MXN · Reciclaje: $0 MXN
+                  Físico: $0 MXN · Digital: $0 MXN · Reciclaje: $0 MXN
                 </p>
                 <div class="grid grid-cols-2 gap-4">
                   <div>
-                    <p class="text-sm font-bold uppercase text-on-surface-variant">Recaudado</p>
+                    <p class="text-sm font-bold uppercase text-on-surface-variant" id="counter-total-label">Recaudado</p>
                     <p class="text-3xl font-black text-primary" id="counter-total">$0 MXN</p>
                   </div>
                   <div>
-                    <p class="text-sm font-bold uppercase text-on-surface-variant">Meta</p>
+                    <p class="text-sm font-bold uppercase text-on-surface-variant" id="counter-goal-label">Meta</p>
                     <p class="text-3xl font-black text-on-surface" id="counter-goal">$0 MXN</p>
                   </div>
                 </div>
@@ -596,25 +648,25 @@
                 </div>
                 <div class="grid gap-4 md:grid-cols-3">
                   <article class="rounded-[1.5rem] bg-surface-container-low p-5">
-                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Fisico</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary" id="breakdown-physical-label">Físico</p>
                     <p class="mt-2 text-2xl font-black text-primary" id="breakdown-physical">$0 MXN</p>
-                    <p class="mt-1 text-sm text-on-surface-variant">Donativos presenciales registrados por admin.</p>
+                    <p class="mt-1 text-sm text-on-surface-variant" id="breakdown-physical-copy">Donativos presenciales registrados por admin.</p>
                   </article>
                   <article class="rounded-[1.5rem] bg-surface-container-low p-5">
-                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Digital</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary" id="breakdown-digital-label">Digital</p>
                     <p class="mt-2 text-2xl font-black text-primary" id="breakdown-digital">$0 MXN</p>
-                    <p class="mt-1 text-sm text-on-surface-variant">Suma de donativos digitales manuales y sincronizados.</p>
+                    <p class="mt-1 text-sm text-on-surface-variant" id="breakdown-digital-copy">Suma de donativos digitales manuales y sincronizados.</p>
                   </article>
                   <article class="rounded-[1.5rem] bg-surface-container-low p-5">
-                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Reciclaje</p>
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary" id="breakdown-recycling-label">Reciclaje</p>
                     <p class="mt-2 text-2xl font-black text-primary" id="breakdown-recycling">$0 MXN</p>
-                    <p class="mt-1 text-sm text-on-surface-variant">Equivalente monetario del reciclaje recibido.</p>
+                    <p class="mt-1 text-sm text-on-surface-variant" id="breakdown-recycling-copy">Equivalente monetario del reciclaje recibido.</p>
                   </article>
                 </div>
                 <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
                   <div class="rounded-2xl bg-surface p-4 text-center">
                     <p class="text-2xl font-black text-secondary" id="counter-donation-count">0</p>
-                    <p class="text-xs font-bold uppercase text-on-surface-variant">Donaciones</p>
+                    <p class="text-xs font-bold uppercase text-on-surface-variant" id="counter-donation-label">Donaciones</p>
                   </div>
                   <div class="rounded-2xl bg-surface p-4 text-center">
                     <p class="text-2xl font-black text-secondary" id="counter-countdown-value">Sin fecha</p>
@@ -624,7 +676,7 @@
                   </div>
                   <div class="rounded-2xl bg-surface p-4 text-center">
                     <p class="text-2xl font-black text-secondary" id="counter-sync-status">Pendiente</p>
-                    <p class="text-xs font-bold uppercase text-on-surface-variant">Teletón digital</p>
+                    <p class="text-xs font-bold uppercase text-on-surface-variant" id="counter-sync-label">Teletón digital</p>
                   </div>
                 </div>
               </div>
@@ -633,12 +685,12 @@
         </div>
       </section>
 
-      <section class="bg-surface py-24" id="piggy-banks">
+      <section class="bg-surface py-24" data-home-section id="piggy-banks">
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-12 max-w-3xl text-center">
-            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Alcancias activas</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Puntos listos para recibir apoyo</h2>
-            <p class="text-on-surface-variant">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary" id="piggy-banks-kicker">Alcancias activas</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight" id="piggy-banks-title">Puntos listos para recibir apoyo</h2>
+            <p class="text-on-surface-variant" id="piggy-banks-copy">
               Cada campaña puede abrir y cerrar alcancías sin perder el histórico del proyecto.
             </p>
           </div>
@@ -649,11 +701,11 @@
         </div>
       </section>
 
-      <section class="bg-surface-container-low py-24" id="ranking">
+      <section class="bg-surface-container-low py-24" data-home-section id="ranking">
         <div class="mx-auto max-w-5xl px-6">
           <div class="mb-12 text-center">
-            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Ranking publico</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Muro de Campeones</h2>
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary" id="ranking-kicker">Ranking público</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight" id="ranking-title">Muro de Campeones</h2>
             <p class="italic text-on-surface-variant" id="ranking-copy">
               Ranking acumulado por donador dentro de la campaña activa.
             </p>
@@ -666,35 +718,35 @@
         </div>
       </section>
 
-      <section class="bg-surface py-24" id="transparency">
+      <section class="bg-surface py-24" data-home-section id="transparency">
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-16 max-w-3xl text-center">
-            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Transparencia</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Seguimiento publico y evidencias</h2>
-            <p class="text-on-surface-variant">
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary" id="transparency-kicker">Transparencia</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight" id="transparency-title">Seguimiento público y evidencias</h2>
+            <p class="text-on-surface-variant" id="transparency-copy">
               La plataforma pública comparte el seguimiento, las evidencias por URL y el resumen de montos por campaña.
             </p>
           </div>
           <div class="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
             <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
-              <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Estado digital</p>
+              <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary" id="transparency-summary-kicker">Estado digital</p>
               <h3 class="mt-3 font-headline text-3xl font-black tracking-tight" id="transparency-sync-status">Modo institucional</h3>
               <p class="mt-3 text-sm leading-relaxed text-on-surface-variant" id="transparency-sync-copy">
                 Cuando inicie la siguiente campaña, aquí aparecerán el seguimiento digital y las evidencias públicas.
               </p>
               <div class="mt-8 rounded-[1.5rem] bg-surface-container-low p-5">
-                <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Resumen visible</p>
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary" id="transparency-summary-box-kicker">Resumen visible</p>
                 <div class="mt-4 space-y-3 text-sm text-on-surface-variant">
                   <div class="flex items-center justify-between gap-4">
-                    <span>Total de campaña</span>
+                    <span id="transparency-total-label">Total de campaña</span>
                     <strong class="text-on-surface" id="transparency-total-amount">$0 MXN</strong>
                   </div>
                   <div class="flex items-center justify-between gap-4">
-                    <span>Digital sincronizado</span>
+                    <span id="transparency-digital-label">Digital sincronizado</span>
                     <strong class="text-on-surface" id="transparency-digital-amount">$0 MXN</strong>
                   </div>
                   <div class="flex items-center justify-between gap-4">
-                    <span>Ultima actualizacion</span>
+                    <span id="transparency-last-sync-label">Ultima actualizacion</span>
                     <strong class="text-on-surface" id="transparency-last-sync">Sin datos</strong>
                   </div>
                 </div>
@@ -704,8 +756,8 @@
             <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
               <div class="mb-6 flex flex-wrap items-center justify-between gap-3">
                 <div>
-                  <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Evidencias públicas</p>
-                  <h3 class="mt-2 font-headline text-3xl font-black tracking-tight">Comprobantes y referencias</h3>
+                  <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary" id="transparency-list-kicker">Evidencias públicas</p>
+                  <h3 class="mt-2 font-headline text-3xl font-black tracking-tight" id="transparency-list-title">Comprobantes y referencias</h3>
                 </div>
                 <span class="rounded-full bg-surface-container-low px-4 py-2 text-sm font-bold text-on-surface-variant" id="transparency-evidence-count">
                   0 registros
@@ -720,55 +772,31 @@
         </div>
       </section>
 
-      <section class="bg-surface py-24" id="allies">
+      <section class="bg-surface py-24" data-home-section id="story-highlight">
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-16 max-w-3xl text-center">
-            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Aliados de la causa</p>
-            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight">Empresas y personas que sostienen el proyecto</h2>
-            <p class="text-on-surface-variant">
-              Este esfuerzo crece gracias a quienes abren espacios, difunden la campaña y reciben reciclables.
+            <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary" id="story-highlight-kicker">Historia del proyecto</p>
+            <h2 class="mb-4 font-headline text-4xl font-black tracking-tight" id="story-highlight-title">De una primera campaña escolar a una nueva etapa pública</h2>
+            <p class="text-on-surface-variant" id="story-highlight-copy">
+              Reciclando Goles nació como una iniciativa juvenil para unir deporte, comunidad y apoyo social con transparencia.
             </p>
           </div>
-          <div class="grid gap-8 lg:grid-cols-2">
-            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
-              <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Aliados institucionales</p>
-              <div class="space-y-4">
-                <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Estadio Miguel Aleman Valdes</h3>
-                  <p class="mt-2 text-on-surface-variant">Espacio clave para impulsar la presencia pública del proyecto.</p>
-                </div>
-                <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Reyka</h3>
-                  <p class="mt-2 text-on-surface-variant">Aliado que fortalece la red de apoyo alrededor de la causa.</p>
-                </div>
-              </div>
-            </article>
-            <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
-              <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-primary">Difusion en medios</p>
-              <div class="space-y-4">
-                <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Stereo Cristal 96.7 FM</h3>
-                  <p class="mt-2 text-on-surface-variant">Nos ayudaron a anunciar la iniciativa para llegar a más personas.</p>
-                  <audio class="mt-4 w-full" controls preload="none">
-                    <source src="./audio/Radio_spots/Cristal.mp3" type="audio/mpeg" />
-                    Tu navegador no soporta reproducción de audio.
-                  </audio>
-                </div>
-                <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">El y Ella 103.7 FM</h3>
-                  <p class="mt-2 text-on-surface-variant">Se sumaron a la difusión pública del proyecto.</p>
-                  <audio class="mt-4 w-full" controls preload="none">
-                    <source src="./audio/Radio_spots/ElyElla.mp3" type="audio/mpeg" />
-                    Tu navegador no soporta reproducción de audio.
-                  </audio>
-                </div>
-              </div>
-            </article>
+          <div class="grid gap-6 lg:grid-cols-3" id="story-highlight-grid"></div>
+          <div class="mt-10 flex justify-center">
+            <a
+              class="inline-flex items-center gap-3 rounded-full bg-primary px-8 py-4 font-black text-white shadow-xl shadow-primary/20 transition-transform hover:-translate-y-0.5"
+              data-route
+              href="/historia"
+              id="story-highlight-link"
+            >
+              Leer historia completa
+              <span class="material-symbols-outlined text-base">arrow_forward</span>
+            </a>
           </div>
         </div>
       </section>
 
-      <section class="bg-surface-container-low py-24" id="history">
+      <section class="bg-surface-container-low py-24" data-home-section id="history">
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-16 max-w-3xl text-center">
             <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Historial de campañas</p>
@@ -784,7 +812,11 @@
         </div>
       </section>
 
-      <section class="bg-surface py-24" id="contact">
+      <section class="bg-surface pb-24 pt-32" hidden id="history-page-view"></section>
+
+      <section class="bg-surface pb-24 pt-32" hidden id="campaign-detail-view"></section>
+
+      <section class="bg-surface py-24" data-shared-section id="contact">
         <div class="mx-auto max-w-7xl px-6">
           <div class="mx-auto mb-14 max-w-3xl text-center">
             <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Contacto directo</p>
@@ -808,7 +840,7 @@
                   </a>
                 </div>
                 <div class="rounded-2xl bg-surface-container-low p-5">
-                  <h3 class="text-xl font-black text-on-surface">Angel Arenas Patino</h3>
+                  <h3 class="text-xl font-black text-on-surface">Angel Arenas Patiño</h3>
                   <a
                     class="mt-2 inline-flex items-center gap-2 text-sm font-bold text-primary hover:underline"
                     href="mailto:arenas.angel@prepaoak.edu.mx"
@@ -863,11 +895,10 @@
       <div class="flex flex-col items-center space-y-8 px-6 py-16 text-center">
         <div class="font-headline text-xl font-black uppercase tracking-tight">Reciclando Goles</div>
         <div class="flex flex-wrap justify-center gap-8 text-sm">
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#home">Inicio</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#active-campaign">Campaña</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#impact">Contador</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#transparency">Transparencia</a>
-          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#history">Historial</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" data-route href="/">Inicio</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" data-route href="/campanas/mundialhito-2026">Campaña activa</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" data-route href="/historia">Historia</a>
+          <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="/#history">Historial</a>
           <a class="text-on-surface-variant transition-colors hover:text-primary hover:underline" href="#contact">Contacto</a>
         </div>
         <div class="flex flex-col items-center gap-4">
@@ -895,7 +926,7 @@
       </div>
     </footer>
 
-    <div class="fixed bottom-6 left-6 right-6 z-50 md:hidden">
+    <div class="hidden fixed bottom-6 left-6 right-6 z-50 md:hidden">
       <nav class="flex items-center justify-between rounded-full bg-primary px-6 py-4 text-white shadow-2xl shadow-primary/25">
         <a class="flex flex-col items-center gap-1 text-secondary-container" href="#home">
           <span class="material-symbols-outlined" style='font-variation-settings: "FILL" 1'>home</span>
@@ -903,7 +934,7 @@
         </a>
         <a class="flex flex-col items-center gap-1 text-zinc-400" href="#impact">
           <span class="material-symbols-outlined">monitoring</span>
-          <span class="text-[10px] font-bold">Contador</span>
+          <span class="text-[10px] font-bold">Datos</span>
         </a>
         <button class="flex flex-col items-center gap-1 text-zinc-400" data-open-admin-modal type="button">
           <span class="material-symbols-outlined">lock</span>
@@ -1104,7 +1135,7 @@
                     <p class="admin-kicker text-sm font-bold uppercase text-primary">Resumen visible</p>
                     <div class="mt-3 space-y-2 text-sm text-on-surface-variant" id="admin-summary-totals">
                       <p>Total: $0 MXN</p>
-                      <p>Fisico: $0 MXN</p>
+                      <p>Físico: $0 MXN</p>
                       <p>Digital: $0 MXN</p>
                       <p>Reciclaje: $0 MXN</p>
                     </div>
@@ -1144,7 +1175,7 @@
                     <label class="block">
                       <span class="mb-2 block text-sm font-bold text-on-surface">Fuente</span>
                       <select class="w-full rounded-2xl border border-outline-variant bg-white px-4 py-3" id="admin-donation-source-type">
-                        <option value="physical">Fisico</option>
+                        <option value="physical">Físico</option>
                         <option value="digital">Digital</option>
                         <option value="recycling">Reciclaje</option>
                       </select>

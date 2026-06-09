@@ -51,7 +51,72 @@ const EMPTY_TOTALS = {
   lastSuccessfulSyncAt: null,
 };
 
+const HISTORY_CONTENT = {
+  summary:
+    "Reciclando Goles nació como una iniciativa juvenil para unir deporte, comunidad y apoyo social con una lógica pública de seguimiento, transparencia e historial.",
+  homeHighlights: [
+    {
+      title: "Cómo empezó",
+      copy: "El proyecto comenzó como una campaña escolar solidaria impulsada por estudiantes para convertir participación deportiva y cooperación en apoyo real.",
+    },
+    {
+      title: "Primera etapa",
+      copy: "La primera campaña formal permitió probar contador, alcancías, registro de aportaciones, transparencia y cierre público sin borrar el trabajo anterior.",
+    },
+    {
+      title: "Nueva etapa",
+      copy: "Tras cerrar la primera campaña, Reciclando Goles continúa fuera de la escuela con MundialHITO 2026 y una visión más abierta hacia empresas e instituciones.",
+    },
+  ],
+  pageIntro:
+    "Reciclando Goles nació como una iniciativa juvenil para transformar el deporte y la participación comunitaria en apoyo real para causas sociales. Su historia conecta una primera campaña escolar con una nueva etapa pública y empresarial.",
+  origin:
+    "Reciclando Goles inició como un proyecto escolar solidario impulsado por estudiantes, con la idea de unir deporte, participación comunitaria y recaudación con causa. La meta no era solo reunir dinero, sino crear una dinámica visible, ordenada y transparente, donde cada avance pudiera registrarse y compartirse públicamente.",
+  originFollowup:
+    "Desde el inicio, el proyecto buscó que las personas pudieran ver el progreso de la campaña, conocer la meta, identificar las formas de aportación y revisar el cierre final sin borrar el trabajo anterior. Esa visión dio origen a una plataforma con contador, campañas, alcancías, historial y transparencia.",
+  firstStage:
+    "La primera campaña formal registrada fue Reciclando Goles x Teletón 2026 Semestre 1. Aunque no alcanzó la meta completa, sí dejó una base real para continuar, evidencia del proceso y una estructura capaz de crecer más allá del entorno escolar.",
+  outcomes: [
+    "Una campaña cerrada con total final, meta y desglose de aportaciones.",
+    "Una página pública capaz de conservar historial y transparencia.",
+    "Un modelo de seguimiento para alcancías, contador y evidencias.",
+    "Una identidad de proyecto reconocible bajo el nombre Reciclando Goles.",
+    "La posibilidad de abrir nuevas campañas sin borrar el trabajo anterior.",
+  ],
+  newStage:
+    "Después del cierre de la primera campaña, Reciclando Goles inicia una nueva etapa fuera de la escuela. La segunda campaña toma el nombre de MundialHITO 2026 y busca ser una propuesta más memorable, deportiva y fácil de comunicar, sin perder el enfoque formal de la causa.",
+  longText:
+    "MundialHITO 2026 será un torneo empresarial de fútbol 7 en beneficio del Hospital Infantil Teletón de Oncología. Esta nueva etapa busca reunir a empresas locales y regionales en una jornada deportiva con causa, promoviendo actividad física, convivencia laboral y responsabilidad social empresarial.",
+  principles: [
+    "Transparencia: mostrar metas, avances, gastos y cierre final.",
+    "Continuidad: conservar campañas anteriores como parte del historial.",
+    "Impacto social: vincular deporte y participación con una causa concreta.",
+    "Colaboración: unir estudiantes, empresas, familias e instituciones.",
+    "Responsabilidad: separar donativos de gastos operativos como arbitraje.",
+  ],
+};
+
+function getHomeSectionDefinitions() {
+  return [
+    { id: "active-campaign", label: "Campaña" },
+    { id: "impact", label: "Datos rápidos" },
+    {
+      id: "piggy-banks",
+      label: isTournamentCampaign(state.activeCampaign) ? "Empresas" : "Alcancías",
+    },
+    { id: "ranking", label: "Ranking" },
+    { id: "transparency", label: "Transparencia" },
+    { id: "story-highlight", label: "Historia" },
+    { id: "history", label: "Historial" },
+    { id: "contact", label: "Contacto" },
+  ];
+}
+
 const state = {
+  route: {
+    kind: "home",
+    campaignId: "",
+  },
   activeCampaignId: "",
   activeCampaign: null,
   activeTotals: { ...EMPTY_TOTALS },
@@ -66,58 +131,116 @@ const state = {
   user: null,
   userRole: null,
   adminTab: "summary",
+  activeSectionId: "active-campaign",
+  sectionObserver: null,
   baseUnsubscribers: [],
   activeCampaignUnsubscribers: [],
   userRoleUnsubscribe: null,
 };
 
 const elements = {
+  body: document.body,
+  metaDescription: document.getElementById("meta-description"),
+  canonicalLink: document.getElementById("canonical-link"),
+  metaOgTitle: document.getElementById("meta-og-title"),
+  metaOgDescription: document.getElementById("meta-og-description"),
+  metaOgUrl: document.getElementById("meta-og-url"),
+  metaTwitterTitle: document.getElementById("meta-twitter-title"),
+  metaTwitterDescription: document.getElementById("meta-twitter-description"),
+  navCurrentLink: document.getElementById("nav-current-link"),
+  navContactLink: document.getElementById("nav-contact-link"),
+  navMenuButton: document.getElementById("nav-menu-button"),
+  siteMenu: document.getElementById("site-menu"),
+  siteMenuBackdrop: document.getElementById("site-menu-backdrop"),
+  siteMenuCloseButton: document.getElementById("site-menu-close"),
+  siteMenuLinks: document.getElementById("site-menu-links"),
   appStatus: document.getElementById("app-status"),
   heroCampaignState: document.getElementById("hero-campaign-state"),
   heroCampaignCopy: document.getElementById("hero-campaign-copy"),
   heroCampaignName: document.getElementById("hero-campaign-name"),
   heroCampaignMeta: document.getElementById("hero-campaign-meta"),
   heroPrimaryButton: document.getElementById("hero-primary-button"),
+  heroSecondaryButton: document.getElementById("hero-secondary-button"),
   activeCampaignName: document.getElementById("active-campaign-name"),
   activeCampaignStatus: document.getElementById("active-campaign-status"),
   activeCampaignSemester: document.getElementById("active-campaign-semester"),
   activeCampaignDates: document.getElementById("active-campaign-dates"),
+  activeCampaignGoalLabel: document.getElementById("active-campaign-goal-label"),
   activeCampaignGoal: document.getElementById("active-campaign-goal"),
   activeCampaignCopy: document.getElementById("active-campaign-copy"),
+  activeSummaryKicker: document.getElementById("active-summary-kicker"),
+  activeSummaryCopy: document.getElementById("active-summary-copy"),
   activeCampaignTotal: document.getElementById("active-campaign-total"),
   activeCampaignTeletonLink: document.getElementById("active-campaign-teleton-link"),
   activeCampaignSupportButton: document.getElementById("active-campaign-support-button"),
+  activeHistoryLabel: document.getElementById("active-history-label"),
+  activeSecondaryStatLabel: document.getElementById("active-secondary-stat-label"),
   activeCampaignTransparencyCount: document.getElementById("active-campaign-transparency-count"),
   historyCount: document.getElementById("history-count"),
+  impactKicker: document.getElementById("impact-kicker"),
+  impactTitle: document.getElementById("impact-title"),
+  impactDescription: document.getElementById("impact-description"),
   counterStageCopy: document.getElementById("counter-stage-copy"),
   counterBreakdownCopy: document.getElementById("counter-breakdown-copy"),
+  counterTotalLabel: document.getElementById("counter-total-label"),
   counterTotal: document.getElementById("counter-total"),
+  counterGoalLabel: document.getElementById("counter-goal-label"),
   counterGoal: document.getElementById("counter-goal"),
   counterPercent: document.getElementById("counter-percent"),
   counterRemaining: document.getElementById("counter-remaining"),
   counterFill: document.getElementById("counter-fill"),
+  breakdownPhysicalLabel: document.getElementById("breakdown-physical-label"),
   breakdownPhysical: document.getElementById("breakdown-physical"),
+  breakdownPhysicalCopy: document.getElementById("breakdown-physical-copy"),
+  breakdownDigitalLabel: document.getElementById("breakdown-digital-label"),
   breakdownDigital: document.getElementById("breakdown-digital"),
+  breakdownDigitalCopy: document.getElementById("breakdown-digital-copy"),
+  breakdownRecyclingLabel: document.getElementById("breakdown-recycling-label"),
   breakdownRecycling: document.getElementById("breakdown-recycling"),
+  breakdownRecyclingCopy: document.getElementById("breakdown-recycling-copy"),
   counterDonationCount: document.getElementById("counter-donation-count"),
+  counterDonationLabel: document.getElementById("counter-donation-label"),
   counterCountdownValue: document.getElementById("counter-countdown-value"),
   counterCountdownLabel: document.getElementById("counter-countdown-label"),
   counterSyncStatus: document.getElementById("counter-sync-status"),
+  counterSyncLabel: document.getElementById("counter-sync-label"),
+  piggyBanksKicker: document.getElementById("piggy-banks-kicker"),
+  piggyBanksTitle: document.getElementById("piggy-banks-title"),
+  piggyBanksCopy: document.getElementById("piggy-banks-copy"),
   piggyBanksList: document.getElementById("piggy-banks-list"),
   piggyBanksEmpty: document.getElementById("piggy-banks-empty"),
+  rankingKicker: document.getElementById("ranking-kicker"),
+  rankingTitle: document.getElementById("ranking-title"),
+  rankingCopy: document.getElementById("ranking-copy"),
   generalDonationsCard: document.getElementById("general-donations-card"),
   leaderboardList: document.getElementById("leaderboard-list"),
   leaderboardEmpty: document.getElementById("leaderboard-empty"),
+  transparencyKicker: document.getElementById("transparency-kicker"),
+  transparencyTitle: document.getElementById("transparency-title"),
+  transparencyCopy: document.getElementById("transparency-copy"),
+  transparencySummaryKicker: document.getElementById("transparency-summary-kicker"),
   transparencySyncStatus: document.getElementById("transparency-sync-status"),
   transparencySyncCopy: document.getElementById("transparency-sync-copy"),
+  transparencySummaryBoxKicker: document.getElementById("transparency-summary-box-kicker"),
+  transparencyTotalLabel: document.getElementById("transparency-total-label"),
   transparencyTotalAmount: document.getElementById("transparency-total-amount"),
+  transparencyDigitalLabel: document.getElementById("transparency-digital-label"),
   transparencyDigitalAmount: document.getElementById("transparency-digital-amount"),
+  transparencyLastSyncLabel: document.getElementById("transparency-last-sync-label"),
   transparencyLastSync: document.getElementById("transparency-last-sync"),
+  transparencyListKicker: document.getElementById("transparency-list-kicker"),
+  transparencyListTitle: document.getElementById("transparency-list-title"),
   transparencyEvidenceCount: document.getElementById("transparency-evidence-count"),
   transparencyEvidenceList: document.getElementById("transparency-evidence-list"),
   transparencyEvidenceEmpty: document.getElementById("transparency-evidence-empty"),
+  storyHighlightKicker: document.getElementById("story-highlight-kicker"),
+  storyHighlightTitle: document.getElementById("story-highlight-title"),
+  storyHighlightCopy: document.getElementById("story-highlight-copy"),
+  storyHighlightGrid: document.getElementById("story-highlight-grid"),
   historyCampaignsList: document.getElementById("history-campaigns-list"),
   historyEmpty: document.getElementById("history-empty"),
+  historyPageView: document.getElementById("history-page-view"),
+  campaignDetailView: document.getElementById("campaign-detail-view"),
   donationNoticeModal: document.getElementById("donation-notice-modal"),
   donationNoticeBackdrop: document.getElementById("donation-notice-backdrop"),
   donationNoticePanel: document.getElementById("donation-notice-panel"),
@@ -208,19 +331,780 @@ const elements = {
   newCampaignEnd: document.getElementById("new-campaign-end"),
   newCampaignMessage: document.getElementById("new-campaign-message"),
   newCampaignSubmit: document.getElementById("new-campaign-submit"),
+  homeSections: Array.from(document.querySelectorAll("[data-home-section]")),
+  sharedSections: Array.from(document.querySelectorAll("[data-shared-section]")),
 };
 
 function formatCurrency(value) {
   return MXN_FORMATTER.format(Number(value) || 0);
 }
 
+const DISPLAY_TEXT_REPAIRS = [
+  ["Su Saz?n", "Su Sazón"],
+  ["Pati?o", "Patiño"],
+  ["campa?a", "campaña"],
+  ["Campa?a", "Campaña"],
+  ["Telet?n", "Teletón"],
+  ["Oncolog?a", "Oncología"],
+  ["f?tbol", "fútbol"],
+  ["invitaci?n", "invitación"],
+  ["participaci?n", "participación"],
+  ["planeaci?n", "planeación"],
+  ["organizaci?n", "organización"],
+  ["operaci?n", "operación"],
+  ["informaci?n", "información"],
+  ["edici?n", "edición"],
+  ["Categor?a", "Categoría"],
+  ["Duraci?n", "Duración"],
+];
+
+function repairVisibleText(value) {
+  let text = String(value ?? "");
+  for (const [broken, fixed] of DISPLAY_TEXT_REPAIRS) {
+    text = text.split(broken).join(fixed);
+  }
+
+  return text;
+}
+
 function escapeHtml(value) {
-  return String(value || "")
+  return repairVisibleText(value)
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;")
     .replace(/'/g, "&#39;");
+}
+
+function normalizePathname(pathname) {
+  const trimmed = String(pathname || "/").trim();
+  if (!trimmed || trimmed === "/") {
+    return "/";
+  }
+
+  return trimmed.replace(/\/+$/, "") || "/";
+}
+
+function getRouteFromLocation() {
+  const pathname = normalizePathname(globalThis.location?.pathname || "/");
+  if (pathname === "/historia") {
+    return {
+      kind: "history",
+      campaignId: "",
+    };
+  }
+
+  if (pathname.startsWith("/campanas/")) {
+    return {
+      kind: "campaign-detail",
+      campaignId: decodeURIComponent(pathname.slice("/campanas/".length)),
+    };
+  }
+
+  return {
+    kind: "home",
+    campaignId: "",
+  };
+}
+
+function getBasePathForRoute(route = state.route) {
+  if (route.kind === "history") {
+    return "/historia";
+  }
+
+  if (route.kind === "campaign-detail") {
+    return `/campanas/${encodeURIComponent(route.campaignId)}`;
+  }
+
+  return "/";
+}
+
+function getAbsoluteUrl(pathname) {
+  const normalizedPath = normalizePathname(pathname);
+  return new URL(normalizedPath, globalThis.location.origin).toString();
+}
+
+function buildRouteHref(pathname, hash = "") {
+  return `${normalizePathname(pathname)}${hash ? `#${hash}` : ""}`;
+}
+
+function updateSeoForRoute() {
+  const defaultTitle = "Reciclando Goles";
+  const defaultDescription =
+    "Plataforma oficial de Reciclando Goles para seguir campañas semestrales, transparencia pública, alcancías activas y apoyo solidario.";
+  let title = defaultTitle;
+  let description = defaultDescription;
+  let pathname = "/";
+
+  if (state.route.kind === "history") {
+    title = "Historia | Reciclando Goles";
+    description =
+      "Conoce la historia de Reciclando Goles: su origen escolar, la primera campaña cerrada y la transición hacia MundialHITO 2026.";
+    pathname = "/historia";
+  } else if (state.route.kind === "campaign-detail") {
+    const campaign = getRouteCampaign();
+    title = campaign ? `${campaign.name} | Reciclando Goles` : "Campaña | Reciclando Goles";
+    description = campaign
+      ? `${campaign.name}: detalle público de campaña con datos rápidos, costo por equipo, empresas invitadas, transparencia y reglamento.`
+      : "Detalle público de campaña de Reciclando Goles.";
+    pathname = getBasePathForRoute(state.route);
+  }
+
+  const absoluteUrl = getAbsoluteUrl(pathname);
+  document.title = title;
+  if (elements.metaDescription) {
+    elements.metaDescription.content = description;
+  }
+  if (elements.canonicalLink) {
+    elements.canonicalLink.href = absoluteUrl;
+  }
+  if (elements.metaOgTitle) {
+    elements.metaOgTitle.content = title;
+  }
+  if (elements.metaOgDescription) {
+    elements.metaOgDescription.content = description;
+  }
+  if (elements.metaOgUrl) {
+    elements.metaOgUrl.content = absoluteUrl;
+  }
+  if (elements.metaTwitterTitle) {
+    elements.metaTwitterTitle.content = title;
+  }
+  if (elements.metaTwitterDescription) {
+    elements.metaTwitterDescription.content = description;
+  }
+}
+
+function navigateTo(pathname, hash = "", replace = false) {
+  const href = buildRouteHref(pathname, hash);
+  const currentHref = `${normalizePathname(globalThis.location.pathname)}${globalThis.location.hash || ""}`;
+  if (href !== currentHref) {
+    const method = replace ? "replaceState" : "pushState";
+    globalThis.history[method]({}, "", href);
+  }
+
+  state.route = getRouteFromLocation();
+  renderAll();
+  if (hash) {
+    requestAnimationFrame(() => scrollToHash(hash, false));
+  } else {
+    requestAnimationFrame(() => globalThis.scrollTo({ top: 0, behavior: "auto" }));
+  }
+}
+
+function scrollToHash(hash, smooth = true) {
+  const target = document.getElementById(String(hash || "").replace(/^#/, ""));
+  if (!target) {
+    return;
+  }
+
+  target.scrollIntoView({
+    behavior: smooth ? "smooth" : "auto",
+    block: "start",
+  });
+}
+
+function getLegacyCampaign() {
+  return (
+    state.allCampaigns.find((campaign) => campaign.id === "legacy-2026-sem1") ||
+    sortCampaigns(state.allCampaigns.filter((campaign) => campaign.status === "closed"))[0] ||
+    null
+  );
+}
+
+function getRouteCampaign() {
+  if (state.route.kind !== "campaign-detail") {
+    return null;
+  }
+
+  return (
+    state.allCampaigns.find((campaign) => campaign.id === state.route.campaignId) ||
+    (state.activeCampaign && state.activeCampaign.id === state.route.campaignId ? state.activeCampaign : null)
+  );
+}
+
+function getCampaignEvidenceForRoute() {
+  return state.route.kind === "campaign-detail" && state.route.campaignId === state.activeCampaignId
+    ? [...state.activeEvidence]
+    : [];
+}
+
+function getCurrentSectionDefinitions() {
+  if (state.route.kind === "history") {
+    return [
+      { id: "history-hero", label: "Historia" },
+      { id: "history-origin", label: "Origen" },
+      { id: "history-first-campaign", label: "Primera etapa" },
+      { id: "history-legacy", label: "Lo que dejó" },
+      { id: "history-new-stage", label: "Nueva etapa" },
+      { id: "history-principles", label: "Principios" },
+      { id: "contact", label: "Contacto" },
+    ];
+  }
+
+  if (state.route.kind === "campaign-detail") {
+    return [
+      { id: "campaign-detail-hero", label: "Campaña" },
+      { id: "campaign-detail-facts", label: "Datos rápidos" },
+      { id: "campaign-detail-cost", label: "Costo" },
+      { id: "campaign-detail-companies", label: "Empresas" },
+      { id: "campaign-detail-transparency", label: "Transparencia" },
+      { id: "campaign-detail-rules", label: "Reglamento" },
+      { id: "contact", label: "Contacto" },
+    ];
+  }
+
+  return getHomeSectionDefinitions();
+}
+
+function updateCurrentSectionLink() {
+  const definitions = getCurrentSectionDefinitions();
+  const sectionLinks = definitions.filter((item) => item.id !== "contact");
+  const fallback = sectionLinks[0] || { id: "contact", label: "Inicio" };
+  const isContactActive = state.activeSectionId === "contact";
+  const current =
+    (isContactActive
+      ? fallback
+      : sectionLinks.find((item) => item.id === state.activeSectionId)) || fallback;
+  const href = buildRouteHref(getBasePathForRoute(), current.id);
+  const previousLabel = elements.navCurrentLink.textContent;
+  elements.navCurrentLink.textContent = current.label;
+  elements.navCurrentLink.href = href;
+  elements.navCurrentLink.setAttribute("data-route", "");
+  elements.navContactLink.href = buildRouteHref(getBasePathForRoute(), "contact");
+  elements.navContactLink.setAttribute("data-route", "");
+  elements.navCurrentLink.classList.toggle("border-secondary-container", !isContactActive);
+  elements.navCurrentLink.classList.toggle("border-transparent", isContactActive);
+  elements.navCurrentLink.classList.toggle("text-primary", !isContactActive);
+  elements.navCurrentLink.classList.toggle("text-on-surface-variant", isContactActive);
+  elements.navCurrentLink.classList.toggle("opacity-100", !isContactActive);
+  elements.navCurrentLink.classList.toggle("opacity-70", isContactActive);
+  elements.navCurrentLink.classList.toggle("-translate-y-0.5", !isContactActive);
+  elements.navCurrentLink.classList.toggle("translate-y-0", isContactActive);
+  elements.navContactLink.classList.toggle("border-secondary-container", isContactActive);
+  elements.navContactLink.classList.toggle("border-transparent", !isContactActive);
+  elements.navContactLink.classList.toggle("text-primary", isContactActive);
+  elements.navContactLink.classList.toggle("text-on-surface-variant", !isContactActive);
+  elements.navContactLink.classList.toggle("opacity-100", isContactActive);
+  elements.navContactLink.classList.toggle("opacity-80", !isContactActive);
+  elements.navContactLink.classList.toggle("-translate-y-0.5", isContactActive);
+  elements.navContactLink.classList.toggle("translate-y-0", !isContactActive);
+  if (previousLabel !== current.label && typeof elements.navCurrentLink.animate === "function") {
+    elements.navCurrentLink.animate(
+      [
+        { opacity: 0.4, transform: "translateY(4px)" },
+        { opacity: 1, transform: "translateY(0)" },
+      ],
+      { duration: 220, easing: "ease-out" }
+    );
+  }
+}
+
+function closeSiteMenu() {
+  elements.siteMenu.classList.add("pointer-events-none", "opacity-0");
+  elements.siteMenu.hidden = true;
+  elements.siteMenu.setAttribute("aria-hidden", "true");
+  elements.navMenuButton.setAttribute("aria-expanded", "false");
+  elements.body.classList.remove("menu-open");
+}
+
+function openSiteMenu() {
+  renderSiteMenu();
+  elements.siteMenu.hidden = false;
+  elements.siteMenu.classList.remove("pointer-events-none", "opacity-0");
+  elements.siteMenu.setAttribute("aria-hidden", "false");
+  elements.navMenuButton.setAttribute("aria-expanded", "true");
+  elements.body.classList.add("menu-open");
+  elements.siteMenuCloseButton.focus();
+}
+
+function renderSiteMenu() {
+  const definitions = getCurrentSectionDefinitions();
+  const links = definitions
+    .map((item) => {
+      const isActive = item.id === state.activeSectionId;
+      const href = buildRouteHref(getBasePathForRoute(), item.id);
+      return `
+        <a
+          class="${isActive ? "bg-primary text-white" : "bg-surface-container-low text-on-surface"} rounded-[1.35rem] px-5 py-4 text-base font-bold transition-colors hover:bg-surface-container-high hover:text-primary"
+          data-route
+          data-menu-link
+          href="${escapeHtml(href)}"
+        >
+          ${escapeHtml(item.label)}
+        </a>
+      `;
+    })
+    .join("");
+
+  const auxiliaryLinks =
+    state.route.kind === "home"
+      ? `
+        <a class="rounded-[1.35rem] bg-white px-5 py-4 text-base font-bold text-on-surface transition-colors hover:bg-surface-container-low hover:text-primary" data-menu-link data-route href="/historia">
+          Historia completa
+        </a>
+      `
+      : `
+        <a class="rounded-[1.35rem] bg-white px-5 py-4 text-base font-bold text-on-surface transition-colors hover:bg-surface-container-low hover:text-primary" data-menu-link data-route href="/">
+          Volver al inicio
+        </a>
+      `;
+
+  elements.siteMenuLinks.innerHTML = `${links}${auxiliaryLinks}`;
+}
+
+function setSectionVisibility() {
+  const isHome = state.route.kind === "home";
+  elements.homeSections.forEach((section) => {
+    section.hidden = !isHome;
+    section.classList.toggle("hidden", !isHome);
+  });
+
+  elements.historyPageView.hidden = state.route.kind !== "history";
+  elements.historyPageView.classList.toggle("hidden", state.route.kind !== "history");
+  elements.campaignDetailView.hidden = state.route.kind !== "campaign-detail";
+  elements.campaignDetailView.classList.toggle("hidden", state.route.kind !== "campaign-detail");
+}
+
+function disconnectSectionObserver() {
+  if (state.sectionObserver) {
+    state.sectionObserver.disconnect();
+    state.sectionObserver = null;
+  }
+}
+
+function observeCurrentSections() {
+  disconnectSectionObserver();
+  const definitions = getCurrentSectionDefinitions();
+  const targets = definitions
+    .map((item) => ({
+      ...item,
+      element: document.getElementById(item.id),
+    }))
+    .filter((item) => item.element && !item.element.hidden);
+
+  if (targets.length === 0) {
+    state.activeSectionId = "contact";
+    updateCurrentSectionLink();
+    return;
+  }
+
+  state.activeSectionId = targets[0].id;
+  updateCurrentSectionLink();
+
+  state.sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((left, right) => right.intersectionRatio - left.intersectionRatio);
+
+      if (visibleEntries.length === 0) {
+        return;
+      }
+
+      const nextId = visibleEntries[0].target.id;
+      if (nextId !== state.activeSectionId) {
+        state.activeSectionId = nextId;
+        updateCurrentSectionLink();
+        renderSiteMenu();
+      }
+    },
+    {
+      rootMargin: "-18% 0px -48% 0px",
+      threshold: [0.15, 0.4, 0.65],
+    }
+  );
+
+  targets.forEach((item) => state.sectionObserver.observe(item.element));
+}
+
+function renderStoryHighlight() {
+  elements.storyHighlightKicker.textContent = "Historia del proyecto";
+  elements.storyHighlightTitle.textContent =
+    "De una primera campaña escolar a una nueva etapa pública";
+  elements.storyHighlightCopy.textContent = HISTORY_CONTENT.summary;
+  elements.storyHighlightGrid.innerHTML = HISTORY_CONTENT.homeHighlights
+    .map(
+      (item) => `
+        <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">${escapeHtml(
+            item.title
+          )}</p>
+          <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(item.copy)}</p>
+        </article>
+      `
+    )
+    .join("");
+}
+
+function renderHistoryPageView() {
+  if (state.route.kind !== "history") {
+    elements.historyPageView.innerHTML = "";
+    return;
+  }
+
+  const legacyCampaign = getLegacyCampaign();
+  const summary = legacyCampaign?.summary || {};
+  const detailHref = state.activeCampaign
+    ? `/campanas/${encodeURIComponent(state.activeCampaign.id)}`
+    : "/";
+
+  elements.historyPageView.innerHTML = `
+    <div class="mx-auto max-w-7xl px-6">
+      <section class="grid gap-10 pb-14 lg:grid-cols-[1.2fr_0.8fr]" id="history-hero">
+        <div class="space-y-6">
+          <p class="inline-flex rounded-full bg-secondary-container px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-primary">Historia de Reciclando Goles</p>
+          <h1 class="font-headline text-5xl font-black tracking-tight text-on-surface lg:text-7xl">De una primera campaña escolar a una nueva etapa pública</h1>
+          <p class="max-w-3xl text-lg leading-relaxed text-on-surface-variant">${escapeHtml(
+            HISTORY_CONTENT.pageIntro
+          )}</p>
+          <div class="flex flex-wrap gap-4">
+            <a class="rounded-full bg-primary px-8 py-4 font-black text-white shadow-xl shadow-primary/20 transition-transform hover:-translate-y-0.5" data-route href="${escapeHtml(
+              detailHref
+            )}">Ver campaña activa</a>
+            <a class="rounded-full bg-surface-container-highest px-8 py-4 font-bold text-primary transition-colors hover:bg-surface-container-high" data-route href="/">Volver al inicio</a>
+          </div>
+        </div>
+        <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Resumen</p>
+          <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+            HISTORY_CONTENT.longText
+          )}</p>
+        </article>
+      </section>
+
+      <section class="py-10" id="history-origin">
+        <div class="grid gap-8 lg:grid-cols-2">
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Cómo empezó</p>
+            <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+              HISTORY_CONTENT.origin
+            )}</p>
+          </article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Visión inicial</p>
+            <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+              HISTORY_CONTENT.originFollowup
+            )}</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="py-10" id="history-first-campaign">
+        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Primera campaña</p>
+            <h2 class="mt-3 font-headline text-4xl font-black tracking-tight text-on-surface">${escapeHtml(
+              legacyCampaign?.name || "Reciclando Goles x Teletón 2026 Semestre 1"
+            )}</h2>
+            <p class="mt-4 text-on-surface-variant">${escapeHtml(
+              legacyCampaign ? formatDateRange(legacyCampaign.startAt, legacyCampaign.endAt) : "Sin fechas disponibles"
+            )}</p>
+            <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+              HISTORY_CONTENT.firstStage
+            )}</p>
+          </article>
+          <article class="rounded-[2rem] bg-gradient-to-br from-primary to-primary-container p-8 text-white shadow-xl shadow-primary/20">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-secondary-container">Resultados reales</p>
+            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+              <div class="rounded-[1.5rem] bg-white/10 p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Total final</p>
+                <p class="mt-2 text-3xl font-black">${escapeHtml(formatCurrency(summary.totalAmount))}</p>
+              </div>
+              <div class="rounded-[1.5rem] bg-white/10 p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Meta</p>
+                <p class="mt-2 text-3xl font-black">${escapeHtml(formatCurrency(legacyCampaign?.goalAmount))}</p>
+              </div>
+              <div class="rounded-[1.5rem] bg-white/10 p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Físico</p>
+                <p class="mt-2 text-2xl font-black">${escapeHtml(formatCurrency(summary.physicalAmount))}</p>
+              </div>
+              <div class="rounded-[1.5rem] bg-white/10 p-5">
+                <p class="text-xs font-bold uppercase tracking-[0.25em] text-white/60">Digital</p>
+                <p class="mt-2 text-2xl font-black">${escapeHtml(formatCurrency(summary.digitalAmount))}</p>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="py-10" id="history-legacy">
+        <div class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Lo que dejó la primera etapa</p>
+          <div class="mt-6 grid gap-4 lg:grid-cols-2">
+            ${HISTORY_CONTENT.outcomes
+              .map(
+                (item) => `
+                  <article class="rounded-[1.5rem] bg-surface-container-low p-5">
+                    <p class="leading-relaxed text-on-surface-variant">${escapeHtml(item)}</p>
+                  </article>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+      </section>
+
+      <section class="py-10" id="history-new-stage">
+        <div class="grid gap-8 lg:grid-cols-2">
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Nueva etapa</p>
+            <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+              HISTORY_CONTENT.newStage
+            )}</p>
+          </article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Puente hacia MundialHITO 2026</p>
+            <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(
+              HISTORY_CONTENT.longText
+            )}</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="py-10" id="history-principles">
+        <div class="rounded-[2rem] bg-surface-container-low p-8">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Principios del proyecto</p>
+          <div class="mt-6 grid gap-4 lg:grid-cols-2">
+            ${HISTORY_CONTENT.principles
+              .map(
+                (item) => `
+                  <article class="rounded-[1.5rem] bg-white p-5 shadow-sm">
+                    <p class="leading-relaxed text-on-surface-variant">${escapeHtml(item)}</p>
+                  </article>
+                `
+              )
+              .join("")}
+          </div>
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function buildCampaignDetailCostCards(campaign) {
+  const costBreakdown = getTournamentCostBreakdown(campaign);
+  return [
+    {
+      label: "Donativo para HITO",
+      value: formatCurrency(costBreakdown.donationAmount),
+      copy: "El proceso de donativo será acompañado por HITO.",
+    },
+    {
+      label: "Arbitraje operativo",
+      value: formatCurrency(costBreakdown.refereeFee),
+      copy: "La cuota operativa será cobrada por la organización y registrada por separado.",
+    },
+    {
+      label: "Costo total por equipo",
+      value: formatCurrency(costBreakdown.teamCostTotal),
+      copy: "Separacion clara entre causa social y gasto operativo.",
+    },
+  ];
+}
+
+function renderCampaignDetailView() {
+  if (state.route.kind !== "campaign-detail") {
+    elements.campaignDetailView.innerHTML = "";
+    return;
+  }
+
+  const campaign = getRouteCampaign();
+  if (!campaign) {
+    elements.campaignDetailView.innerHTML = `
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="rounded-[2rem] bg-white p-10 text-center shadow-lg shadow-primary/10">
+          <h1 class="font-headline text-4xl font-black tracking-tight text-on-surface">Campaña no encontrada</h1>
+          <p class="mt-4 text-on-surface-variant">No fue posible cargar el detalle público solicitado.</p>
+          <a class="mt-8 inline-flex rounded-full bg-primary px-8 py-4 font-black text-white" data-route href="/">Volver al inicio</a>
+        </div>
+      </div>
+    `;
+    return;
+  }
+
+  const evidence = getCampaignEvidenceForRoute().sort((left, right) => {
+    const leftTime = timestampToDate(left.recordedAt)?.getTime() || 0;
+    const rightTime = timestampToDate(right.recordedAt)?.getTime() || 0;
+    return rightTime - leftTime;
+  });
+  const costCards = buildCampaignDetailCostCards(campaign);
+  const transparencyNotes = getTournamentTransparencyNotes(campaign);
+
+  elements.campaignDetailView.innerHTML = `
+    <div class="mx-auto max-w-7xl px-6">
+      <section class="grid gap-10 pb-14 lg:grid-cols-[1.15fr_0.85fr]" id="campaign-detail-hero">
+        <div class="space-y-6">
+          <p class="inline-flex rounded-full bg-secondary-container px-4 py-2 text-sm font-bold uppercase tracking-[0.2em] text-primary">${escapeHtml(
+            getPublicCampaignState(campaign)
+          )}</p>
+          <h1 class="font-headline text-5xl font-black tracking-tight text-on-surface lg:text-7xl">${escapeHtml(
+            campaign.name
+          )}</h1>
+          <p class="max-w-3xl text-lg leading-relaxed text-on-surface-variant">${escapeHtml(
+            campaign.subtitle || campaign.publicPrimaryText
+          )}</p>
+          <div class="flex flex-wrap gap-4">
+            <a class="rounded-full bg-primary px-8 py-4 font-black text-white shadow-xl shadow-primary/20 transition-transform hover:-translate-y-0.5" href="#contact">Contacto</a>
+            <a class="rounded-full bg-surface-container-highest px-8 py-4 font-bold text-primary transition-colors hover:bg-surface-container-high" data-route href="/">Volver al inicio</a>
+          </div>
+        </div>
+        <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+          <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Resumen visible</p>
+          <div class="mt-6 grid gap-4">
+            <div class="rounded-[1.5rem] bg-surface-container-low p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant">Beneficiario</p>
+              <p class="mt-2 text-xl font-black text-on-surface">${escapeHtml(campaign.beneficiary || "Por confirmar")}</p>
+            </div>
+            <div class="rounded-[1.5rem] bg-surface-container-low p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant">Sede propuesta</p>
+              <p class="mt-2 text-xl font-black text-on-surface">${escapeHtml(campaign.proposedVenue || "Por confirmar")}</p>
+            </div>
+            <div class="rounded-[1.5rem] bg-surface-container-low p-5">
+              <p class="text-xs font-bold uppercase tracking-[0.25em] text-on-surface-variant">Fecha</p>
+              <p class="mt-2 text-xl font-black text-on-surface">${escapeHtml(campaign.dateLabel || "Por confirmar")}</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section class="py-10" id="campaign-detail-facts">
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Modalidad</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(campaign.modality || "Por confirmar")}</p></article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Categoría</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(campaign.category || "Por confirmar")}</p></article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Formato</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(campaign.competitionFormat || "Por confirmar")}</p></article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Cupo máximo</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(Number(campaign.maxTeams) > 0 ? `${campaign.maxTeams} equipos` : "Por definir")}</p></article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Duración</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(campaign.durationLabel || "Por confirmar")}</p></article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10"><p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">Estado</p><p class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(getPublicCampaignState(campaign))}</p></article>
+        </div>
+      </section>
+
+      <section class="py-10" id="campaign-detail-cost">
+        <div class="mx-auto mb-10 max-w-3xl text-center">
+          <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Costo por equipo</p>
+          <h2 class="font-headline text-4xl font-black tracking-tight text-on-surface">Separación pública entre donativo y arbitraje</h2>
+        </div>
+        <div class="grid gap-6 lg:grid-cols-3">
+          ${costCards
+            .map(
+              (item) => `
+                <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+                  <p class="text-sm font-bold uppercase tracking-[0.2em] text-primary">${escapeHtml(
+                    item.label
+                  )}</p>
+                  <p class="mt-3 text-4xl font-black text-on-surface">${escapeHtml(item.value)}</p>
+                  <p class="mt-4 leading-relaxed text-on-surface-variant">${escapeHtml(item.copy)}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+
+      <section class="py-10" id="campaign-detail-companies">
+        <div class="mx-auto mb-10 max-w-3xl text-center">
+          <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Empresas invitadas</p>
+          <h2 class="font-headline text-4xl font-black tracking-tight text-on-surface">Seguimiento empresarial</h2>
+        </div>
+        <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          ${(campaign.companies || [])
+            .map(
+              (company) => `
+                <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">${escapeHtml(
+                    humanizeCompanyStatus(company.status)
+                  )}</p>
+                  <h3 class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(company.name)}</h3>
+                  <p class="mt-3 text-sm leading-relaxed text-on-surface-variant">${escapeHtml(
+                    getCompanyStatusCopy(company.status)
+                  )}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+
+      <section class="py-10" id="campaign-detail-transparency">
+        <div class="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Transparencia de fondos</p>
+            <div class="mt-6 space-y-4">
+              ${transparencyNotes
+                .map(
+                  (item) => `
+                    <div class="rounded-[1.5rem] bg-surface-container-low p-5">
+                      <p class="leading-relaxed text-on-surface-variant">${escapeHtml(item)}</p>
+                    </div>
+                  `
+                )
+                .join("")}
+            </div>
+          </article>
+          <article class="rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10">
+            <div class="mb-6 flex items-center justify-between gap-4">
+              <div>
+                <p class="text-sm font-bold uppercase tracking-[0.25em] text-primary">Evidencias públicas</p>
+                <h3 class="mt-2 font-headline text-3xl font-black tracking-tight text-on-surface">Comprobantes y referencias</h3>
+              </div>
+              <span class="rounded-full bg-surface-container-low px-4 py-2 text-sm font-bold text-on-surface-variant">${evidence.length} registro${evidence.length === 1 ? "" : "s"}</span>
+            </div>
+            ${
+              evidence.length > 0
+                ? evidence
+                    .map(
+                      (item) => `
+                        <article class="rounded-[1.5rem] bg-surface-container-low p-5">
+                          <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">${escapeHtml(
+                            humanizeEvidenceKind(item.kind)
+                          )}</p>
+                          <h4 class="mt-2 text-xl font-black text-on-surface">${escapeHtml(item.title)}</h4>
+                          <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">${escapeHtml(
+                            item.description || "Sin descripción adicional."
+                          )}</p>
+                          ${buildEvidenceImageMarkup(item, "mt-4 h-56 w-full rounded-[1.25rem] bg-surface object-cover")}
+                          <a class="mt-4 inline-flex items-center gap-2 font-bold text-primary hover:underline" href="${escapeHtml(
+                            item.publicUrl
+                          )}" rel="noreferrer" target="_blank">${escapeHtml(
+                            buildEvidenceLinkLabel(item)
+                          )}<span class="material-symbols-outlined text-base">open_in_new</span></a>
+                        </article>
+                      `
+                    )
+                    .join("")
+                : '<div class="rounded-[1.5rem] border border-dashed border-outline-variant bg-surface-container-low px-6 py-10 text-center text-on-surface-variant">Aún no hay evidencias públicas registradas para esta campaña.</div>'
+            }
+          </article>
+        </div>
+      </section>
+
+      <section class="py-10" id="campaign-detail-rules">
+        <div class="mx-auto mb-10 max-w-3xl text-center">
+          <p class="mb-3 text-sm font-bold uppercase tracking-[0.25em] text-tertiary">Reglamento básico</p>
+          <h2 class="font-headline text-4xl font-black tracking-tight text-on-surface">Lineamientos de la campaña</h2>
+        </div>
+        <div class="grid gap-4">
+          ${normalizeStringArray(campaign.rules)
+            .map(
+              (rule, index) => `
+                <article class="rounded-[1.5rem] bg-white p-6 shadow-sm">
+                  <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">Punto ${index + 1}</p>
+                  <p class="mt-3 leading-relaxed text-on-surface-variant">${escapeHtml(rule)}</p>
+                </article>
+              `
+            )
+            .join("")}
+        </div>
+      </section>
+    </div>
+  `;
+}
+
+function renderRouteViews() {
+  setSectionVisibility();
+  renderStoryHighlight();
+  renderHistoryPageView();
+  renderCampaignDetailView();
 }
 
 function timestampToDate(value) {
@@ -512,6 +1396,137 @@ function humanizeEvidenceKind(kind) {
   }[kind] || "Evidencia";
 }
 
+function normalizeStringArray(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => repairVisibleText(String(item || "").trim()))
+    .filter(Boolean);
+}
+
+function normalizeCompanies(value) {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .map((item) => {
+      if (!item || typeof item !== "object") {
+        return null;
+      }
+
+      const name = repairVisibleText(String(item.name || "").trim());
+      if (!name) {
+        return null;
+      }
+
+      const normalizedStatus = String(item.status || "invited")
+        .trim()
+        .toLowerCase();
+
+      return {
+        name,
+        status: ["invited", "interested", "confirmed", "paid"].includes(normalizedStatus)
+          ? normalizedStatus
+          : "invited",
+      };
+    })
+    .filter(Boolean);
+}
+
+function humanizeCompanyStatus(status) {
+  return {
+    invited: "Invitada",
+    interested: "Interesada",
+    confirmed: "Confirmada",
+    paid: "Pagada",
+  }[String(status || "").trim().toLowerCase()] || "Invitada";
+}
+
+function getCompanyStatusCopy(status) {
+  return {
+    invited: "Empresa en etapa de invitación pública para esta edición.",
+    interested: "Empresa que ya manifestó interés, aún sin confirmar lugar.",
+    confirmed: "Empresa con intención confirmada, pendiente de pasos finales.",
+    paid: "Empresa con aportación operativa registrada por separado.",
+  }[String(status || "").trim().toLowerCase()] || "Empresa invitada a participar.";
+}
+
+function isTournamentCampaign(campaign) {
+  return String(campaign?.campaignType || "").trim().toLowerCase() === "tournament";
+}
+
+function getPublicCampaignState(campaign) {
+  return String(campaign?.publicStateLabel || "").trim() || humanizeCampaignStatus(campaign?.status);
+}
+
+function getTournamentCostBreakdown(campaign) {
+  return {
+    teamCostTotal: roundCurrency(campaign?.teamCostTotal),
+    donationAmount: roundCurrency(campaign?.donationAmount),
+    refereeFee: roundCurrency(campaign?.refereeFee),
+  };
+}
+
+function getTournamentOverviewLine(campaign) {
+  const fragments = [];
+
+  if (campaign?.beneficiary) {
+    fragments.push(`Beneficiario: ${campaign.beneficiary}`);
+  }
+
+  if (campaign?.proposedVenue) {
+    fragments.push(`Sede propuesta: ${campaign.proposedVenue}`);
+  }
+
+  if (campaign?.dateLabel) {
+    fragments.push(`Fecha: ${campaign.dateLabel}`);
+  }
+
+  return fragments.join(" · ") || "Detalles por confirmar.";
+}
+
+function getTournamentSummaryCopy(campaign) {
+  const fragments = [];
+
+  if (campaign?.modality) {
+    fragments.push(campaign.modality);
+  }
+
+  if (campaign?.category) {
+    fragments.push(`categoría ${String(campaign.category).toLowerCase()}`);
+  }
+
+  if (campaign?.competitionFormat) {
+    fragments.push(`formato ${String(campaign.competitionFormat).toLowerCase()}`);
+  }
+
+  if (campaign?.durationLabel) {
+    fragments.push(`duración ${String(campaign.durationLabel).toLowerCase()}`);
+  }
+
+  if (Number(campaign?.maxTeams) > 0) {
+    fragments.push(`cupo máximo ${campaign.maxTeams} equipos`);
+  }
+
+  return fragments.join(" · ") || "Campaña deportiva en preparación.";
+}
+
+function getTournamentTransparencyNotes(campaign) {
+  const configuredNotes = normalizeStringArray(campaign?.transparencyNotes);
+  if (configuredNotes.length > 0) {
+    return configuredNotes;
+  }
+
+  return [
+    "Los $2,000 MXN por equipo corresponden al donativo en beneficio del HITO.",
+    "Los $400 MXN por equipo corresponden a arbitraje operativo y se registran por separado.",
+    "El proceso de donativo será acompañado por el Hospital Infantil Teletón de Oncología.",
+  ];
+}
+
 function normalizeEvidenceUrl(value) {
   const trimmed = String(value || "").trim();
   if (!trimmed) {
@@ -731,8 +1746,24 @@ function renderHero() {
     elements.heroCampaignName.textContent = "Sin campaña activa";
     elements.heroCampaignMeta.textContent =
       "La siguiente edición se anunciará aquí.";
+    elements.heroSecondaryButton.textContent = "Ver historia";
+    elements.heroSecondaryButton.href = "/historia";
+    elements.heroSecondaryButton.setAttribute("data-route", "");
     elements.heroPrimaryButton.disabled = false;
-    document.title = "Reciclando Goles";
+    return;
+  }
+
+  if (isTournamentCampaign(campaign)) {
+    elements.heroCampaignState.textContent = getPublicCampaignState(campaign);
+    elements.heroCampaignCopy.textContent =
+      "La portada mantiene una lectura institucional del proyecto mientras la campaña activa vive con más detalle en su propia página pública.";
+    elements.heroCampaignName.textContent = campaign.name;
+    elements.heroCampaignMeta.textContent =
+      campaign.subtitle || getTournamentOverviewLine(campaign);
+    elements.heroSecondaryButton.textContent = "Ver campaña completa";
+    elements.heroSecondaryButton.href = `/campanas/${encodeURIComponent(campaign.id)}`;
+    elements.heroSecondaryButton.setAttribute("data-route", "");
+    elements.heroPrimaryButton.disabled = false;
     return;
   }
 
@@ -743,8 +1774,10 @@ function renderHero() {
     campaign.status === "active"
       ? `Cierre programado: ${formatDate(campaign.endAt)}`
       : "Esta campaña ya cerró y permanece en el historial institucional.";
+  elements.heroSecondaryButton.textContent = "Ver ranking";
+  elements.heroSecondaryButton.href = "#ranking";
+  elements.heroSecondaryButton.removeAttribute("data-route");
   elements.heroPrimaryButton.disabled = false;
-  document.title = `${campaign.name} | Reciclando Goles`;
 }
 
 function setLinkState(linkElement, url, label) {
@@ -752,12 +1785,16 @@ function setLinkState(linkElement, url, label) {
   if (!safeUrl) {
     linkElement.classList.add("hidden");
     linkElement.removeAttribute("href");
+    linkElement.removeAttribute("data-route");
     return;
   }
 
   linkElement.classList.remove("hidden");
   linkElement.href = safeUrl;
   linkElement.textContent = label;
+  linkElement.removeAttribute("data-route");
+  linkElement.setAttribute("target", "_blank");
+  linkElement.setAttribute("rel", "noreferrer");
 }
 
 function renderActiveCampaignSection() {
@@ -770,11 +1807,53 @@ function renderActiveCampaignSection() {
     elements.activeCampaignSemester.textContent = "Plataforma oficial del proyecto";
     elements.activeCampaignDates.textContent =
       "Por ahora no hay una campaña abierta. El historial del proyecto sigue disponible más abajo.";
+    elements.activeCampaignGoalLabel.textContent = "Meta activa";
     elements.activeCampaignGoal.textContent = formatCurrency(0);
     elements.activeCampaignCopy.textContent =
       "Reciclando Goles sigue funcionando como plataforma institucional mientras prepara la siguiente campaña.";
+    elements.activeSummaryKicker.textContent = "Estado del proyecto";
+    elements.activeSummaryCopy.textContent =
+      "El tablero se reinicia por campaña, pero el historial queda visible para mantener continuidad y transparencia.";
     elements.activeCampaignTotal.textContent = formatCurrency(0);
+    elements.activeHistoryLabel.textContent = "Campañas cerradas";
+    elements.activeSecondaryStatLabel.textContent = "Transparencia pública";
+    elements.activeCampaignTransparencyCount.textContent = "0 evidencias";
+    elements.activeCampaignSupportButton.textContent = "Ver formas de apoyo";
     setLinkState(elements.activeCampaignTeletonLink, "", "");
+    elements.activeCampaignSupportButton.disabled = false;
+    return;
+  }
+
+  if (isTournamentCampaign(campaign)) {
+    const costBreakdown = getTournamentCostBreakdown(campaign);
+    const companies = campaign.companies || [];
+
+    elements.activeCampaignName.textContent = campaign.name;
+    elements.activeCampaignStatus.textContent = getPublicCampaignState(campaign);
+    elements.activeCampaignSemester.textContent =
+      campaign.subtitle || "Campaña deportiva con causa";
+    elements.activeCampaignDates.textContent = getTournamentOverviewLine(campaign);
+    elements.activeCampaignGoalLabel.textContent = "Costo por equipo";
+    elements.activeCampaignGoal.textContent = formatCurrency(costBreakdown.teamCostTotal);
+    elements.activeCampaignCopy.textContent =
+      "La home conserva un resumen institucional. El reglamento y la operación puntual viven dentro de la página de campaña.";
+    elements.activeSummaryKicker.textContent = "Cupo del torneo";
+    elements.activeSummaryCopy.textContent =
+      "Torneo empresarial en planeación con sede propuesta en Planet Gool, formato de eliminación directa y duración de un día.";
+    elements.activeCampaignTotal.textContent =
+      Number(campaign.maxTeams) > 0 ? `${campaign.maxTeams} equipos` : "Por definir";
+    elements.activeHistoryLabel.textContent = "Campañas cerradas";
+    elements.activeSecondaryStatLabel.textContent = "Empresas invitadas";
+    elements.activeCampaignTransparencyCount.textContent = `${companies.length} empresa${
+      companies.length === 1 ? "" : "s"
+    }`;
+    elements.activeCampaignSupportButton.textContent = "Cómo apoyar";
+    elements.activeCampaignTeletonLink.classList.remove("hidden");
+    elements.activeCampaignTeletonLink.href = `/campanas/${encodeURIComponent(campaign.id)}`;
+    elements.activeCampaignTeletonLink.textContent = "Ver campaña completa";
+    elements.activeCampaignTeletonLink.removeAttribute("target");
+    elements.activeCampaignTeletonLink.removeAttribute("rel");
+    elements.activeCampaignTeletonLink.setAttribute("data-route", "");
     elements.activeCampaignSupportButton.disabled = false;
     return;
   }
@@ -783,12 +1862,18 @@ function renderActiveCampaignSection() {
   elements.activeCampaignStatus.textContent = humanizeCampaignStatus(campaign.status);
   elements.activeCampaignSemester.textContent = campaign.semesterLabel || "Semestre no definido";
   elements.activeCampaignDates.textContent = formatDateRange(campaign.startAt, campaign.endAt);
+  elements.activeCampaignGoalLabel.textContent = "Meta activa";
   elements.activeCampaignGoal.textContent = formatCurrency(campaign.goalAmount);
   elements.activeCampaignCopy.textContent =
     campaign.status === "active"
       ? "Consulta aquí la meta vigente, las fechas oficiales y las formas públicas de apoyo de esta edición."
       : "Esta campaña ya cerró, pero su información permanece como parte del historial institucional.";
+  elements.activeSummaryKicker.textContent = "Estado del proyecto";
+  elements.activeSummaryCopy.textContent =
+    "El tablero se reinicia por campaña, pero el historial queda visible para mantener continuidad y transparencia.";
   elements.activeCampaignTotal.textContent = formatCurrency(totals.totalAmount);
+  elements.activeHistoryLabel.textContent = "Campañas cerradas";
+  elements.activeSecondaryStatLabel.textContent = "Transparencia pública";
   setLinkState(
     elements.activeCampaignTeletonLink,
     campaign.teletonUrl,
@@ -804,12 +1889,77 @@ function renderCounter() {
   const totalAmount = roundCurrency(totals.totalAmount);
   const percent = goalAmount > 0 ? Math.min((totalAmount / goalAmount) * 100, 100) : 0;
 
+  if (isTournamentCampaign(campaign)) {
+    const costBreakdown = getTournamentCostBreakdown(campaign);
+    const donationSharePercent =
+      costBreakdown.teamCostTotal > 0
+        ? Math.round((costBreakdown.donationAmount / costBreakdown.teamCostTotal) * 100)
+        : 0;
+
+    elements.impactKicker.textContent = "Datos rápidos";
+    elements.impactTitle.textContent = campaign.name || "Campaña activa";
+    elements.impactDescription.textContent =
+      campaign.publicPrimaryText ||
+      "Torneo empresarial de fútbol 7 en beneficio del Hospital Infantil Teletón de Oncología.";
+    elements.counterStageCopy.textContent = getPublicCampaignState(campaign);
+    elements.counterBreakdownCopy.textContent = `${formatCurrency(
+      costBreakdown.donationAmount
+    )} de donativo para HITO · ${formatCurrency(
+      costBreakdown.refereeFee
+    )} de arbitraje operativo.`;
+    elements.counterTotalLabel.textContent = "Costo total";
+    elements.counterGoalLabel.textContent = "Donativo";
+    elements.counterTotal.textContent = formatCurrency(costBreakdown.teamCostTotal);
+    elements.counterGoal.textContent = formatCurrency(costBreakdown.donationAmount);
+    elements.counterPercent.textContent = `${donationSharePercent}% donativo`;
+    elements.counterRemaining.textContent = `${formatCurrency(
+      costBreakdown.refereeFee
+    )} corresponden a arbitraje operativo.`;
+    elements.counterFill.style.width = `${Math.max(Math.min(donationSharePercent, 100), 0)}%`;
+
+    elements.breakdownPhysicalLabel.textContent = "Donativo HITO";
+    elements.breakdownPhysical.textContent = formatCurrency(costBreakdown.donationAmount);
+    elements.breakdownPhysicalCopy.textContent =
+      "El proceso de donativo será acompañado por HITO.";
+    elements.breakdownDigitalLabel.textContent = "Arbitraje";
+    elements.breakdownDigital.textContent = formatCurrency(costBreakdown.refereeFee);
+    elements.breakdownDigitalCopy.textContent =
+      "Cuota operativa cobrada por la organización y registrada por separado.";
+    elements.breakdownRecyclingLabel.textContent = "Cupo máximo";
+    elements.breakdownRecycling.textContent =
+      Number(campaign.maxTeams) > 0 ? `${campaign.maxTeams} equipos` : "Por definir";
+    elements.breakdownRecyclingCopy.textContent = getTournamentSummaryCopy(campaign);
+
+    elements.counterDonationCount.textContent =
+      Number(campaign.maxTeams) > 0 ? String(campaign.maxTeams) : "0";
+    elements.counterDonationLabel.textContent = "Equipos máximo";
+    elements.counterCountdownValue.textContent = campaign.dateLabel || "Por confirmar";
+    elements.counterCountdownLabel.textContent = "Fecha del torneo";
+    elements.counterSyncStatus.textContent = campaign.proposedVenue || "Por confirmar";
+    elements.counterSyncLabel.textContent = "Sede propuesta";
+    return;
+  }
+
+  elements.impactKicker.textContent = "Contador público";
+  elements.impactTitle.textContent = "Contador de campaña";
+  elements.impactDescription.textContent =
+    "El avance se calcula por campaña y separa aportes físicos, digitales y equivalentes de reciclaje.";
+  elements.counterTotalLabel.textContent = "Recaudado";
+  elements.counterGoalLabel.textContent = "Meta";
   elements.counterTotal.textContent = formatCurrency(totalAmount);
   elements.counterGoal.textContent = formatCurrency(goalAmount);
+  elements.breakdownPhysicalLabel.textContent = "Físico";
   elements.breakdownPhysical.textContent = formatCurrency(totals.physicalAmount);
+  elements.breakdownPhysicalCopy.textContent = "Donativos presenciales registrados por admin.";
+  elements.breakdownDigitalLabel.textContent = "Digital";
   elements.breakdownDigital.textContent = formatCurrency(totals.digitalAmount);
+  elements.breakdownDigitalCopy.textContent =
+    "Suma de donativos digitales manuales y sincronizados.";
+  elements.breakdownRecyclingLabel.textContent = "Reciclaje";
   elements.breakdownRecycling.textContent = formatCurrency(totals.recyclingAmount);
+  elements.breakdownRecyclingCopy.textContent = "Equivalente monetario del reciclaje recibido.";
   elements.counterDonationCount.textContent = String(totals.donationCount);
+  elements.counterDonationLabel.textContent = "Donaciones";
   elements.counterBreakdownCopy.textContent = `Físico: ${formatCurrency(
     totals.physicalAmount
   )} · Digital: ${formatCurrency(totals.digitalAmount)} · Reciclaje: ${formatCurrency(
@@ -818,6 +1968,7 @@ function renderCounter() {
   elements.counterFill.style.width = `${percent}%`;
   elements.counterSyncStatus.textContent =
     humanizeSyncStatus(totals.syncStatus);
+  elements.counterSyncLabel.textContent = "Teletón digital";
 
   if (!campaign) {
     elements.counterStageCopy.textContent = "Modo institucional";
@@ -851,9 +2002,43 @@ function getPublicPiggyBanks() {
 }
 
 function renderPiggyBanks() {
+  if (isTournamentCampaign(state.activeCampaign)) {
+    const companies = state.activeCampaign?.companies || [];
+    elements.piggyBanksKicker.textContent = "Empresas invitadas";
+    elements.piggyBanksTitle.textContent = "Participación empresarial en seguimiento";
+    elements.piggyBanksCopy.textContent =
+      "Estas empresas forman parte de la invitación inicial de MundialHITO 2026. Su estatus puede cambiar conforme avance la planeación.";
+    elements.piggyBanksList.innerHTML = "";
+    elements.piggyBanksEmpty.hidden = companies.length > 0;
+    elements.piggyBanksEmpty.textContent =
+      "Aún no hay empresas publicadas para esta campaña.";
+
+    companies.forEach((company) => {
+      const article = document.createElement("article");
+      article.className = "rounded-[2rem] bg-white p-8 shadow-lg shadow-primary/10";
+      article.innerHTML = `
+        <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">${escapeHtml(
+          humanizeCompanyStatus(company.status)
+        )}</p>
+        <h3 class="mt-3 text-2xl font-black text-on-surface">${escapeHtml(company.name)}</h3>
+        <p class="mt-3 text-sm leading-relaxed text-on-surface-variant">${escapeHtml(
+          getCompanyStatusCopy(company.status)
+        )}</p>
+      `;
+      elements.piggyBanksList.append(article);
+    });
+    return;
+  }
+
   const piggyBanks = getPublicPiggyBanks();
+  elements.piggyBanksKicker.textContent = "Alcancías activas";
+  elements.piggyBanksTitle.textContent = "Puntos listos para recibir apoyo";
+  elements.piggyBanksCopy.textContent =
+    "Cada campaña puede abrir y cerrar alcancías sin perder el histórico del proyecto.";
   elements.piggyBanksList.innerHTML = "";
   elements.piggyBanksEmpty.hidden = piggyBanks.length > 0;
+  elements.piggyBanksEmpty.textContent =
+    "No hay alcancías activas visibles en esta campaña.";
 
   piggyBanks.forEach((piggyBank) => {
     const article = document.createElement("article");
@@ -885,6 +2070,12 @@ function renderPiggyBanks() {
 }
 
 function renderGeneralDonationsCard() {
+  if (isTournamentCampaign(state.activeCampaign)) {
+    elements.generalDonationsCard.innerHTML = "";
+    elements.generalDonationsCard.hidden = true;
+    return;
+  }
+
   const shouldShow = Number(state.anonymousSummary.donationCount) > 0;
   elements.generalDonationsCard.innerHTML = "";
   elements.generalDonationsCard.hidden = !shouldShow;
@@ -919,6 +2110,62 @@ function renderGeneralDonationsCard() {
 }
 
 function renderLeaderboard() {
+  if (isTournamentCampaign(state.activeCampaign)) {
+    const campaign = state.activeCampaign;
+    const costBreakdown = getTournamentCostBreakdown(campaign);
+    const notes = getTournamentTransparencyNotes(campaign);
+
+    elements.rankingKicker.textContent = "Transparencia de fondos";
+    elements.rankingTitle.textContent = "Distribución pública por equipo";
+    elements.rankingCopy.textContent =
+      "La campaña distingue el donativo para HITO de la cuota operativa de arbitraje para evitar mezclar conceptos.";
+    elements.leaderboardList.innerHTML = "";
+    elements.leaderboardEmpty.hidden = true;
+    elements.generalDonationsCard.innerHTML = "";
+    elements.generalDonationsCard.hidden = true;
+
+    const items = [
+      {
+        title: "Donativo para HITO",
+        value: formatCurrency(costBreakdown.donationAmount),
+        copy: notes[0] || "Monto solidario en beneficio del Hospital Infantil Teletón de Oncología.",
+      },
+      {
+        title: "Arbitraje operativo",
+        value: formatCurrency(costBreakdown.refereeFee),
+        copy: notes[1] || "Cuota operativa cobrada y registrada por la organización.",
+      },
+      {
+        title: "Costo total por equipo",
+        value: formatCurrency(costBreakdown.teamCostTotal),
+        copy: notes[2] || "El acompañamiento del donativo se realizará junto con HITO.",
+      },
+    ];
+
+    items.forEach((item) => {
+      const row = document.createElement("article");
+      row.className =
+        "group flex flex-wrap items-center justify-between gap-6 rounded-[2rem] bg-white p-6 shadow-sm";
+      row.innerHTML = `
+        <div class="space-y-2">
+          <p class="text-xs font-black uppercase tracking-[0.3em] text-secondary">${escapeHtml(
+            item.title
+          )}</p>
+          <p class="max-w-2xl text-sm text-on-surface-variant">${escapeHtml(item.copy)}</p>
+        </div>
+        <div class="text-right">
+          <p class="text-2xl font-black text-primary">${escapeHtml(item.value)}</p>
+        </div>
+      `;
+      elements.leaderboardList.append(row);
+    });
+    return;
+  }
+
+  elements.rankingKicker.textContent = "Ranking público";
+  elements.rankingTitle.textContent = "Muro de Campeones";
+  elements.rankingCopy.textContent =
+    "Ranking acumulado por donador dentro de la campaña activa.";
   renderGeneralDonationsCard();
   elements.leaderboardList.innerHTML = "";
   const donors = state.topDonors;
@@ -959,6 +2206,76 @@ function renderLeaderboard() {
 }
 
 function renderTransparency() {
+  if (isTournamentCampaign(state.activeCampaign)) {
+    const campaign = state.activeCampaign;
+    const evidence = [...state.activeEvidence].sort((left, right) => {
+      const leftDate = timestampToDate(left.recordedAt)?.getTime() || 0;
+      const rightDate = timestampToDate(right.recordedAt)?.getTime() || 0;
+      return rightDate - leftDate;
+    });
+
+    elements.transparencyKicker.textContent = "Transparencia";
+    elements.transparencyTitle.textContent = "Seguimiento público de la campaña";
+    elements.transparencyCopy.textContent =
+      "La portada muestra fondos, evidencias y estado general. El reglamento completo vive dentro de la página propia de la campaña.";
+    elements.transparencySummaryKicker.textContent = "Estado visible";
+    elements.transparencySyncStatus.textContent = getPublicCampaignState(campaign);
+    elements.transparencySyncCopy.textContent =
+      "Los montos solidarios y los operativos se comunican por separado para mantener claridad pública.";
+    elements.transparencySummaryBoxKicker.textContent = "Resumen de fondos";
+    elements.transparencyTotalLabel.textContent = "Donativo HITO";
+    elements.transparencyTotalAmount.textContent = formatCurrency(campaign.donationAmount);
+    elements.transparencyDigitalLabel.textContent = "Arbitraje";
+    elements.transparencyDigitalAmount.textContent = formatCurrency(campaign.refereeFee);
+    elements.transparencyLastSyncLabel.textContent = "Evidencias";
+    elements.transparencyLastSync.textContent = `${evidence.length} registro${
+      evidence.length === 1 ? "" : "s"
+    }`;
+    elements.transparencyListKicker.textContent = "Evidencias públicas";
+    elements.transparencyListTitle.textContent = "Comprobantes y referencias";
+    elements.transparencyEvidenceCount.textContent = `${evidence.length} registro${
+      evidence.length === 1 ? "" : "s"
+    }`;
+    elements.transparencyEvidenceList.innerHTML = "";
+    elements.transparencyEvidenceEmpty.hidden = evidence.length > 0;
+    elements.transparencyEvidenceEmpty.textContent =
+      "Aún no hay evidencias públicas registradas para esta campaña.";
+
+    evidence.forEach((item) => {
+      const article = document.createElement("article");
+      article.className = "rounded-[1.5rem] bg-surface-container-low p-5";
+      article.innerHTML = `
+        <div class="flex flex-wrap items-start justify-between gap-4">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[0.25em] text-secondary">${escapeHtml(
+              humanizeEvidenceKind(item.kind)
+            )}</p>
+            <h4 class="mt-2 text-xl font-black text-on-surface">${escapeHtml(item.title)}</h4>
+            <p class="mt-2 text-sm leading-relaxed text-on-surface-variant">${escapeHtml(
+                            item.description || "Sin descripción adicional."
+            )}</p>
+          </div>
+          <div class="min-w-[180px] text-left sm:text-right">
+            <p class="text-sm font-bold text-primary">${
+              item.amount != null ? formatCurrency(item.amount) : "Sin monto asociado"
+            }</p>
+            <p class="mt-1 text-xs uppercase tracking-[0.25em] text-on-surface-variant">${escapeHtml(
+              formatDate(item.recordedAt)
+            )}</p>
+          </div>
+        </div>
+        ${buildEvidenceImageMarkup(item, "h-56 w-full bg-surface object-cover object-center")}
+        <a class="mt-4 inline-flex items-center gap-2 font-bold text-primary hover:underline" href="${escapeHtml(
+          item.publicUrl
+        )}" rel="noreferrer" target="_blank">
+          ${escapeHtml(buildEvidenceLinkLabel(item))} <span class="material-symbols-outlined text-base">open_in_new</span>
+        </a>
+      `;
+      elements.transparencyEvidenceList.append(article);
+    });
+    return;
+  }
+
   const totals = state.activeTotals;
   const evidence = [...state.activeEvidence].sort((left, right) => {
     const leftDate = timestampToDate(left.recordedAt)?.getTime() || 0;
@@ -1078,6 +2395,26 @@ function renderHistory() {
 }
 
 function renderDonationNotice() {
+  if (isTournamentCampaign(state.activeCampaign)) {
+    const campaign = state.activeCampaign;
+    const costBreakdown = getTournamentCostBreakdown(campaign);
+    const companies = campaign?.companies || [];
+
+    elements.donationNoticeCopy.textContent =
+      "MundialHITO 2026 está en planeación. El donativo por equipo será acompañado por HITO y la cuota de arbitraje será cobrada por la organización por separado.";
+    elements.donationNoticePiggyBanks.innerHTML = [
+      `${formatCurrency(costBreakdown.donationAmount)} de donativo en beneficio del HITO.`,
+      `${formatCurrency(costBreakdown.refereeFee)} de arbitraje operativo registrado por separado.`,
+      companies.length > 0
+        ? `${companies.length} empresas en la lista inicial de invitación o seguimiento.`
+        : "Aún no hay empresas publicadas.",
+    ]
+      .map((item) => `<li>${escapeHtml(item)}</li>`)
+      .join("");
+    setLinkState(elements.donationNoticeTeletonLink, "", "");
+    return;
+  }
+
   const piggyBanks = getPublicPiggyBanks();
   if (!state.activeCampaign) {
     elements.donationNoticeCopy.textContent =
@@ -1282,7 +2619,7 @@ function renderAdminEvidence() {
                   )}</p>
                   <h4 class="mt-1.5 text-lg font-black text-on-surface">${escapeHtml(item.title)}</h4>
                   <p class="mt-2 text-sm text-on-surface-variant">${escapeHtml(
-                    item.description || "Sin descripcion adicional."
+                    item.description || "Sin descripción adicional."
                   )}</p>
                 </div>
                 <div class="text-right">
@@ -1395,6 +2732,23 @@ function renderAdminWorkspace() {
     : "No hay campaña activa para cerrar.";
 }
 
+function renderRouteChrome() {
+  renderRouteViews();
+  updateSeoForRoute();
+
+  const routeHash = String(globalThis.location.hash || "").replace(/^#/, "");
+  const definitions = getCurrentSectionDefinitions();
+  if (definitions.some((item) => item.id === routeHash)) {
+    state.activeSectionId = routeHash;
+  } else if (!definitions.some((item) => item.id === state.activeSectionId)) {
+    state.activeSectionId = definitions[0]?.id || "contact";
+  }
+
+  updateCurrentSectionLink();
+  renderSiteMenu();
+  observeCurrentSections();
+}
+
 function renderAll() {
   renderHero();
   renderActiveCampaignSection();
@@ -1404,6 +2758,7 @@ function renderAll() {
   renderTransparency();
   renderHistory();
   renderDonationNotice();
+  renderRouteChrome();
   renderAdminWorkspace();
 }
 
@@ -1484,13 +2839,13 @@ function subscribeToActiveCampaignData() {
           const data = item.data();
           return {
             id: item.id,
-            name: String(data.name || "").trim(),
-            location: String(data.location || "").trim(),
+            name: repairVisibleText(String(data.name || "").trim()),
+            location: repairVisibleText(String(data.location || "").trim()),
             status: String(data.status || "inactive"),
             accepts: Array.isArray(data.accepts)
-              ? data.accepts.map((value) => String(value || "").trim()).filter(Boolean)
+              ? data.accepts.map((value) => repairVisibleText(String(value || "").trim())).filter(Boolean)
               : [],
-            notes: String(data.notes || "").trim(),
+            notes: repairVisibleText(String(data.notes || "").trim()),
             createdAt: data.createdAt || null,
             updatedAt: data.updatedAt || null,
           };
@@ -1512,7 +2867,8 @@ function subscribeToActiveCampaignData() {
           const data = item.data();
           return {
             id: item.id,
-            displayName: String(data.displayName || "Anonimo").trim() || "Anonimo",
+            displayName:
+              repairVisibleText(String(data.displayName || "Anonimo").trim()) || "Anonimo",
             totalAmount: roundCurrency(data.totalAmount),
             donationCount: Number(data.donationCount) || 0,
           };
@@ -1542,7 +2898,7 @@ function subscribeToActiveCampaignData() {
       },
       (error) => {
         console.error("Donor totals listener failed.", error);
-        showStatus("No fue posible actualizar el ranking publico.", "error");
+        showStatus("No fue posible actualizar el ranking público.", "error");
       }
     )
   );
@@ -1555,14 +2911,14 @@ function subscribeToActiveCampaignData() {
           const data = item.data();
           return {
             id: item.id,
-            title: String(data.title || "").trim(),
+            title: repairVisibleText(String(data.title || "").trim()),
             kind: String(data.kind || "other"),
             publicUrl: String(data.publicUrl || "").trim(),
             assetType: String(data.assetType || "").trim(),
             fileName: String(data.fileName || "").trim(),
             mimeType: String(data.mimeType || "").trim(),
             storagePath: String(data.storagePath || "").trim(),
-            description: String(data.description || "").trim(),
+            description: repairVisibleText(String(data.description || "").trim()),
             amount: data.amount == null ? null : roundCurrency(data.amount),
             recordedAt: data.recordedAt || null,
             createdAt: data.createdAt || null,
@@ -1580,11 +2936,38 @@ function subscribeToActiveCampaignData() {
 
 function normalizeCampaignDocument(documentSnapshot) {
   const data = documentSnapshot.data();
+  const profile =
+    data.campaignProfile && typeof data.campaignProfile === "object" ? data.campaignProfile : {};
+
   return {
     id: documentSnapshot.id,
-    name: String(data.name || "").trim(),
-    semesterLabel: String(data.semesterLabel || "").trim(),
+    name: repairVisibleText(String(data.name || "").trim()),
+    semesterLabel: repairVisibleText(String(data.semesterLabel || "").trim()),
     status: String(data.status || "draft"),
+    campaignType: String(data.campaignType || profile.campaignType || "").trim(),
+    subtitle: repairVisibleText(String(data.subtitle || profile.subtitle || "").trim()),
+    beneficiary: repairVisibleText(String(data.beneficiary || profile.beneficiary || "").trim()),
+    publicStateLabel: repairVisibleText(
+      String(data.publicStateLabel || profile.publicStateLabel || "").trim()
+    ),
+    publicPrimaryText: repairVisibleText(
+      String(data.publicPrimaryText || profile.publicPrimaryText || "").trim()
+    ),
+    proposedVenue: repairVisibleText(String(data.proposedVenue || profile.proposedVenue || "").trim()),
+    modality: repairVisibleText(String(data.modality || profile.modality || "").trim()),
+    category: repairVisibleText(String(data.category || profile.category || "").trim()),
+    competitionFormat: repairVisibleText(String(
+      data.competitionFormat || data.format || profile.competitionFormat || profile.format || ""
+    ).trim()),
+    maxTeams: Number(data.maxTeams ?? profile.maxTeams) || 0,
+    durationLabel: repairVisibleText(String(data.durationLabel || profile.durationLabel || "").trim()),
+    dateLabel: repairVisibleText(String(data.dateLabel || profile.dateLabel || "").trim()),
+    teamCostTotal: roundCurrency(data.teamCostTotal ?? profile.teamCostTotal),
+    donationAmount: roundCurrency(data.donationAmount ?? profile.donationAmount),
+    refereeFee: roundCurrency(data.refereeFee ?? profile.refereeFee),
+    companies: normalizeCompanies(data.companies ?? profile.companies),
+    transparencyNotes: normalizeStringArray(data.transparencyNotes ?? profile.transparencyNotes),
+    rules: normalizeStringArray(data.rules ?? profile.rules),
     goalAmount: roundCurrency(data.goalAmount),
     startAt: data.startAt || null,
     endAt: data.endAt || null,
@@ -2456,6 +3839,25 @@ async function handleNewCampaignCreate(event) {
 }
 
 function bindUi() {
+  document.addEventListener("click", (event) => {
+    const routeLink = event.target.closest("a[data-route]");
+    if (routeLink) {
+      const href = routeLink.getAttribute("href") || "/";
+      const url = new URL(href, globalThis.location.origin);
+      if (url.origin === globalThis.location.origin) {
+        event.preventDefault();
+        closeSiteMenu();
+        navigateTo(url.pathname, url.hash.replace(/^#/, ""));
+      }
+      return;
+    }
+
+    const menuLink = event.target.closest("[data-menu-link]");
+    if (menuLink) {
+      closeSiteMenu();
+    }
+  });
+
   document.querySelectorAll("[data-open-donation-notice]").forEach((button) => {
     button.addEventListener("click", (event) => {
       event.preventDefault();
@@ -2469,6 +3871,17 @@ function bindUi() {
       openAdminModal();
     });
   });
+
+  elements.navMenuButton.addEventListener("click", () => {
+    if (elements.siteMenu.getAttribute("aria-hidden") === "false") {
+      closeSiteMenu();
+      return;
+    }
+
+    openSiteMenu();
+  });
+  elements.siteMenuBackdrop.addEventListener("click", closeSiteMenu);
+  elements.siteMenuCloseButton.addEventListener("click", closeSiteMenu);
 
   elements.donationNoticeClose.addEventListener("click", closeDonationNoticeModal);
   elements.donationNoticeCloseButton.addEventListener("click", closeDonationNoticeModal);
@@ -2490,6 +3903,10 @@ function bindUi() {
       elements.donationNoticeModal.getAttribute("aria-hidden") === "false"
     ) {
       closeDonationNoticeModal();
+    }
+
+    if (event.key === "Escape" && elements.siteMenu.getAttribute("aria-hidden") === "false") {
+      closeSiteMenu();
     }
   });
 
@@ -2513,11 +3930,24 @@ function bindUi() {
   elements.adminSyncTeletonButton.addEventListener("click", handleSyncTeleton);
   elements.adminRecalculateButton.addEventListener("click", handleRecalculateTotals);
   elements.newCampaignForm.addEventListener("submit", handleNewCampaignCreate);
+  globalThis.addEventListener("popstate", () => {
+    state.route = getRouteFromLocation();
+    renderAll();
+    const hash = String(globalThis.location.hash || "").replace(/^#/, "");
+    if (hash) {
+      requestAnimationFrame(() => scrollToHash(hash, false));
+    }
+  });
 }
 
 async function bootstrap() {
+  state.route = getRouteFromLocation();
   bindUi();
   renderAll();
+  const initialHash = String(globalThis.location.hash || "").replace(/^#/, "");
+  if (initialHash) {
+    requestAnimationFrame(() => scrollToHash(initialHash, false));
+  }
 
   if (!isFirebaseConfigured || !db || !auth) {
     showStatus(
